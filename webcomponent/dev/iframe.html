@@ -1,40 +1,47 @@
 <!-- Page to be hosted on a specific domain, allowed by default to do protocol launch in Edge, to be injected as an iframe on ISVs website -->
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Microsoft Store Popup Badge</title>
-  <style>
-    html, body {
-          margin: 0;
-          padding: 0;
-      }
-    .largeBadge {
-       width: 284px; height: 104px;
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Microsoft Store Popup Badge</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
         }
 
-    .smallBadge {
-        width: 127px; height: 52px;
-    }
+        .largeBadge {
+            width: 284px;
+            height: 104px;
+        }
 
-    button {
-        border: none;
-        margin: 0;
-        padding: 0;
-        width: auto;
-        overflow: visible;
-    }
-  </style>
+        .smallBadge {
+            width: 127px;
+            height: 52px;
+        }
+
+        button {
+            border: none;
+            margin: 0;
+            padding: 0;
+            width: auto;
+            overflow: visible;
+        }
+    </style>
+
 <body>
 </body>
+
 </html>
 <script>
     const params = new URLSearchParams(document.location.search);
     const imgUrl = params.get('imgUrl');
-    const targetUrl = params.get('targetUrl'); 
+    const targetUrl = params.get('targetUrl');
     const badgeSize = params.get('badgeSize');
-    
+
     let bigBadge = false;
     if (badgeSize && badgeSize === 'big') {
         bigBadge = true;
@@ -48,14 +55,12 @@
         badgeImage.setAttribute("class", 'smallBadge');
     }
     badgeImage.setAttribute("src", imgUrl);
-    
+
     badgeImage.setAttribute("id", 'msStoreBadgeImg');
     badgeImage.setAttribute("alt", 'Microsoft Store badge logo');
     buttonElement.appendChild(badgeImage);
     buttonElement.addEventListener("click", function () {
-        window.open(targetUrl + "&mode=mini&pos="+Math.floor(window.screenLeft*window.devicePixelRatio)+","+Math.floor(window.screenTop*window.devicePixelRatio)+","+Math.floor(window.outerWidth*window.devicePixelRatio)+","+Math.floor(window.outerHeight*window.devicePixelRatio));
+        window.open(targetUrl + "&mode=mini&pos=" + Math.floor(window.screenLeft * window.devicePixelRatio) + "," + Math.floor(window.screenTop * window.devicePixelRatio) + "," + Math.floor(window.outerWidth * window.devicePixelRatio) + "," + Math.floor(window.outerHeight * window.devicePixelRatio));
     });
     document.body.appendChild(buttonElement);
 </script>
-
-
