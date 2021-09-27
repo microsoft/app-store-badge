@@ -1,0 +1,250 @@
+<!-- Page to be hosted on a specific domain, allowed by default to do protocol launch in Edge, to be injected as an iframe on ISVs website -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Microsoft Store Popup Badge</title>
+  <style>
+    html, body {
+          margin: 0;
+          padding: 0;
+      }
+    .largeBadge {
+       width: 284px; height: 104px;
+        }
+
+    .smallBadge {
+        width: 127px; height: 52px;
+    }
+  </style>
+<body>
+</body>
+</html>
+<script>
+    const params = new URLSearchParams(document.location.search);
+    const productId = params.get('productId');
+    const badgeSize = params.get('badgeSize');
+    // if no language parameter is provided, we will auto detect the preferred language of the user using JavaScript
+    let language = params.get('language');
+    /* Using english by default if language not found */
+    let largeBadgeUrl = "https://developer.microsoft.com/store/badges/images/English_get-it-from-MS.png";
+    let smallBadgeUrl = "https://developer.microsoft.com/store/badges/images/English_get_L.png";
+    let languageFull = "English";
+
+    if (!language) {
+        dashPosition = navigator.language.indexOf("-");
+        /* 'en-us', 'fr-fr', 'fil-ph' */
+        if (dashPosition !== -1) {
+            language = navigator.language.substring(0, dashPosition);
+        }
+        /* 'en', 'fr' */
+        else {
+            language = navigator.language;
+        }
+    }
+
+    switch (language) {
+        case "ar":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Arabic_get_it_from_MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Arabic_get_L.png';
+            break;
+        case "be":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Belarusian_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Belarusian_get_L.png';
+            break;
+        case "bn":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Bengali_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Bengali_get_L.png';
+            break;
+        case "bs":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Bosnian_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Bosnian_get_L.png';
+            break;
+        case "bg":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Bulgarian_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Bulgarian_get_L.png';
+            break;
+        case "zh":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Chinese_Simplified_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Chinese_Simplified_Get_L.png';
+            break;
+        case "hr":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Croatian_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Croatian_get_L.png';
+            break;
+        case "cs":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Czech_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Czech_get_L.png';
+            break;
+        case "da":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Danish_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Danish_get_L.png';
+            break;
+        case "nl":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Dutch_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Dutch_get_L.png';
+            break;
+        case "et":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Estonian_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Estonian_get_L.png';
+            break;
+        case "fil":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Filipino_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Filipino_get_L.png';
+            break;
+        case "fi":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Finnish_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Finnish_get_L.png';
+            break;
+        case 'fr':
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/French_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/French_get_L.png';
+            break;
+        case "de":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/German_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/German_get_L.png';
+            break;
+        case "el":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Greek_-get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Greek_get_L.png';
+            break;
+        case "he":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Hebrew_-get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Hebrew_get_L.png';
+            break;
+        case "hi":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Hindi_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Hindi_get_L.png';
+            break;
+        case "hu":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Hungarian_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Hungarian_get_L.png';
+            break;
+        case "id":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Indonesian_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Indonesian_get_L.png';
+            break;
+        case "it":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Italian_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Italian_get_L.png';
+            break;
+        case "ja":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Japanese_-get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Japan_Get__L.png';
+            break;
+        case "ko":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Korean_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Korean_get_L.png';
+            break;
+        case "lv":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Latvian_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Latvian_get_L.png';
+            break;
+        case "lt":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Lithuanian_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Lithuanian_get_L.png';
+            break;
+        case "ms":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Malay_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Malay_get_L.png';
+            break;
+        case "no":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Norwegian_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Norwegian_get_L.png';
+            break;
+        case "pl":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Polish_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Polish_get_L.png';
+            break;
+        case "pt":
+            if (navigator.language.toLowerCase() === 'pt-br') {
+                largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Portuguese-Brazilian_get-it-from-MS.png';
+                smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Portuguese_Brazil_get_L.png';
+            }
+            else {
+                largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Portuguese-Portugal_get-it-from-MS.png';
+                smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Portuguese_Portugal_get_L.png';
+            }
+            break;
+        case "ro":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Romanian_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Romanian_get_L.png';
+            break;
+        case "ru":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Russian_get_it_from_MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Russian_get_L.png';
+            break;
+        case "sr":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Serbian_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Serbian_get_L.png';
+            break;
+        case "sk":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Slovak_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Slovak_get_L.png';
+            break;
+        case "sl":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Slovenian_get_it_from_MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Slovenian_get_L.png';
+            break;
+        case "es":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Spanish_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Spanish_get_L.png';
+            break;
+        case "sw":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Swahili_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Swahili_get_L.png';
+            break;
+        case "sv":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Swedish_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Swedish_get_L.png';
+            break;
+        case "th":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Thai_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Thai_get_L.png';
+            break;
+         case "tr":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Turkish_get-it-from-MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Turkish_get_L.png';
+            break;
+        case "uk":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Ukranian_get_it_from_MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Ukranian_get.png';
+            break;
+        case "vi":
+            largeBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Vietnamese_get_it_from_MS.png';
+            smallBadgeUrl = 'https://developer.microsoft.com/store/badges/images/Vietnamese_get.png';
+            break;
+    }
+    
+    let bigBadge = true;
+    if (badgeSize && badgeSize === 'small') {
+        bigBadge = false;
+    }
+    const ahrefElement = document.createElement('a');
+    let badgeImage = document.createElement("img");
+    if (bigBadge) {
+        badgeImage.setAttribute("class", 'largeBadge');
+        badgeImage.setAttribute("src", largeBadgeUrl);
+    }
+    else {
+        badgeImage.setAttribute("class", 'smallBadge');
+        badgeImage.setAttribute("src", smallBadgeUrl);
+    }
+    
+    badgeImage.setAttribute("id", 'msStoreBadgeImg');
+    badgeImage.setAttribute("alt", 'Microsoft Store badge logo');
+    ahrefElement.appendChild(badgeImage);
+    // If the OS is Windows 10 or Windows 11 and the browser Edge Chromium
+    if (navigator.userAgent.indexOf("Windows NT 1") !== -1 && (navigator.userAgent.indexOf("Edg/") !== -1 ||  navigator.userAgent.indexOf("Firefox") !== -1)) {
+        ahrefElement.setAttribute('href', `ms-windows-store://pdp/?ProductId=${productId}`);
+    }
+    // otherwise, redirect to the Web PDP
+    else {
+        ahrefElement.setAttribute('href', `https://www.microsoft.com/store/apps/${productId}?cid=storebadge&ocid=badge`);
+        ahrefElement.setAttribute('target', "_blank");
+    }
+    document.body.appendChild(ahrefElement);
+</script>
+
+
