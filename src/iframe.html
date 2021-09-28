@@ -49,10 +49,10 @@
     const buttonElement = document.createElement('button');
     let badgeImage = document.createElement("img");
     if (bigBadge) {
-        badgeImage.setAttribute("size", 'large');
+        badgeImage.setAttribute("class", 'largeBadge');
     }
     else {
-        badgeImage.setAttribute("size", 'small');
+        badgeImage.setAttribute("class", 'smallBadge');
     }
     badgeImage.setAttribute("src", imgUrl);
 
