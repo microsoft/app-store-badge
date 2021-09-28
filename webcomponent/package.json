@@ -7,7 +7,7 @@
   "module": "ms-store-badge.js",
   "type": "module",
   "scripts": {
-    "build": "concurrently \"tsc\" \"rollup --config rollup.config.js --watch\"",
+    "build": "concurrently \"tsc\" \"rollup --config rollup.config.js\"",
     "build:watch": "concurrently \"tsc --watch\" \"rollup --config rollup.config.js --watch\"",
     "clean": "rimraf ms-store-badge.{d.ts,d.ts.map,js,js.map} test/ms-store-badge.{d.ts,d.ts.map,js,js.map} test/ms-store-badge_test.{d.ts,d.ts.map,js,js.map}",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
