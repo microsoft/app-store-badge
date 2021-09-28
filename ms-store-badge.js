@@ -89,7 +89,12 @@ let MSStoreBadge = MSStoreBadge_1 = class MSStoreBadge extends LitElement {
             this.languageImageSuffixMap[language] || // Grab the image suffix from the map
                 "English"; // Couldn't find anything? Use English
         const sizeSuffix = size === "small" ? "get_L.png" : "get-it-from-MS.png";
-        return `https://developer.microsoft.com/store/badges/images/${langSuffix}_${sizeSuffix}`;
+        // The language name and size are separated by "_".
+        // Special case: For large sizes, Hebrew, Greek, and Japanese are separated by "_-"
+        // Example special case: https://developer.microsoft.com/store/badges/images/Hebrew_-get-it-from-MS.png
+        const isLangWithDashPrefix = language === "he" || language === "el" || language === "ja";
+        const separator = isLangWithDashPrefix && size === "large" ? "_-" : "_";
+        return `https://developer.microsoft.com/store/badges/images/${langSuffix}${separator}${sizeSuffix}`;
     }
     render() {
         let badge;
