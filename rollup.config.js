@@ -20,7 +20,7 @@ export default {
       targets: [
         { src: 'src/iframe.html', dest: 'dist' },
         { src: 'src/create-your-own.html', dest: 'dist' },
-        { src: 'dev/index.html', dest: 'dist', transform: (contents) => contents.toString().replace("../ms-store-badge.js", "https://minipdpstaticsitestorage.z19.web.core.windows.net/ms-store-badge.bundled.js") }
+        { src: 'dev/index.html', dest: 'dist', transform: (contents) => contents.toString().replace("../ms-store-badge.js", "https://badgedelivery.z20.web.core.windows.net/ms-store-badge.bundled.js") }
       ]
     }),
     replace({
