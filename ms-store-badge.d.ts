@@ -20,13 +20,13 @@ export declare class MSStoreBadge extends LitElement {
      */
     language: string;
     /**
-     * to set the size of the badge (image)
-     * true for big, false for small
+     * Sets the size of the badge. Should be "small" or "large"
      */
-    bigBadge: boolean;
+    size: "small" | "large";
     protected largeBadgeUrl: string;
     protected smallBadgeUrl: string;
     protected iframeLocation: string;
+    private static languageImageSuffixMap;
     /**
      * Will contain the right url to the Web PDP or Store App protocol using the product ID
     */
@@ -40,6 +40,7 @@ export declare class MSStoreBadge extends LitElement {
     updated(): void;
     private _checkPlatform;
     private _checkLanguage;
+    static getBadgeUrl(language: string, size: "small" | "large"): string;
     render(): import("lit-html").TemplateResult<1>;
 }
 declare global {

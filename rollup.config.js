@@ -31,7 +31,9 @@ export default {
     summary(),
     copy({
       targets: [
-        { src: 'src/iframe.html', dest: 'dist' }
+        { src: 'src/iframe.html', dest: 'dist' },
+        { src: 'src/create-your-own.html', dest: 'dist' },
+        { src: 'dev/index.html', dest: 'dist' }
       ]
     })
   ],
