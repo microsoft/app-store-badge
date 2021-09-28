@@ -65,7 +65,7 @@ export class MSStoreBadge extends LitElement {
   protected smallBadgeUrl = "https://developer.microsoft.com/store/badges/images/English_get_L.png";
 
   @state()
-  protected iframeLocation = "https://david.blob.core.windows.net/tests/minipdp/iframe.html";
+  protected iframeLocation = "https://black-water-0eaf5100f.azurestaticapps.net/iframe.html";
 
   private static languageImageSuffixMap = {
     "ar": "Arabic",

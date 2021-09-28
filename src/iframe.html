@@ -43,16 +43,16 @@
     const badgeSize = params.get('badgeSize');
 
     let bigBadge = false;
-    if (badgeSize && badgeSize === 'big') {
+    if (badgeSize && badgeSize === 'large') {
         bigBadge = true;
     }
     const buttonElement = document.createElement('button');
     let badgeImage = document.createElement("img");
     if (bigBadge) {
-        badgeImage.setAttribute("class", 'largeBadge');
+        badgeImage.setAttribute("size", 'large');
     }
     else {
-        badgeImage.setAttribute("class", 'smallBadge');
+        badgeImage.setAttribute("size", 'small');
     }
     badgeImage.setAttribute("src", imgUrl);
 

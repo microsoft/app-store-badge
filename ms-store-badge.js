@@ -34,7 +34,7 @@ let MSStoreBadge = MSStoreBadge_1 = class MSStoreBadge extends LitElement {
         this.size = "large";
         this.largeBadgeUrl = "https://developer.microsoft.com/store/badges/images/English_get-it-from-MS.png";
         this.smallBadgeUrl = "https://developer.microsoft.com/store/badges/images/English_get_L.png";
-        this.iframeLocation = "https://david.blob.core.windows.net/tests/minipdp/iframe.html";
+        this.iframeLocation = "https://black-water-0eaf5100f.azurestaticapps.net/iframe.html";
         /**
          * Will contain the right url to the Web PDP or Store App protocol using the product ID
         */

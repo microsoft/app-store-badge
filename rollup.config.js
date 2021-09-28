@@ -16,7 +16,16 @@ export default {
     }
   },
   plugins: [
-    replace({ 'Reflect.decorate': 'undefined' }),
+    copy({
+      targets: [
+        { src: 'src/iframe.html', dest: 'dist' },
+        { src: 'src/create-your-own.html', dest: 'dist' },
+        { src: 'dev/index.html', dest: 'dist', transform: (contents) => contents.toString().replace("../ms-store-badge.js", "https://black-water-0eaf5100f.azurestaticapps.net/ms-store-badge.bundled.js") }
+      ]
+    }),
+    replace({
+      'Reflect.decorate': 'undefined'
+    }),
     resolve(),
     terser({
       ecma: 2017,
@@ -28,13 +37,6 @@ export default {
         },
       },
     }),
-    summary(),
-    copy({
-      targets: [
-        { src: 'src/iframe.html', dest: 'dist' },
-        { src: 'src/create-your-own.html', dest: 'dist' },
-        { src: 'dev/index.html', dest: 'dist' }
-      ]
-    })
+    summary()
   ],
 };

@@ -95,11 +95,16 @@
                         <input type="text" class="form-control" id="appIdInput" value="9nhkjb6lpptv"
                             placeholder="9nhkjb6lpptv">
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3" style="position: relative;">
                         <label for="codeInput" class="form-label">
                             Copy and paste this HTML into your website where you want the badge to appear
                         </label>
                         <textarea readonly rows="6" class="form-control" id="codeInput"></textarea>
+                        <button type="button" id="copyBtn" class="btn btn-primary btn-sm"
+                            style="position: absolute; right: 0; bottom: 0;">
+                            <i class="bi bi-clipboard"></i>
+                            Copy
+                        </button>
                     </div>
                 </form>
             </div>
@@ -108,13 +113,9 @@
                 <div id="badgeContainer" class="d-flex justify-content-center bg-light"
                     style="width: 100%; min-height: 450px; padding-top: 200px;">
                     <script type="module"
-                        src="https://david.blob.core.windows.net/tests/minipdp/ms-store-badge.bundled.js"></script>
+                        src="https://black-water-0eaf5100f.azurestaticapps.net/ms-store-badge.bundled.js"></script>
 
                 </div>
-                <button type="button" class="btn btn-primary">
-                    <i class="bi bi-clipboard"></i>
-                    Copy
-                </button>
             </div>
         </div>
     </div>
@@ -163,18 +164,31 @@
             document.querySelector("#badgeContainer").appendChild(badgeElement);
 
             const componentScript = '<script type="module" ' +
-                'src="https://david.blob.core.windows.net/tests/minipdp/ms-store-badge.bundled.js"><' +
+                'src="https://black-water-0eaf5100f.azurestaticapps.net/ms-store-badge.bundled.js"><' +
                 '/script>';
 
-            document.querySelector("#codeInput").innerText =
+            document.querySelector("#codeInput").value =
                 componentScript + badgeElement.outerHTML.replace('id=\"badgeSample\" ', '');
         }
 
-        function listenForUIChanges() {
-            const inputs = document.querySelectorAll("#languageSelector, #smallSizeBtn, #largeSizeBtn, #appIdInput");
-            inputs.addEventListener("change", () => queueUpdate());
+        async function copyCode() {
+            const code = document.querySelector("#codeInput").value;
+            navigator.clipboard.writeText(code);
+            console.log("zanz copying code...", code);
         }
 
+        function listenForUIChanges() {
+            const inputs = [
+                "#languageSelector",
+                "#smallSizeBtn",
+                "#largeSizeBtn",
+                "#appIdInput"
+            ];
+            inputs.forEach(i => document.querySelector(i).addEventListener("change", () => queueUpdate()));
+            document.querySelector("#copyBtn").addEventListener("click", () => copyCode());
+        }
+
+        listenForUIChanges();
         queueUpdate();
     </script>
 </body>
