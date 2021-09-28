@@ -97,13 +97,13 @@ let MSStoreBadge = MSStoreBadge_1 = class MSStoreBadge extends LitElement {
         if (this.size === "large") {
             badge = html `<img src="${this.largeBadgeUrl}" alt="Microsoft Store badge logo" class="largeBadge" />`;
             iframe = html `<iframe
-  src='${this.iframeLocation}?productId=${this.productId}&amp;language=${this.language}&amp;badgeSize=big&amp;imgUrl=${this.largeBadgeUrl}&amp;targetUrl=${this.hrefValue}'
+  src='${this.iframeLocation}?productId=${this.productId}&amp;language=${this.language}&amp;size=large&amp;imgUrl=${this.largeBadgeUrl}&amp;targetUrl=${this.hrefValue}'
   class="iframeBig"></iframe>`;
         }
         else {
             badge = html `<img src="${this.smallBadgeUrl}" alt="Microsoft Store badge logo" class="smallBadge" />`;
             iframe = html `<iframe
-  src='${this.iframeLocation}?productId=${this.productId}&amp;language=${this.language}&amp;imgUrl=${this.smallBadgeUrl}&amp;targetUrl=${this.hrefValue}'
+  src='${this.iframeLocation}?productId=${this.productId}&amp;language=${this.language}&amp;size=small&amp;imgUrl=${this.smallBadgeUrl}&amp;targetUrl=${this.hrefValue}'
   class="iframeSmall"></iframe>`;
         }
         return this.miniPDPcompatible ?

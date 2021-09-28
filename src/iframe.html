@@ -40,7 +40,7 @@
     const params = new URLSearchParams(document.location.search);
     const imgUrl = params.get('imgUrl');
     const targetUrl = params.get('targetUrl');
-    const badgeSize = params.get('badgeSize');
+    const badgeSize = params.get('size');
 
     let bigBadge = false;
     if (badgeSize && badgeSize === 'large') {
