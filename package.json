@@ -1,10 +1,10 @@
 {
   "name": "@microsoft/store-app-badge",
   "private": true,
-  "version": "0.0.0",
-  "description": "Web component that renders 'Get this app from the Microsoft Store'",
-  "main": "ms-store-badge.js",
-  "module": "ms-store-badge.js",
+  "version": "0.5.0",
+  "description": "Web component that renders a 'Get this app from the Microsoft Store' button",
+  "main": "dist/ms-store-badge.bundled.js",
+  "module": "dist/ms-store-badge.bundled.js",
   "type": "module",
   "scripts": {
     "build": "concurrently \"tsc\" \"rollup --config rollup.config.js\"",
