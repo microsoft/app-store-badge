@@ -260,7 +260,7 @@ let MSStoreBadge = class MSStoreBadge extends LitElement {
         else {
             badge = html `<img src="${this.smallBadgeUrl}" alt="Microsoft Store badge logo" class="smallBadge" />`;
             iframe = html `<iframe
-  src='${this.iframeLocation}?prodZZZZZuctId=${this.productId}&amp;language=${this.language}&amp;imgUrl=${this.smallBadgeUrl}&amp;targetUrl=${this.hrefValue}'
+  src='${this.iframeLocation}?productId=${this.productId}&amp;language=${this.language}&amp;imgUrl=${this.smallBadgeUrl}&amp;targetUrl=${this.hrefValue}'
   class="iframeSmall"></iframe>`;
         }
         return this.miniPDPcompatible ?

@@ -2,11 +2,12 @@ import summary from 'rollup-plugin-summary';
 import { terser } from 'rollup-plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
+import copy from 'rollup-plugin-copy';
 
 export default {
   input: 'ms-store-badge.js',
   output: {
-    file: 'ms-store-badge.bundled.js',
+    file: 'dist/ms-store-badge.bundled.js',
     format: 'esm',
   },
   onwarn(warning) {
@@ -28,5 +29,10 @@ export default {
       },
     }),
     summary(),
+    copy({
+      targets: [
+        { src: 'src/iframe.html', dest: 'dist' }
+      ]
+    })
   ],
 };
