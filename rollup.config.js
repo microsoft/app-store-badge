@@ -27,10 +27,10 @@ export default {
         { src: 'src/iframe.html', dest: 'dist' },
 
         // When copying create-your-own.html, use production URL for script
-        { src: 'src/create-your-own.html', dest: 'dist', transform: (contents) => contents.toString().replace('../ms-store-badge.js', 'https://black-water-0eaf5100f.azurestaticapps.net/ms-store-badge.bundled.js') },
+        { src: 'src/create-your-own.html', dest: 'dist', transform: (contents) => contents.toString().replace('../ms-store-badge.js', 'https://badgedeliverycdn.azureedge.net/ms-store-badge.bundled.js') },
 
         // When copying index.html, use the production URL for script
-        { src: 'dev/index.html', dest: 'dist', transform: (contents) => contents.toString().replace('../ms-store-badge.js', 'https://black-water-0eaf5100f.azurestaticapps.net/ms-store-badge.bundled.js') },
+        { src: 'dev/index.html', dest: 'dist', transform: (contents) => contents.toString().replace('../ms-store-badge.js', 'https://badgedeliverycdn.azureedge.net/ms-store-badge.bundled.js') },
       ]
     }),
     resolve(),
