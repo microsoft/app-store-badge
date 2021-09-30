@@ -6,11 +6,14 @@ This repository contains the source code for web component that displays the "Ge
 
 Most app store badges are a simple image with a link to the web store.
 
-We use a web component to go a step further: detect if we're on Windows, and if so, display a button that launches the Store on Windows using the mini PDP variation of the ms-store:// protocol where enabled.
+We use a web component to go a step further: detect if we're on Windows, and if so, delights the user by allowing inline install.
 
 If the badge is running on a non-Windows OS, or a Windows OS older than Windows 10, an image with link to the app in the web Store will be displayed instead.
 
-Furthermore, when run in Edge, this component lights up further by skipping the "Page wants to launch ms-store://..." message. Instead, it launches the mini PDP for the Store, centered within the host page.
+Inline install is achieved in two ways: 
+    1. We use the ms-store:// protocol with the `?minipdp` query string. This instructs the Store to launch a miniature product description page (mini PDP) inline, prompting the user to install.
+    2. The web component runs this logic via an iframe hosted on badgedelivery.microsoft.com. This domain is whitelisted by Edge to skip browser launch prompts. Other browsers will still work, but will prompt the user before launching the mini PDP.
+
 
 ## Running the code
 

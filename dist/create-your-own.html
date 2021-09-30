@@ -93,8 +93,8 @@
                             <i class="bi bi-info-circle"
                                 title="12 character ID of your app. You can find this in the URL of your Store product description page, or in your App Identity page in Partner Center"></i>
                         </label>
-                        <input type="text" class="form-control" id="appIdInput" value="9nhkjb6lpptv"
-                            placeholder="9nhkjb6lpptv">
+                        <input type="text" class="form-control" id="appIdInput" value="9wzdncrfhvjl"
+                            placeholder="9wzdncrfhvjl">
                     </div>
                     <div class="mb-3" style="position: relative;">
                         <label for="codeInput" class="form-label">
@@ -113,10 +113,8 @@
             <div class="col">
                 <div id="badgeContainer" class="d-flex justify-content-center bg-light"
                     style="width: 100%; min-height: 450px; padding-top: 200px;">
-
                     <!-- This will get set to production URL during rollup build -->
-                    <script type="module" src="https://black-water-0eaf5100f.azurestaticapps.net/ms-store-badge.bundled.js"></script>
-
+                    <script type="module" src="https://badgedeliverycdn.azureedge.net/ms-store-badge.bundled.js"></script>
                 </div>
             </div>
         </div>
@@ -167,7 +165,7 @@
 
             // This script src will get set to production URL during rollup build.
             const componentScript = '<script type="module" ' +
-                'src="../ms-store-badge.js"><' +
+                'src="https://badgedeliverycdn.azureedge.net/ms-store-badge.bundled.js"><' +
                 '/script>';
 
             document.querySelector("#codeInput").value =
