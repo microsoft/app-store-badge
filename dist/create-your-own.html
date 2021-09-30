@@ -29,6 +29,7 @@
                     <div class="mb-3">
                         <label for="languageSelector" class="form-label">Language</label>
                         <select id="languageSelector" class="form-control">
+                            <option value="" selected>Auto detect</option>
                             <option value="ar">Arabic</option>
                             <option value="be">Bosnian</option>
                             <option value="bn">Bengali</option>
@@ -41,7 +42,7 @@
                             <option value="nl">Dutch</option>
                             <option value="de">German</option>
                             <option value="el">Greek</option>
-                            <option value="en" selected>English</option>
+                            <option value="en">English</option>
                             <option value="et">Estonian</option>
                             <option value="fil">Filipino</option>
                             <option value="fi">Finnish</option>
@@ -112,8 +113,9 @@
             <div class="col">
                 <div id="badgeContainer" class="d-flex justify-content-center bg-light"
                     style="width: 100%; min-height: 450px; padding-top: 200px;">
-                    <script type="module"
-                        src="https://minipdpstaticsitestorage.z19.web.core.windows.net/ms-store-badge.bundled.js"></script>
+
+                    <!-- This will get set to production URL during rollup build -->
+                    <script type="module" src="https://black-water-0eaf5100f.azurestaticapps.net/ms-store-badge.bundled.js"></script>
 
                 </div>
             </div>
@@ -163,8 +165,9 @@
 
             document.querySelector("#badgeContainer").appendChild(badgeElement);
 
+            // This script src will get set to production URL during rollup build.
             const componentScript = '<script type="module" ' +
-                'src="https://minipdpstaticsitestorage.z19.web.core.windows.net/ms-store-badge.bundled.js"><' +
+                'src="../ms-store-badge.js"><' +
                 '/script>';
 
             document.querySelector("#codeInput").value =

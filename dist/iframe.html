@@ -13,13 +13,15 @@
             padding: 0;
         }
 
+        .largeBadge .smallBadge {
+            width: auto;
+        }
+
         .largeBadge {
-            width: 284px;
             height: 104px;
         }
 
         .smallBadge {
-            width: 127px;
             height: 52px;
         }
 
@@ -29,6 +31,7 @@
             padding: 0;
             width: auto;
             overflow: visible;
+            cursor: pointer;
         }
     </style>
 
@@ -60,7 +63,9 @@
     badgeImage.setAttribute("alt", 'Microsoft Store badge logo');
     buttonElement.appendChild(badgeImage);
     buttonElement.addEventListener("click", function () {
-        window.open(targetUrl + "&mode=mini&pos=" + Math.floor(window.screenLeft * window.devicePixelRatio) + "," + Math.floor(window.screenTop * window.devicePixelRatio) + "," + Math.floor(window.outerWidth * window.devicePixelRatio) + "," + Math.floor(window.outerHeight * window.devicePixelRatio));
+        const desiredUrl = targetUrl + "&mode=mini&pos=" + Math.floor(window.screenLeft * window.devicePixelRatio) + "," + Math.floor(window.screenTop * window.devicePixelRatio) + "," + Math.floor(window.outerWidth * window.devicePixelRatio) + "," + Math.floor(window.outerHeight * window.devicePixelRatio);
+        location.href = desiredUrl;
+        //window.open(targetUrl + "&mode=mini&pos=" + Math.floor(window.screenLeft * window.devicePixelRatio) + "," + Math.floor(window.screenTop * window.devicePixelRatio) + "," + Math.floor(window.outerWidth * window.devicePixelRatio) + "," + Math.floor(window.outerHeight * window.devicePixelRatio));
     });
     document.body.appendChild(buttonElement);
 </script>
