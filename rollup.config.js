@@ -22,6 +22,9 @@ export default {
       // In the ms-store-badge.js, swap out the local iframe for the production deployed iframe
       '../src/iframe.html': 'https://black-water-0eaf5100f.azurestaticapps.net/iframe.html',
 
+      // In the ms-store-badge.js, swap out the blob image storage for the production deployed iframe
+      'https://developer.microsoft.com/store/badges': 'https://getbadgecdn.azureedge.net',
+
       delimiters: ['', '']
     }),
     copy({
