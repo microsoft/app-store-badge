@@ -94,12 +94,13 @@ export class MSStoreBadge extends LitElement {
 
   private static supportedLanguages: SupportedLanguage[] = [
     { name: "Arabic", code: "ar", imageSmall: { fileName: "Arabic_get_L.png", aspectRatio: 3.458 }, imageLarge: { fileName: "Arabic_get_it_from_MS.png", aspectRatio: 2.769 } },
-    { name: "Bosnian", code: "be", imageSmall: { fileName: "Bosnian_get_L.png", aspectRatio: 4.369 }, imageLarge: { fileName: "Bosnian_get-it-from-MS.png", aspectRatio: 2.769 } },
+    { name: "Bosnian", code: "bs", imageSmall: { fileName: "Bosnian_get_L.png", aspectRatio: 4.369 }, imageLarge: { fileName: "Bosnian_get-it-from-MS.png", aspectRatio: 2.769 } },
     { name: "Bengali", code: "bn", imageSmall: { fileName: "Bengali_get_L.png", aspectRatio: 2.5 }, imageLarge: { fileName: "Bengali_get-it-from-MS.png", aspectRatio: 2.769 } },
+    { name: "Belarusian", code: "be", imageSmall: { fileName: "Belarusian_get_L.png", aspectRatio: 2.5 }, imageLarge: { fileName: "Belarusian_get-it-from-MS.png", aspectRatio: 2.769 } },
     { name: "Bosnian", code: "bn", imageSmall: { fileName: "Bosnian_get_L.png", aspectRatio: 4.369 }, imageLarge: { fileName: "Bosnian_get-it-from-MS.png", aspectRatio: 2.769 } },
     { name: "Bulgarian", code: "bg", imageSmall: { fileName: "Bulgarian_get_L.png", aspectRatio: 5.38 }, imageLarge: { fileName: "Bulgarian_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Chinese (Simplified)", code: "zh", imageSmall: { fileName: "Chinese_Simplified_Get_L.png", aspectRatio: 2.744 }, imageLarge: { fileName: "Chinese_Simplified_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Chinese (Traditional)", code: "tc", imageSmall: { fileName: "Chinese-Traditional_Get_L.png", aspectRatio: 2.776 }, imageLarge: { fileName: "Chinese-Traditional_get-it-from-MS.png", aspectRatio: 2.769 } },
+    { name: "Chinese (Simplified)", code: "zh-cn", imageSmall: { fileName: "Chinese_Simplified_Get_L.png", aspectRatio: 2.744 }, imageLarge: { fileName: "Chinese_Simplified_get-it-from-MS.png", aspectRatio: 2.769 } },
+    { name: "Chinese (Traditional)", code: "zh-tw", imageSmall: { fileName: "Chinese-Traditional_Get_L.png", aspectRatio: 2.776 }, imageLarge: { fileName: "Chinese-Traditional_get-it-from-MS.png", aspectRatio: 2.769 } },
     { name: "Croatian", code: "hr", imageSmall: { fileName: "Croatian_get_L.png", aspectRatio: 4.406 }, imageLarge: { fileName: "Croatian_get-it-from-MS.png", aspectRatio: 2.769 } },
     { name: "Czech", code: "cs", imageSmall: { fileName: "Czech_get_L.png", aspectRatio: 3.197 }, imageLarge: { fileName: "Czech_get-it-from-MS.png", aspectRatio: 2.769 } },
     { name: "Danish", code: "da", imageSmall: { fileName: "Danish_get_L.png", aspectRatio: 3.239 }, imageLarge: { fileName: "Danish_get-it-from-MS.png", aspectRatio: 2.769 } },
@@ -272,4 +273,4 @@ interface SupportedLanguageImage {
   aspectRatio: number; // 1.5 = width is 1.5 greater than height
 }
 
-type SupportedLanguageCode = "ar" | "be" | "bn" | "bs" | "bg" | "zh" | "tc" | "hr" | "cs" | "da" | "nl" | "en" | "et" | "fil" | "fi" | "fr" | "de" | "el" | "he" | "hi" | "hu" | "id" | "it" | "ja" | "ko" | "lv" | "lt" | "ms" | "no" | "pl" | "pt" | "pt-br" | "ro" | "ru" | "sr" | "sk" | "sl" | "es" | "sw" | "sv" | "th" | "tr" | "uk" | "vi";
+type SupportedLanguageCode = "ar" | "be" | "bn" | "bs" | "bg" | "zh" | "tc" | "hr" | "cs" | "da" | "nl" | "en" | "et" | "fil" | "fi" | "fr" | "de" | "el" | "he" | "hi" | "hu" | "id" | "it" | "ja" | "ko" | "lv" | "lt" | "ms" | "no" | "pl" | "pt" | "pt-br" | "ro" | "ru" | "sr" | "sk" | "sl" | "es" | "sw" | "sv" | "th" | "tr" | "uk" | "vi" | "zh-cn" | "zh-tw";
