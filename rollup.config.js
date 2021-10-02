@@ -19,11 +19,11 @@ export default {
     replace({
       'Reflect.decorate': 'undefined',
 
-      // In the ms-store-badge.js, swap out the local iframe for the production deployed iframe
+      // In ms-store-badge.js, swap out the local iframe for the production deployed iframe
       '../src/iframe.html': 'https://black-water-0eaf5100f.azurestaticapps.net/iframe.html',
 
-      // In the ms-store-badge.js, swap out the blob image storage for the production deployed iframe
-      'https://developer.microsoft.com/store/badges': 'https://getbadgecdn.azureedge.net',
+      // In  ms-store-badge.js, swap out the local images for the images on the CDN
+      '../images': 'https://getbadgecdn.azureedge.net/images',
 
       delimiters: ['', '']
     }),

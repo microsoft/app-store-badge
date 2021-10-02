@@ -6,6 +6,7 @@ const smallHeight = 52;
 const smallHeightCss = css`${smallHeight}px;`;
 const largeHeight = 104;
 const largeHeightCss = css`${largeHeight}px`;
+const imagesRoot = "../images"; // This will be replaced by rollup with the real production URL.
 
 /**
  * <ms-store-badge> web component
@@ -67,22 +68,11 @@ export class MSStoreBadge extends LitElement {
    */
   @property({ type: String }) size: "small" | "large" = "large";
 
-  @state() languageDetails: SupportedLanguage = MSStoreBadge.englishLanguage; // will use the real deal after call to _checkLanguage()
-
   @state()
-  protected largeBadgeUrl = "https://developer.microsoft.com/store/badges/images/English_get-it-from-MS.png";
-
-  @state()
-  protected smallBadgeUrl = "https://developer.microsoft.com/store/badges/images/English_get_L.png";
+  protected languageDetails: SupportedLanguage = MSStoreBadge.englishLanguage; // will use the real deal after call to _checkLanguage()
 
   @state()
   protected iframeLocation = "../src/iframe.html"; // This is for ease of testing. Our rollup build script will change this to the production URL.
-
-  /**
-   * Will contain the right url to the Web PDP or Store App protocol using the product ID
-  */
-  @state()
-  protected hrefValue = '';
 
   /**
    * Trying to trigger miniPDP only on Windows 10+
@@ -90,57 +80,78 @@ export class MSStoreBadge extends LitElement {
   @state()
   protected miniPDPcompatible = false;
 
-  private static englishLanguage: SupportedLanguage = { name: "English", code: "en", imageSmall: { fileName: "English_get_L.png", aspectRatio: 2.5 }, imageLarge: { fileName: "English_get-it-from-MS.png", aspectRatio: 2.769 } };
+  private static englishLanguage: SupportedLanguage = { name: "English", code: "en", imageSmall: { fileName: "English_S.png", aspectRatio: 2.5 }, imageLarge: { fileName: "English_L.png", aspectRatio: 2.769 } };
 
   private static supportedLanguages: SupportedLanguage[] = [
-    { name: "Arabic", code: "ar", imageSmall: { fileName: "Arabic_get_L.png", aspectRatio: 3.458 }, imageLarge: { fileName: "Arabic_get_it_from_MS.png", aspectRatio: 2.769 } },
-    { name: "Bosnian", code: "be", imageSmall: { fileName: "Bosnian_get_L.png", aspectRatio: 4.369 }, imageLarge: { fileName: "Bosnian_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Bengali", code: "bn", imageSmall: { fileName: "Bengali_get_L.png", aspectRatio: 2.5 }, imageLarge: { fileName: "Bengali_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Bosnian", code: "bn", imageSmall: { fileName: "Bosnian_get_L.png", aspectRatio: 4.369 }, imageLarge: { fileName: "Bosnian_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Bulgarian", code: "bg", imageSmall: { fileName: "Bulgarian_get_L.png", aspectRatio: 5.38 }, imageLarge: { fileName: "Bulgarian_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Chinese (Simplified)", code: "zh", imageSmall: { fileName: "Chinese_Simplified_Get_L.png", aspectRatio: 2.744 }, imageLarge: { fileName: "Chinese_Simplified_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Chinese (Traditional)", code: "tc", imageSmall: { fileName: "Chinese-Traditional_Get_L.png", aspectRatio: 2.776 }, imageLarge: { fileName: "Chinese-Traditional_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Croatian", code: "hr", imageSmall: { fileName: "Croatian_get_L.png", aspectRatio: 4.406 }, imageLarge: { fileName: "Croatian_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Czech", code: "cs", imageSmall: { fileName: "Czech_get_L.png", aspectRatio: 3.197 }, imageLarge: { fileName: "Czech_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Danish", code: "da", imageSmall: { fileName: "Danish_get_L.png", aspectRatio: 3.239 }, imageLarge: { fileName: "Danish_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Dutch", code: "nl", imageSmall: { fileName: "Dutch_get_L.png", aspectRatio: 3.859 }, imageLarge: { fileName: "Dutch_get-it-from-MS.png", aspectRatio: 2.769 } },
+    { name: "Arabic", code: "ar", imageSmall: { fileName: "Arabic_S.png", aspectRatio: 3.458 }, imageLarge: { fileName: "Arabic_L.png", aspectRatio: 2.769 } },
+    { name: "Bosnian", code: "be", imageSmall: { fileName: "Bosnian_S.png", aspectRatio: 4.369 }, imageLarge: { fileName: "Bosnian_L.png", aspectRatio: 2.769 } },
+    { name: "Bengali", code: "bn", imageSmall: { fileName: "Bengali_S.png", aspectRatio: 2.5 }, imageLarge: { fileName: "Bengali_L.png", aspectRatio: 2.769 } },
+    { name: "Bosnian", code: "bs", imageSmall: { fileName: "Bosnian_S.png", aspectRatio: 4.369 }, imageLarge: { fileName: "Bosnian_L.png", aspectRatio: 2.769 } },
+    { name: "Bulgarian", code: "bg", imageSmall: { fileName: "Bulgarian_S.png", aspectRatio: 5.38 }, imageLarge: { fileName: "Bulgarian_L.png", aspectRatio: 2.769 } },
+    { name: "Chinese (Simplified)", code: "zh-cn", imageSmall: { fileName: "Chinese_Simplified_S.png", aspectRatio: 2.744 }, imageLarge: { fileName: "Chinese_Simplified_L.png", aspectRatio: 2.769 } },
+    { name: "Chinese (Traditional)", code: "zh-tw", imageSmall: { fileName: "Chinese_Traditional_S.png", aspectRatio: 2.776 }, imageLarge: { fileName: "Chinese_Traditional_L.png", aspectRatio: 2.769 } },
+    { name: "Croatian", code: "hr", imageSmall: { fileName: "Croatian_S.png", aspectRatio: 4.406 }, imageLarge: { fileName: "Croatian_L.png", aspectRatio: 2.769 } },
+    { name: "Czech", code: "cs", imageSmall: { fileName: "Czech_S.png", aspectRatio: 3.197 }, imageLarge: { fileName: "Czech_L.png", aspectRatio: 2.769 } },
+    { name: "Danish", code: "da", imageSmall: { fileName: "Danish_S.png", aspectRatio: 3.239 }, imageLarge: { fileName: "Danish_L.png", aspectRatio: 2.769 } },
+    { name: "Dutch", code: "nl", imageSmall: { fileName: "Dutch_S.png", aspectRatio: 3.859 }, imageLarge: { fileName: "Dutch_L.png", aspectRatio: 2.769 } },
     MSStoreBadge.englishLanguage,
-    { name: "Estonian", code: "et", imageSmall: { fileName: "Estonian_get_L.png", aspectRatio: 3.161 }, imageLarge: { fileName: "Estonian_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Filipino", code: "fil", imageSmall: { fileName: "Filipino_get_L.png", aspectRatio: 3.119 }, imageLarge: { fileName: "Filipino_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Finnish", code: "fi", imageSmall: { fileName: "Finnish_get_L.png", aspectRatio: 3.119 }, imageLarge: { fileName: "Finnish_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "French", code: "fr", imageSmall: { fileName: "French_get_L.png", aspectRatio: 3.718 }, imageLarge: { fileName: "French_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "German", code: "de", imageSmall: { fileName: "German_get_L.png", aspectRatio: 2.609 }, imageLarge: { fileName: "German_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Greek", code: "el", imageSmall: { fileName: "Greek_get_L.png", aspectRatio: 4.546 }, imageLarge: { fileName: "Greek_-get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Hebrew", code: "he", imageSmall: { fileName: "Hebrew_get_L.png", aspectRatio: 3.666 }, imageLarge: { fileName: "Hebrew_-get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Hindi", code: "hi", imageSmall: { fileName: "Hindi_get_L.png", aspectRatio: 4.25 }, imageLarge: { fileName: "Hindi_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Hungarian", code: "hu", imageSmall: { fileName: "Hungarian_get_L.png", aspectRatio: 3.416 }, imageLarge: { fileName: "Hungarian_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Indonesian", code: "id", imageSmall: { fileName: "Indonesian_get_L.png", aspectRatio: 2.666 }, imageLarge: { fileName: "Indonesian_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Italian", code: "it", imageSmall: { fileName: "Italian_get_L.png", aspectRatio: 3.401 }, imageLarge: { fileName: "Italian_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Japanese", code: "ja", imageSmall: { fileName: "Japan_Get__L.png", aspectRatio: 2.609 }, imageLarge: { fileName: "Japanese_-get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Korean", code: "ko", imageSmall: { fileName: "Korean_get_L.png", aspectRatio: 2.312 }, imageLarge: { fileName: "Korean_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Latvian", code: "lv", imageSmall: { fileName: "Latvian_get_L.png", aspectRatio: 2.942 }, imageLarge: { fileName: "Latvian_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Lithuanian", code: "lt", imageSmall: { fileName: "Lithuanian_get_L.png", aspectRatio: 3.578 }, imageLarge: { fileName: "Lithuanian_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Malay", code: "ms", imageSmall: { fileName: "Malay_get_L.png", aspectRatio: 4.171 }, imageLarge: { fileName: "Malay_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Norwegian", code: "no", imageSmall: { fileName: "Norwegian_get_L.png", aspectRatio: 3.213 }, imageLarge: { fileName: "Norwegian_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Polish", code: "pl", imageSmall: { fileName: "Polish_get_L.png", aspectRatio: 3.593 }, imageLarge: { fileName: "Polish_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Portuguese (Brazil)", code: "pt-br", imageSmall: { fileName: "Portuguese_Brazil_get_L.png", aspectRatio: 2.963 }, imageLarge: { fileName: "Portuguese-Brazilian_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Portuguese (Portugal)", code: "pt", imageSmall: { fileName: "Portuguese_Portugal_get_L.png", aspectRatio: 3.171 }, imageLarge: { fileName: "Portuguese-Portugal_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Romanian", code: "ro", imageSmall: { fileName: "Romanian_get_L.png", aspectRatio: 4.312 }, imageLarge: { fileName: "Romanian_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Russian", code: "ru", imageSmall: { fileName: "Russian_get_L.png", aspectRatio: 3.895 }, imageLarge: { fileName: "Russian_get_it_from_MS.png", aspectRatio: 2.769 } },
-    { name: "Serbian", code: "sr", imageSmall: { fileName: "Serbian_get_L.png", aspectRatio: 4.395 }, imageLarge: { fileName: "Serbian_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Slovak", code: "sk", imageSmall: { fileName: "Slovak_get_L.png", aspectRatio: 3.067 }, imageLarge: { fileName: "Slovak_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Slovenian", code: "sl", imageSmall: { fileName: "Slovenian_get_L.png", aspectRatio: 3.375 }, imageLarge: { fileName: "Slovenian_get_it_from_MS.png", aspectRatio: 2.769 } },
-    { name: "Spanish", code: "es", imageSmall: { fileName: "Spanish_get_L.png", aspectRatio: 4.692 }, imageLarge: { fileName: "Spanish_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Swahili", code: "sw", imageSmall: { fileName: "Swahili_get_L.png", aspectRatio: 2.666 }, imageLarge: { fileName: "Swahili_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Swedish", code: "sv", imageSmall: { fileName: "Swedish_get_L.png", aspectRatio: 3.208 }, imageLarge: { fileName: "Swedish_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Thai", code: "th", imageSmall: { fileName: "Thai_get_L.png", aspectRatio: 3.135 }, imageLarge: { fileName: "Thai_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Turkish", code: "tr", imageSmall: { fileName: "Turkish_get_L.png", aspectRatio: 2.708 }, imageLarge: { fileName: "Turkish_get-it-from-MS.png", aspectRatio: 2.769 } },
-    { name: "Ukranian", code: "uk", imageSmall: { fileName: "Ukranian_get.png", aspectRatio: 4.468 }, imageLarge: { fileName: "Ukranian_get_it_from_MS.png", aspectRatio: 2.769 } },
-    { name: "Vietnamese", code: "vi", imageSmall: { fileName: "Vietnamese_get.png", aspectRatio: 2.192 }, imageLarge: { fileName: "Vietnamese_get_it_from_MS.png", aspectRatio: 2.769 } }
+    { name: "Estonian", code: "et", imageSmall: { fileName: "Estonian_S.png", aspectRatio: 3.161 }, imageLarge: { fileName: "Estonian_L.png", aspectRatio: 2.769 } },
+    { name: "Filipino", code: "fil", imageSmall: { fileName: "Filipino_S.png", aspectRatio: 3.119 }, imageLarge: { fileName: "Filipino_L.png", aspectRatio: 2.769 } },
+    { name: "Finnish", code: "fi", imageSmall: { fileName: "Finnish_S.png", aspectRatio: 3.119 }, imageLarge: { fileName: "Finnish_L.png", aspectRatio: 2.769 } },
+    { name: "French", code: "fr", imageSmall: { fileName: "French_S.png", aspectRatio: 3.718 }, imageLarge: { fileName: "French_L.png", aspectRatio: 2.769 } },
+    { name: "German", code: "de", imageSmall: { fileName: "German_S.png", aspectRatio: 2.609 }, imageLarge: { fileName: "German_L.png", aspectRatio: 2.769 } },
+    { name: "Greek", code: "el", imageSmall: { fileName: "Greek_S.png", aspectRatio: 4.546 }, imageLarge: { fileName: "Greek_L.png", aspectRatio: 2.769 } },
+    { name: "Hebrew", code: "he", imageSmall: { fileName: "Hebrew_S.png", aspectRatio: 3.666 }, imageLarge: { fileName: "Hebrew_L.png", aspectRatio: 2.769 } },
+    { name: "Hindi", code: "hi", imageSmall: { fileName: "Hindi_S.png", aspectRatio: 4.25 }, imageLarge: { fileName: "Hindi_L.png", aspectRatio: 2.769 } },
+    { name: "Hungarian", code: "hu", imageSmall: { fileName: "Hungarian_S.png", aspectRatio: 3.416 }, imageLarge: { fileName: "Hungarian_L.png", aspectRatio: 2.769 } },
+    { name: "Indonesian", code: "id", imageSmall: { fileName: "Indonesian_S.png", aspectRatio: 2.666 }, imageLarge: { fileName: "Indonesian_L.png", aspectRatio: 2.769 } },
+    { name: "Italian", code: "it", imageSmall: { fileName: "Italian_S.png", aspectRatio: 3.401 }, imageLarge: { fileName: "Italian_L.png", aspectRatio: 2.769 } },
+    { name: "Japanese", code: "ja", imageSmall: { fileName: "Japanese_S.png", aspectRatio: 2.609 }, imageLarge: { fileName: "Japanese_L.png", aspectRatio: 2.769 } },
+    { name: "Korean", code: "ko", imageSmall: { fileName: "Korean_S.png", aspectRatio: 2.312 }, imageLarge: { fileName: "Korean_L.png", aspectRatio: 2.769 } },
+    { name: "Latvian", code: "lv", imageSmall: { fileName: "Latvian_S.png", aspectRatio: 2.942 }, imageLarge: { fileName: "Latvian_L.png", aspectRatio: 2.769 } },
+    { name: "Lithuanian", code: "lt", imageSmall: { fileName: "Lithuanian_S.png", aspectRatio: 3.578 }, imageLarge: { fileName: "Lithuanian_L.png", aspectRatio: 2.769 } },
+    { name: "Malay", code: "ms", imageSmall: { fileName: "Malay_S.png", aspectRatio: 4.171 }, imageLarge: { fileName: "Malay_L.png", aspectRatio: 2.769 } },
+    { name: "Norwegian", code: "no", imageSmall: { fileName: "Norwegian_S.png", aspectRatio: 3.213 }, imageLarge: { fileName: "Norwegian_L.png", aspectRatio: 2.769 } },
+    { name: "Polish", code: "pl", imageSmall: { fileName: "Polish_S.png", aspectRatio: 3.593 }, imageLarge: { fileName: "Polish_L.png", aspectRatio: 2.769 } },
+    { name: "Portuguese (Brazil)", code: "pt-br", imageSmall: { fileName: "Portuguese_Brazil_S.png", aspectRatio: 2.963 }, imageLarge: { fileName: "Portuguese_Brazil_L.png", aspectRatio: 2.769 } },
+    { name: "Portuguese (Portugal)", code: "pt", imageSmall: { fileName: "Portuguese_Portugal_S.png", aspectRatio: 3.171 }, imageLarge: { fileName: "Portuguese_Portugal_L.png", aspectRatio: 2.769 } },
+    { name: "Romanian", code: "ro", imageSmall: { fileName: "Romanian_S.png", aspectRatio: 4.312 }, imageLarge: { fileName: "Romanian_L.png", aspectRatio: 2.769 } },
+    { name: "Russian", code: "ru", imageSmall: { fileName: "Russian_S.png", aspectRatio: 3.895 }, imageLarge: { fileName: "Russian_L.png", aspectRatio: 2.769 } },
+    { name: "Serbian", code: "sr", imageSmall: { fileName: "Serbian_S.png", aspectRatio: 4.395 }, imageLarge: { fileName: "Serbian_L.png", aspectRatio: 2.769 } },
+    { name: "Slovak", code: "sk", imageSmall: { fileName: "Slovak_S.png", aspectRatio: 3.067 }, imageLarge: { fileName: "Slovak_L.png", aspectRatio: 2.769 } },
+    { name: "Slovenian", code: "sl", imageSmall: { fileName: "Slovenian_S.png", aspectRatio: 3.375 }, imageLarge: { fileName: "Slovenian_L.png", aspectRatio: 2.769 } },
+    { name: "Spanish", code: "es", imageSmall: { fileName: "Spanish_S.png", aspectRatio: 4.692 }, imageLarge: { fileName: "Spanish_L.png", aspectRatio: 2.769 } },
+    { name: "Swahili", code: "sw", imageSmall: { fileName: "Swahili_S.png", aspectRatio: 2.666 }, imageLarge: { fileName: "Swahili_L.png", aspectRatio: 2.769 } },
+    { name: "Swedish", code: "sv", imageSmall: { fileName: "Swedish_S.png", aspectRatio: 3.208 }, imageLarge: { fileName: "Swedish_L.png", aspectRatio: 2.769 } },
+    { name: "Thai", code: "th", imageSmall: { fileName: "Thai_S.png", aspectRatio: 3.135 }, imageLarge: { fileName: "Thai_L.png", aspectRatio: 2.769 } },
+    { name: "Turkish", code: "tr", imageSmall: { fileName: "Turkish_S.png", aspectRatio: 2.708 }, imageLarge: { fileName: "Turkish_L.png", aspectRatio: 2.769 } },
+    { name: "Ukranian", code: "uk", imageSmall: { fileName: "Ukranian_S.png", aspectRatio: 4.468 }, imageLarge: { fileName: "Ukranian_L.png", aspectRatio: 2.769 } },
+    { name: "Vietnamese", code: "vi", imageSmall: { fileName: "Vietnamese_S.png", aspectRatio: 2.192 }, imageLarge: { fileName: "Vietnamese_L.png", aspectRatio: 2.769 } }
   ];
 
   constructor() {
     super();
+  }
+
+  get imageUrl() {
+    if (this.size === "large") {
+      return `${imagesRoot}/${this.languageDetails.imageLarge.fileName}`;
+    }
+
+    return `${imagesRoot}/${this.languageDetails.imageSmall.fileName}`;
+  }
+
+  /**
+   * Will contain the right url to the Web PDP or Store App protocol using the product ID
+  */
+  get hrefValue() {
+    // If the OS is Windows 10 or Windows 11 
+    if (this.miniPDPcompatible) {
+      return `ms-windows-store://pdp/?ProductId=${this.productId}`;
+    }
+
+    // Otherwise, redirect to the Web PDP
+    return `https://www.microsoft.com/store/apps/${this.productId}?cid=storebadge&ocid=badge`;
   }
 
   firstUpdated() {
@@ -154,14 +165,8 @@ export class MSStoreBadge extends LitElement {
   }
 
   private _checkPlatform() {
-    // If the OS is Windows 10 or Windows 11 
     if (navigator.userAgent.indexOf("Windows NT 1") !== -1) {
-      this.hrefValue = `ms-windows-store://pdp/?ProductId=${this.productId}`;
       this.miniPDPcompatible = true;
-    }
-    // otherwise, redirect to the Web PDP
-    else {
-      this.hrefValue = `https://www.microsoft.com/store/apps/${this.productId}?cid=storebadge&ocid=badge`
     }
   }
 
@@ -183,9 +188,6 @@ export class MSStoreBadge extends LitElement {
         this.languageDetails = MSStoreBadge.englishLanguage;
       }
     }
-
-    this.smallBadgeUrl = `https://developer.microsoft.com/store/badges/images/${this.languageDetails.imageSmall.fileName}`;
-    this.largeBadgeUrl = `https://developer.microsoft.com/store/badges/images/${this.languageDetails.imageLarge.fileName}`;
   }
 
   static getSupportedLanguageFromUserAgent(): SupportedLanguage {
@@ -237,20 +239,17 @@ export class MSStoreBadge extends LitElement {
   }
 
   renderIFrame(width: number, height: number): TemplateResult {
-    const imageUrl = this.size === "large" ? this.largeBadgeUrl : this.smallBadgeUrl;
     return html`
       <div class="iframe-container ${this.size}">
         <iframe width="${width}" height="${height}" frameborder="0" scrolling="no"
-          src='${this.iframeLocation}?productId=${this.productId}&amp;language=${this.language}&amp;size=${this.size}&amp;imgUrl=${imageUrl}&amp;targetUrl=${this.hrefValue}'>
+          src='${this.iframeLocation}?productId=${this.productId}&amp;language=${this.language}&amp;size=${this.size}&amp;imgUrl=${this.imageUrl}&amp;targetUrl=${this.hrefValue}'>
         </iframe>
       </div>`;
   }
 
   renderImage(width: number, height: number): TemplateResult {
-    const badgeUrl = this.size === "large" ? this.largeBadgeUrl : this.smallBadgeUrl;
-
     return html`<a href="${this.hrefValue}" target="_blank">
-  <img width="${width}" height="${height}" src="${badgeUrl}" alt="Microsoft Store badge logo" />
+  <img width="${width}" height="${height}" src="${this.imageUrl}" alt="Microsoft Store badge logo" />
 </a>`;
   }
 }
@@ -265,12 +264,10 @@ interface SupportedLanguage {
   name: string;
   imageSmall: SupportedLanguageImage;
   imageLarge: SupportedLanguageImage;
-  code: SupportedLanguageCode;
+  code: string;
 }
 
 interface SupportedLanguageImage {
   fileName: string;
   aspectRatio: number; // 1.5 = width is 1.5 greater than height
 }
-
-type SupportedLanguageCode = "ar" | "be" | "bn" | "bs" | "bg" | "zh" | "tc" | "hr" | "cs" | "da" | "nl" | "en" | "et" | "fil" | "fi" | "fr" | "de" | "el" | "he" | "hi" | "hu" | "id" | "it" | "ja" | "ko" | "lv" | "lt" | "ms" | "no" | "pl" | "pt" | "pt-br" | "ro" | "ru" | "sr" | "sk" | "sl" | "es" | "sw" | "sv" | "th" | "tr" | "uk" | "vi";
