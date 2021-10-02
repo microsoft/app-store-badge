@@ -31,11 +31,12 @@
                         <select id="languageSelector" class="form-control">
                             <option value="" selected>Auto detect</option>
                             <option value="ar">Arabic</option>
-                            <option value="be">Bosnian</option>
+                            <option value="be">Belarusian</option>
                             <option value="bn">Bengali</option>
                             <option value="bs">Bosnian</option>
                             <option value="bg">Bulgarian</option>
-                            <option value="zh">Chinese (Simplified)</option>
+                            <option value="zh-cn">Chinese (Simplified)</option>
+                            <option value="zh-tw">Chinese (Traditional)</option>
                             <option value="hr">Croatian</option>
                             <option value="cs">Czech</option>
                             <option value="da">Danish</option>
@@ -114,7 +115,7 @@
                 <div id="badgeContainer" class="d-flex justify-content-center bg-light"
                     style="width: 100%; min-height: 450px; padding-top: 200px;">
                     <!-- This will get set to production URL during rollup build -->
-                    <script type="module" src="https://badgedeliverycdn.azureedge.net/ms-store-badge.bundled.js"></script>
+                    <script type="module" src="https://getbadgecdn.azureedge.net/ms-store-badge.bundled.js"></script>
                 </div>
             </div>
         </div>
@@ -165,7 +166,7 @@
 
             // This script src will get set to production URL during rollup build.
             const componentScript = '<script type="module" ' +
-                'src="https://badgedeliverycdn.azureedge.net/ms-store-badge.bundled.js"><' +
+                'src="https://getbadgecdn.azureedge.net/ms-store-badge.bundled.js"><' +
                 '/script>';
 
             document.querySelector("#codeInput").value =

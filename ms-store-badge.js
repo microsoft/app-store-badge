@@ -56,6 +56,7 @@ let MSStoreBadge = MSStoreBadge_1 = class MSStoreBadge extends LitElement {
     }
     updated() {
         this._checkLanguage();
+        this._checkPlatform(); // Needed because if the product ID changed, we need to recalculate this.hrefValue.
     }
     _checkPlatform() {
         // If the OS is Windows 10 or Windows 11 
