@@ -9,7 +9,7 @@ Generate your own app badge using https://black-water-0eaf5100f.azurestaticapps.
 Alternately, add the following code in your HTML where you want the button to appear:
 
 ```html
-<script type="module" src="https://badgedeliverycdn.azureedge.net/ms-store-badge.bundled.js"></script>
+<script type="module" src="https://getbadgecdn.azureedge.net/ms-store-badge.bundled.js"></script>
 <ms-store-badge productid="9wzdncrfhvjl" size="large"></ms-store-badge>
 ```
 
@@ -24,7 +24,7 @@ The component has some additional configuration options:
 Example using all the available options:
 
 ```html
-<script type="module" src="https://badgedeliverycdn.azureedge.net/ms-store-badge.bundled.js"></script>
+<script type="module" src="https://getbadgecdn.azureedge.net/ms-store-badge.bundled.js"></script>
 <ms-store-badge productid="9wzdncrfhvjl" size="small" language="he"></ms-store-badge>
 ```
 
@@ -49,4 +49,4 @@ To build for production, `npm run build`. This will create the production artifa
 
 Github actions are set to deploy the changes to https://black-water-0eaf5100f.azurestaticapps.net
 
-You will need to manually deploy `/ms-store-badge.bundled.js` to `https://badgedeliverycdn.azureedge.net/ms-store-badge.bundled.js`. (Future work: auto-deploy this to the CDN via Github Actions)
+You will need to manually deploy `/ms-store-badge.bundled.js` to `https://getbadgecdn.azureedge.net/ms-store-badge.bundled.js`. (Future work: auto-deploy this to the CDN via Github Actions)
