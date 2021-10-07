@@ -29,6 +29,8 @@ export default {
     }),
     copy({
       targets: [
+        { src: 'src/staticwebapp.config.json', dest: 'dist' },
+
         { src: 'src/iframe.html', dest: 'dist' },
 
         // When copying create-your-own.html, use production URL for script
