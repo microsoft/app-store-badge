@@ -33,7 +33,7 @@ export default {
 
         { src: 'src/iframe.html', dest: 'dist' },
 
-        { src: 'dev/index.html', dest: 'dist' },
+        { src: 'src/index.html', dest: 'dist' },
 
         // When copying create-your-own.html, use production URL for script
         { src: 'src/create-your-own.html', dest: 'dist', transform: (contents) => contents.toString().replace(new RegExp('../ms-store-badge.js', 'g'), 'https://getbadgecdn.azureedge.net/ms-store-badge.bundled.js') }
