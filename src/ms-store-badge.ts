@@ -241,7 +241,7 @@ export class MSStoreBadge extends LitElement {
   renderIFrame(width: number, height: number): TemplateResult {
     return html`
       <div class="iframe-container ${this.size}">
-        <iframe width="${width}" height="${height}" frameborder="0" scrolling="no"
+        <iframe title="Store Badge" width="${width}" height="${height}" frameborder="0" scrolling="no"
           src='${this.iframeLocation}?productId=${this.productId}&amp;language=${this.language}&amp;size=${this.size}&amp;imgUrl=${this.imageUrl}&amp;targetUrl=${this.hrefValue}'>
         </iframe>
       </div>`;
