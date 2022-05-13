@@ -9,6 +9,7 @@
   "scripts": {
     "build:prod": "concurrently \"tsc\" \"rollup --config rollup.config.js\"",
     "build:dev": "concurrently \"tsc --watch\" \"npm run serve\"",
+    "build": "build:prod",
     "serve": "wds --watch",
     "lint:eslint": "eslint 'src/**/*.ts'"
   },
