@@ -1,193 +1,180 @@
-import { LitElement, html, css, TemplateResult } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
-
-const borderRadius = css`8px`;
-const smallHeight = 52;
-const smallHeightCss = css`${smallHeight}px;`;
-const largeHeight = 104;
-const largeHeightCss = css`${largeHeight}px`;
-const imagesRoot = "../images"; // This will be replaced by rollup with the real production URL.
-
 /**
  * <ms-store-badge> web component
  *
- * Will try to use the Store App protocol to launch the mini PDP on Windows 10+ via an iframe
- * hosted on a default allowed domain by Edge. It will generate a small security pop-up on Chrome 
- * and will work without security pop-up in Firefox
+ * The app badge renders and iframe hosted on a domain whitelisted by Microsoft Edge so that users avoid 
+ * the browser security pop-up asking to launch another apps. Browsers other than Edge will show the
+ * security pop-up.
  * 
- * On non-Windows 10+ machines, it will simply display a href with an image to redirect to the Web PDP
+ * On non-Windows 10+ machines, it will simply display an href with an image to redirect to the Web PDP
  */
-@customElement('ms-store-badge')
-export class MSStoreBadge extends LitElement {
-  static styles = css`
-    :host {
-      display: block;
-      padding: 0;
-      margin: 0;
-    }
-
-    iframe {
-      border: none;
-    }
-
-    img {
-      /* When rendering the image, rather than the iframe, add a border radius.  */
-      border-radius: ${borderRadius};
-    }
-
-    .iframe-container {
-      /* To simulate our iframe having a border radius, we use this technique: https://stackoverflow.com/a/36110063/536 */
-      border-radius: ${borderRadius};
-      transform: translateZ(0px);
-      display: inline-block;
-      overflow: hidden;
-    }
-
-      .iframe-container.small {
-        height: ${smallHeightCss};
-      }
-
-      .iframe-container.large {
-        height: ${largeHeightCss}
-      }
-  `;
-
+class MSStoreBadge extends HTMLElement {
   /**
-   * product Id of the Microsoft Store App provided in the Partner Center portal.
+   * The ID of your app. 
    */
-  @property({ type: String }) productId = '';
-
-  /**
-   * language to use for the badge image (en, fr, zh, etc.)
-   * if not set, the component will auto detect the browser preferred language 
-   */
-  @property({ type: String }) language = '';
+  productId: string = "";
 
   /**
    * Sets the size of the badge. Should be "small" or "large"
    */
-  @property({ type: String }) size: "small" | "large" = "large";
-
-  @state()
-  protected languageDetails: SupportedLanguage = MSStoreBadge.englishLanguage; // will use the real deal after call to _checkLanguage()
-
-  @state()
-  protected iframeLocation = "../src/iframe.html"; // This is for ease of testing. Our rollup build script will change this to the production URL.
+  size: "small" | "large" = "large";
 
   /**
-   * Trying to trigger miniPDP only on Windows 10+
-  */
-  @state()
-  protected miniPDPcompatible = false;
+   * Sets the language. If null or omitted, the language will be auto-detected from the user's browser language.
+   */
+  language: string | null = "";
 
-  private static englishLanguage: SupportedLanguage = { name: "English", code: "en", imageSmall: { fileName: "English_S.png", aspectRatio: 2.5 }, imageLarge: { fileName: "English_L.png", aspectRatio: 2.769 } };
+  #languageDetails: SupportedLanguage = MSStoreBadge.englishLanguage;
+  #env: "dev" | "prod" = (global as any).__rollup_injected_env || "dev";
+  #iframeLocation = this.#env === "dev" ? "iframe.html" : "https://get.microsoft.com/iframe.html";
+  #imagesLocation = this.#env === "dev" ? "/images" : "https://getbadgecdn.azureedge.net/images";
+  #platformDetails: PlatformDetails = { isWindows: false, windowsVersion: null, isEdgeBrowser: false };
 
-  private static supportedLanguages: SupportedLanguage[] = [
-    { name: "Arabic", code: "ar", imageSmall: { fileName: "Arabic_S.png", aspectRatio: 3.458 }, imageLarge: { fileName: "Arabic_L.png", aspectRatio: 2.769 } },
-    { name: "Bosnian", code: "be", imageSmall: { fileName: "Bosnian_S.png", aspectRatio: 4.369 }, imageLarge: { fileName: "Bosnian_L.png", aspectRatio: 2.769 } },
-    { name: "Bengali", code: "bn", imageSmall: { fileName: "Bengali_S.png", aspectRatio: 2.5 }, imageLarge: { fileName: "Bengali_L.png", aspectRatio: 2.769 } },
-    { name: "Bosnian", code: "bs", imageSmall: { fileName: "Bosnian_S.png", aspectRatio: 4.369 }, imageLarge: { fileName: "Bosnian_L.png", aspectRatio: 2.769 } },
-    { name: "Bulgarian", code: "bg", imageSmall: { fileName: "Bulgarian_S.png", aspectRatio: 5.38 }, imageLarge: { fileName: "Bulgarian_L.png", aspectRatio: 2.769 } },
-    { name: "Chinese (Simplified)", code: "zh-cn", imageSmall: { fileName: "Chinese_Simplified_S.png", aspectRatio: 2.744 }, imageLarge: { fileName: "Chinese_Simplified_L.png", aspectRatio: 2.769 } },
-    { name: "Chinese (Traditional)", code: "zh-tw", imageSmall: { fileName: "Chinese_Traditional_S.png", aspectRatio: 2.776 }, imageLarge: { fileName: "Chinese_Traditional_L.png", aspectRatio: 2.769 } },
-    { name: "Croatian", code: "hr", imageSmall: { fileName: "Croatian_S.png", aspectRatio: 4.406 }, imageLarge: { fileName: "Croatian_L.png", aspectRatio: 2.769 } },
-    { name: "Czech", code: "cs", imageSmall: { fileName: "Czech_S.png", aspectRatio: 3.197 }, imageLarge: { fileName: "Czech_L.png", aspectRatio: 2.769 } },
-    { name: "Danish", code: "da", imageSmall: { fileName: "Danish_S.png", aspectRatio: 3.239 }, imageLarge: { fileName: "Danish_L.png", aspectRatio: 2.769 } },
-    { name: "Dutch", code: "nl", imageSmall: { fileName: "Dutch_S.png", aspectRatio: 3.859 }, imageLarge: { fileName: "Dutch_L.png", aspectRatio: 2.769 } },
-    MSStoreBadge.englishLanguage,
-    { name: "Estonian", code: "et", imageSmall: { fileName: "Estonian_S.png", aspectRatio: 3.161 }, imageLarge: { fileName: "Estonian_L.png", aspectRatio: 2.769 } },
-    { name: "Filipino", code: "fil", imageSmall: { fileName: "Filipino_S.png", aspectRatio: 3.119 }, imageLarge: { fileName: "Filipino_L.png", aspectRatio: 2.769 } },
-    { name: "Finnish", code: "fi", imageSmall: { fileName: "Finnish_S.png", aspectRatio: 3.119 }, imageLarge: { fileName: "Finnish_L.png", aspectRatio: 2.769 } },
-    { name: "French", code: "fr", imageSmall: { fileName: "French_S.png", aspectRatio: 3.718 }, imageLarge: { fileName: "French_L.png", aspectRatio: 2.769 } },
-    { name: "German", code: "de", imageSmall: { fileName: "German_S.png", aspectRatio: 2.609 }, imageLarge: { fileName: "German_L.png", aspectRatio: 2.769 } },
-    { name: "Greek", code: "el", imageSmall: { fileName: "Greek_S.png", aspectRatio: 4.546 }, imageLarge: { fileName: "Greek_L.png", aspectRatio: 2.769 } },
-    { name: "Hebrew", code: "he", imageSmall: { fileName: "Hebrew_S.png", aspectRatio: 3.666 }, imageLarge: { fileName: "Hebrew_L.png", aspectRatio: 2.769 } },
-    { name: "Hindi", code: "hi", imageSmall: { fileName: "Hindi_S.png", aspectRatio: 4.25 }, imageLarge: { fileName: "Hindi_L.png", aspectRatio: 2.769 } },
-    { name: "Hungarian", code: "hu", imageSmall: { fileName: "Hungarian_S.png", aspectRatio: 3.416 }, imageLarge: { fileName: "Hungarian_L.png", aspectRatio: 2.769 } },
-    { name: "Indonesian", code: "id", imageSmall: { fileName: "Indonesian_S.png", aspectRatio: 2.666 }, imageLarge: { fileName: "Indonesian_L.png", aspectRatio: 2.769 } },
-    { name: "Italian", code: "it", imageSmall: { fileName: "Italian_S.png", aspectRatio: 3.401 }, imageLarge: { fileName: "Italian_L.png", aspectRatio: 2.769 } },
-    { name: "Japanese", code: "ja", imageSmall: { fileName: "Japanese_S.png", aspectRatio: 2.609 }, imageLarge: { fileName: "Japanese_L.png", aspectRatio: 2.769 } },
-    { name: "Korean", code: "ko", imageSmall: { fileName: "Korean_S.png", aspectRatio: 2.312 }, imageLarge: { fileName: "Korean_L.png", aspectRatio: 2.769 } },
-    { name: "Latvian", code: "lv", imageSmall: { fileName: "Latvian_S.png", aspectRatio: 2.942 }, imageLarge: { fileName: "Latvian_L.png", aspectRatio: 2.769 } },
-    { name: "Lithuanian", code: "lt", imageSmall: { fileName: "Lithuanian_S.png", aspectRatio: 3.578 }, imageLarge: { fileName: "Lithuanian_L.png", aspectRatio: 2.769 } },
-    { name: "Malay", code: "ms", imageSmall: { fileName: "Malay_S.png", aspectRatio: 4.171 }, imageLarge: { fileName: "Malay_L.png", aspectRatio: 2.769 } },
-    { name: "Norwegian", code: "no", imageSmall: { fileName: "Norwegian_S.png", aspectRatio: 3.213 }, imageLarge: { fileName: "Norwegian_L.png", aspectRatio: 2.769 } },
-    { name: "Polish", code: "pl", imageSmall: { fileName: "Polish_S.png", aspectRatio: 3.593 }, imageLarge: { fileName: "Polish_L.png", aspectRatio: 2.769 } },
-    { name: "Portuguese (Brazil)", code: "pt-br", imageSmall: { fileName: "Portuguese_Brazil_S.png", aspectRatio: 2.963 }, imageLarge: { fileName: "Portuguese_Brazil_L.png", aspectRatio: 2.769 } },
-    { name: "Portuguese (Portugal)", code: "pt", imageSmall: { fileName: "Portuguese_Portugal_S.png", aspectRatio: 3.171 }, imageLarge: { fileName: "Portuguese_Portugal_L.png", aspectRatio: 2.769 } },
-    { name: "Romanian", code: "ro", imageSmall: { fileName: "Romanian_S.png", aspectRatio: 4.312 }, imageLarge: { fileName: "Romanian_L.png", aspectRatio: 2.769 } },
-    { name: "Russian", code: "ru", imageSmall: { fileName: "Russian_S.png", aspectRatio: 3.895 }, imageLarge: { fileName: "Russian_L.png", aspectRatio: 2.769 } },
-    { name: "Serbian", code: "sr", imageSmall: { fileName: "Serbian_S.png", aspectRatio: 4.395 }, imageLarge: { fileName: "Serbian_L.png", aspectRatio: 2.769 } },
-    { name: "Slovak", code: "sk", imageSmall: { fileName: "Slovak_S.png", aspectRatio: 3.067 }, imageLarge: { fileName: "Slovak_L.png", aspectRatio: 2.769 } },
-    { name: "Slovenian", code: "sl", imageSmall: { fileName: "Slovenian_S.png", aspectRatio: 3.375 }, imageLarge: { fileName: "Slovenian_L.png", aspectRatio: 2.769 } },
-    { name: "Spanish", code: "es", imageSmall: { fileName: "Spanish_S.png", aspectRatio: 4.692 }, imageLarge: { fileName: "Spanish_L.png", aspectRatio: 2.769 } },
-    { name: "Swahili", code: "sw", imageSmall: { fileName: "Swahili_S.png", aspectRatio: 2.666 }, imageLarge: { fileName: "Swahili_L.png", aspectRatio: 2.769 } },
-    { name: "Swedish", code: "sv", imageSmall: { fileName: "Swedish_S.png", aspectRatio: 3.208 }, imageLarge: { fileName: "Swedish_L.png", aspectRatio: 2.769 } },
-    { name: "Thai", code: "th", imageSmall: { fileName: "Thai_S.png", aspectRatio: 3.135 }, imageLarge: { fileName: "Thai_L.png", aspectRatio: 2.769 } },
-    { name: "Turkish", code: "tr", imageSmall: { fileName: "Turkish_S.png", aspectRatio: 2.708 }, imageLarge: { fileName: "Turkish_L.png", aspectRatio: 2.769 } },
-    { name: "Ukranian", code: "uk", imageSmall: { fileName: "Ukranian_S.png", aspectRatio: 4.468 }, imageLarge: { fileName: "Ukranian_L.png", aspectRatio: 2.769 } },
-    { name: "Vietnamese", code: "vi", imageSmall: { fileName: "Vietnamese_S.png", aspectRatio: 2.192 }, imageLarge: { fileName: "Vietnamese_L.png", aspectRatio: 2.769 } }
-  ];
+  static englishLanguage: SupportedLanguage = { name: "English", code: "en", imageSmall: { fileName: "English_S.png", }, imageLarge: { fileName: "English_L.png" } };
+  static supportedLanguages = MSStoreBadge.createSupportedLanguages();
 
   constructor() {
     super();
+
+    // Create our state.
+    this.getPlatformDetails().then(details => this.#platformDetails = details);
+    this.#languageDetails = MSStoreBadge.getSupportedLanguageFromCode(this.language);
+    this.language = this.#languageDetails.code;
+
+    // Create our HTML elements.
+    const shadow = this.attachShadow({ mode: "open" });
+    const style = this.createStyle();
+    const html = this.createHtml();
+    shadow.appendChild(style);
+    shadow.appendChild(html);
   }
 
-  get imageUrl() {
-    if (this.size === "large") {
-      return `${imagesRoot}/${this.languageDetails.imageLarge.fileName}`;
-    }
-
-    return `${imagesRoot}/${this.languageDetails.imageSmall.fileName}`;
-  }
-
-  /**
-   * Will contain the right url to the Web PDP or Store App protocol using the product ID
-  */
-  get hrefValue() {
-    // If the OS is Windows 10 or Windows 11 
-    if (this.miniPDPcompatible) {
-      return `ms-windows-store://pdp/?ProductId=${this.productId}`;
-    }
-
-    // Otherwise, redirect to the Web PDP
-    return `https://www.microsoft.com/store/apps/${this.productId}?cid=storebadge&ocid=badge`;
-  }
-
-  firstUpdated() {
-    this._checkLanguage();
-    this._checkPlatform();
-  }
-
-  updated() {
-    this._checkLanguage();
-    this._checkPlatform(); // Needed because if the product ID changed, we need to recalculate this.hrefValue.
-  }
-
-  private _checkPlatform() {
-    if (navigator.userAgent.indexOf("Windows NT 1") !== -1) {
-      this.miniPDPcompatible = true;
+  updateImageSrc() {
+    const img = this.shadowRoot?.querySelector("img");
+    if (img) {
+      img.setAttribute("src", this.getImageSource());
+      img.className = this.getImageClass();
     }
   }
 
-  private _checkLanguage() {
-    // If language isn't set, auto-detect
-    if (this.language === '') {
-      const detectedLanguage = MSStoreBadge.getSupportedLanguageFromUserAgent();
-      this.language = detectedLanguage.code;
-      this.languageDetails = detectedLanguage;
-    } else {
-      // The user set a specific language on our component. Make sure it's valid.
-      const supportedLanguage = MSStoreBadge.supportedLanguages.find(l => l.code === this.language.toLowerCase());
-      if (supportedLanguage) {
-        this.language = supportedLanguage.code;
-        this.languageDetails = supportedLanguage;
-      } else {
-        // User set the language to something not supported. Fallback to English.
-        this.language = MSStoreBadge.englishLanguage.code;
-        this.languageDetails = MSStoreBadge.englishLanguage;
+  // Web component lifecycle callback: component added to DOM
+  connectedCallback() {
+  }
+
+  // Web component lifecycle callback: register that we want to observe certain attributes.
+  static get observedAttributes(): string[] {
+    return [
+      "productid",
+      "size",
+      "language"
+    ];
+  }
+
+  // Web component lifecycle callback: when an observed attribute changes.
+  attributeChangedCallback(name: string, oldValue: any, newValue: any) {
+    if (name === "size" && (newValue === "large" || newValue === "small") && oldValue !== newValue) {
+      this.size = newValue;
+      this.updateImageSrc();
+    } else if (name === "language" && newValue !== oldValue && (typeof newValue === "string" || !newValue)) {
+      this.#languageDetails = MSStoreBadge.getSupportedLanguageFromCode(newValue);
+      this.language = this.#languageDetails.code;
+      this.updateImageSrc();
+    } else if (name === "productid" && newValue !== oldValue && typeof newValue === "string") {
+      this.productId = newValue;
+    }
+  }
+
+  createStyle(): HTMLStyleElement {
+    const styleString = `
+      :host {
+        display: inline-block;
+        cursor: pointer;
+        height: fit-content;
+      }
+
+      iframe {
+        border: none;
+        width: 0px;
+        height: 0px;
+      }
+
+      img {
+        width: auto;
+        border-radius: 8px;
+      }
+
+      img.small {
+        max-height: 52px;
+      }
+
+      img.large {
+        max-height: 104px;
+      }
+    `;
+
+    const element = document.createElement("style");
+    element.textContent = styleString;
+    return element;
+  }
+
+  createHtml(): HTMLElement {
+    const container = document.createElement("div");
+    container.appendChild(this.createImage());
+    container.appendChild(this.createIFrame());
+    return container;
+  }
+
+  private async getPlatformDetails(): Promise<PlatformDetails> {
+    // Use client hints if available.
+    // Typescript doesn't yet have support for typing this.
+    const navigatorAny = navigator as any;
+    if (navigatorAny.userAgentData && navigatorAny.userAgentData.getHighEntropyValues) {
+      try {
+        const platformDetails = await navigatorAny.userAgentData.getHighEntropyValues(["platform", "platformVersion"]);
+        const isWindows = platformDetails.platform === "Windows";
+        const version = isWindows ? parseFloat(platformDetails?.platformVersion || "") : null;
+        return {
+          isWindows: isWindows,
+          windowsVersion: version,
+          isEdgeBrowser: (navigatorAny.userAgentData.brands || []).some((b: any) => b.brand === "Microsoft Edge")
+        }
+      } catch (error) {
+        // Eat the error. We'll try our fallback below.
       }
     }
+
+    // Fallback: use navigator.userAgent
+    const windowsUserAgentRegex = new RegExp(/.?Windows NT (\d+\.?\d?\.?\d?\.?\d?)/gi);
+    const matchResults = windowsUserAgentRegex.exec(navigator.userAgent);
+    if (matchResults && matchResults.length >= 2) {
+      return {
+        isWindows: true,
+        windowsVersion: parseFloat(matchResults[1]),
+        isEdgeBrowser: !!navigator.userAgent.match("Edg/")
+      }
+    }
+
+    // Some other platform besides Windows.
+    return {
+      isWindows: false,
+      windowsVersion: null,
+      isEdgeBrowser: !!navigator.userAgent.match("Edg/")
+    }
+  }
+
+  private static getSupportedLanguageFromCode(languageCode: string | null | undefined): SupportedLanguage {
+    // If language code isn't set, auto-detect
+    if (!languageCode) {
+      return MSStoreBadge.getSupportedLanguageFromUserAgent();
+    }
+
+    // See if the language code is a supported language.
+    const supportedLanguage = MSStoreBadge.supportedLanguages.find(l => l.code === languageCode.toLowerCase());
+    if (supportedLanguage) {
+      return supportedLanguage;
+    }
+
+    // Language code is unsupported. Fallback to English.
+    return MSStoreBadge.englishLanguage;
   }
 
   static getSupportedLanguageFromUserAgent(): SupportedLanguage {
@@ -223,40 +210,129 @@ export class MSStoreBadge extends LitElement {
     return MSStoreBadge.englishLanguage;
   }
 
-  render() {
-    // Component height are static.
-    // However, widths are dependent on the aspect ratio of the image.
-    const componentHeight = this.size === "large" ? largeHeight : smallHeight;
-    const componentWidth = Math.round(componentHeight * (this.size === "large" ? this.languageDetails.imageLarge.aspectRatio : this.languageDetails.imageSmall.aspectRatio));
+  createIFrame(): HTMLIFrameElement {
+    const iframe = document.createElement("iframe");
+    iframe.setAttribute("loading", "eager");
+    iframe.title = "Microsoft Store App Badge";
+    iframe.src = this.#iframeLocation;
+    return iframe;
+  }
 
-    if (this.miniPDPcompatible) {
-      return this.renderIFrame(componentWidth, componentHeight);
+  createImage(): HTMLImageElement {
+    const image = document.createElement("img");
+    image.setAttribute("part", "img");
+    image.src = this.getImageSource();
+    image.className = this.getImageClass();
+    image.alt = "Microsoft Store app badge";
+    image.addEventListener("click", (e: MouseEvent) => this.launchApp(e));
+    return image;
+  }
+
+  getImageSource(): string {
+    const fileName = this.size === "large" ?
+      this.#languageDetails.imageLarge.fileName :
+      this.#languageDetails.imageSmall.fileName;
+    return `${this.#imagesLocation}/${fileName}`;
+  }
+
+  getImageClass(): string {
+    return this.size === "large" ? "large" : "small";
+  }
+
+  launchApp(e: MouseEvent) {
+    if (!this.productId) {
+      return;
     }
 
-    // We can't launch the Store; we may be on a different OS.
-    // Render the image that links to the web store.
-    return this.renderImage(componentWidth, componentHeight);
+    if (this.#platformDetails.isWindows && this.#platformDetails.isEdgeBrowser) {
+      // Are we on Edge on Windows? Launch the mini PDP via the iframe hosted on Edge's whitelisted domain.
+      this.launchStoreAppPdpViaWhitelistedDomain();
+    } else if (this.#platformDetails.isWindows) {
+      // We're on some other browser on Windows. Launch via ms-store-app:// protocol.
+      this.launchStoreAppPdp();
+    } else {
+      // We're not on Windows so we can't launch the app. Navigate to the web PDP.
+      this.launchStoreWebPdp(e);
+    }
   }
 
-  renderIFrame(width: number, height: number): TemplateResult {
-    return html`
-      <div class="iframe-container ${this.size}">
-        <iframe title="Store Badge" width="${width}" height="${height}" frameborder="0" scrolling="no"
-          src='${this.iframeLocation}?productId=${this.productId}&amp;language=${this.language}&amp;size=${this.size}&amp;imgUrl=${this.imageUrl}&amp;targetUrl=${this.hrefValue}'>
-        </iframe>
-      </div>`;
+  launchStoreAppPdp() {
+    const appLaunchUrl = "ms-windows-store://pdp/" +
+      "?productid=" + this.productId +
+      "&mode=mini&pos=" + Math.floor(window.screenLeft * window.devicePixelRatio) +
+      "," + Math.floor(window.screenTop * window.devicePixelRatio) +
+      "," + Math.floor(window.outerWidth * window.devicePixelRatio) +
+      "," + Math.floor(window.outerHeight * window.devicePixelRatio);
+    location.href = appLaunchUrl;
   }
 
-  renderImage(width: number, height: number): TemplateResult {
-    return html`<a href="${this.hrefValue}" target="_blank">
-  <img width="${width}" height="${height}" src="${this.imageUrl}" alt="Microsoft Store badge logo" />
-</a>`;
+  launchStoreAppPdpViaWhitelistedDomain() {
+    const iframe = this.shadowRoot?.querySelector("iframe");
+    if (iframe) {
+      const args = {
+        message: "launch",
+        productId: this.productId
+      };
+      iframe.contentWindow?.postMessage(args, "*");
+    }
   }
-}
 
-declare global {
-  interface HTMLElementTagNameMap {
-    'ms-store-badge': MSStoreBadge;
+  launchStoreWebPdp(e: MouseEvent) {
+    const url = `https://apps.microsoft.com/store/detail/${this.productId}`;
+    if (e.ctrlKey) {
+      window.open(url, "_blank");
+    } else {
+      window.location.href = url;
+    }
+  }
+
+  static createSupportedLanguages(): SupportedLanguage[] {
+    return [
+      { name: "Arabic", code: "ar", imageSmall: { fileName: "Arabic_S.png" }, imageLarge: { fileName: "Arabic_L.png" } },
+      { name: "Bosnian", code: "be", imageSmall: { fileName: "Bosnian_S.png" }, imageLarge: { fileName: "Bosnian_L.png" } },
+      { name: "Bengali", code: "bn", imageSmall: { fileName: "Bengali_S.png" }, imageLarge: { fileName: "Bengali_L.png" } },
+      { name: "Bosnian", code: "bs", imageSmall: { fileName: "Bosnian_S.png" }, imageLarge: { fileName: "Bosnian_L.png" } },
+      { name: "Bulgarian", code: "bg", imageSmall: { fileName: "Bulgarian_S.png" }, imageLarge: { fileName: "Bulgarian_L.png" } },
+      { name: "Chinese (Simplified)", code: "zh-cn", imageSmall: { fileName: "Chinese_Simplified_S.png" }, imageLarge: { fileName: "Chinese_Simplified_L.png" } },
+      { name: "Chinese (Traditional)", code: "zh-tw", imageSmall: { fileName: "Chinese_Traditional_S.png" }, imageLarge: { fileName: "Chinese_Traditional_L.png" } },
+      { name: "Croatian", code: "hr", imageSmall: { fileName: "Croatian_S.png" }, imageLarge: { fileName: "Croatian_L.png" } },
+      { name: "Czech", code: "cs", imageSmall: { fileName: "Czech_S.png" }, imageLarge: { fileName: "Czech_L.png" } },
+      { name: "Danish", code: "da", imageSmall: { fileName: "Danish_S.png" }, imageLarge: { fileName: "Danish_L.png" } },
+      { name: "Dutch", code: "nl", imageSmall: { fileName: "Dutch_S.png" }, imageLarge: { fileName: "Dutch_L.png" } },
+      MSStoreBadge.englishLanguage,
+      { name: "Estonian", code: "et", imageSmall: { fileName: "Estonian_S.png" }, imageLarge: { fileName: "Estonian_L.png" } },
+      { name: "Filipino", code: "fil", imageSmall: { fileName: "Filipino_S.png" }, imageLarge: { fileName: "Filipino_L.png" } },
+      { name: "Finnish", code: "fi", imageSmall: { fileName: "Finnish_S.png" }, imageLarge: { fileName: "Finnish_L.png" } },
+      { name: "French", code: "fr", imageSmall: { fileName: "French_S.png" }, imageLarge: { fileName: "French_L.png" } },
+      { name: "German", code: "de", imageSmall: { fileName: "German_S.png" }, imageLarge: { fileName: "German_L.png" } },
+      { name: "Greek", code: "el", imageSmall: { fileName: "Greek_S.png" }, imageLarge: { fileName: "Greek_L.png" } },
+      { name: "Hebrew", code: "he", imageSmall: { fileName: "Hebrew_S.png" }, imageLarge: { fileName: "Hebrew_L.png" } },
+      { name: "Hindi", code: "hi", imageSmall: { fileName: "Hindi_S.png" }, imageLarge: { fileName: "Hindi_L.png" } },
+      { name: "Hungarian", code: "hu", imageSmall: { fileName: "Hungarian_S.png" }, imageLarge: { fileName: "Hungarian_L.png" } },
+      { name: "Indonesian", code: "id", imageSmall: { fileName: "Indonesian_S.png" }, imageLarge: { fileName: "Indonesian_L.png" } },
+      { name: "Italian", code: "it", imageSmall: { fileName: "Italian_S.png" }, imageLarge: { fileName: "Italian_L.png" } },
+      { name: "Japanese", code: "ja", imageSmall: { fileName: "Japanese_S.png" }, imageLarge: { fileName: "Japanese_L.png" } },
+      { name: "Korean", code: "ko", imageSmall: { fileName: "Korean_S.png" }, imageLarge: { fileName: "Korean_L.png" } },
+      { name: "Latvian", code: "lv", imageSmall: { fileName: "Latvian_S.png" }, imageLarge: { fileName: "Latvian_L.png" } },
+      { name: "Lithuanian", code: "lt", imageSmall: { fileName: "Lithuanian_S.png" }, imageLarge: { fileName: "Lithuanian_L.png" } },
+      { name: "Malay", code: "ms", imageSmall: { fileName: "Malay_S.png" }, imageLarge: { fileName: "Malay_L.png" } },
+      { name: "Norwegian", code: "no", imageSmall: { fileName: "Norwegian_S.png" }, imageLarge: { fileName: "Norwegian_L.png" } },
+      { name: "Polish", code: "pl", imageSmall: { fileName: "Polish_S.png" }, imageLarge: { fileName: "Polish_L.png" } },
+      { name: "Portuguese (Brazil)", code: "pt-br", imageSmall: { fileName: "Portuguese_Brazil_S.png" }, imageLarge: { fileName: "Portuguese_Brazil_L.png" } },
+      { name: "Portuguese (Portugal)", code: "pt", imageSmall: { fileName: "Portuguese_Portugal_S.png" }, imageLarge: { fileName: "Portuguese_Portugal_L.png" } },
+      { name: "Romanian", code: "ro", imageSmall: { fileName: "Romanian_S.png", }, imageLarge: { fileName: "Romanian_L.png" } },
+      { name: "Russian", code: "ru", imageSmall: { fileName: "Russian_S.png" }, imageLarge: { fileName: "Russian_L.png" } },
+      { name: "Serbian", code: "sr", imageSmall: { fileName: "Serbian_S.png" }, imageLarge: { fileName: "Serbian_L.png" } },
+      { name: "Slovak", code: "sk", imageSmall: { fileName: "Slovak_S.png" }, imageLarge: { fileName: "Slovak_L.png" } },
+      { name: "Slovenian", code: "sl", imageSmall: { fileName: "Slovenian_S.png" }, imageLarge: { fileName: "Slovenian_L.png" } },
+      { name: "Spanish", code: "es", imageSmall: { fileName: "Spanish_S.png" }, imageLarge: { fileName: "Spanish_L.png" } },
+      { name: "Swahili", code: "sw", imageSmall: { fileName: "Swahili_S.png" }, imageLarge: { fileName: "Swahili_L.png" } },
+      { name: "Swedish", code: "sv", imageSmall: { fileName: "Swedish_S.png" }, imageLarge: { fileName: "Swedish_L.png" } },
+      { name: "Thai", code: "th", imageSmall: { fileName: "Thai_S.png" }, imageLarge: { fileName: "Thai_L.png" } },
+      { name: "Turkish", code: "tr", imageSmall: { fileName: "Turkish_S.png" }, imageLarge: { fileName: "Turkish_L.png" } },
+      { name: "Ukranian", code: "uk", imageSmall: { fileName: "Ukranian_S.png" }, imageLarge: { fileName: "Ukranian_L.png" } },
+      { name: "Vietnamese", code: "vi", imageSmall: { fileName: "Vietnamese_S.png" }, imageLarge: { fileName: "Vietnamese_L.png" } }
+    ];
   }
 }
 
@@ -269,5 +345,12 @@ interface SupportedLanguage {
 
 interface SupportedLanguageImage {
   fileName: string;
-  aspectRatio: number; // 1.5 = width is 1.5 greater than height
 }
+
+interface PlatformDetails {
+  isWindows: boolean;
+  windowsVersion: number | null;
+  isEdgeBrowser: boolean;
+}
+
+customElements.define("ms-store-badge", MSStoreBadge);

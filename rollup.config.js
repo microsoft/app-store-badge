@@ -5,7 +5,7 @@ import replace from '@rollup/plugin-replace';
 import copy from 'rollup-plugin-copy';
 
 export default {
-  input: 'ms-store-badge.js',
+  input: 'src/ms-store-badge.js',
   output: {
     file: 'dist/ms-store-badge.bundled.js',
     format: 'esm',
@@ -19,29 +19,28 @@ export default {
     replace({
       'Reflect.decorate': 'undefined',
 
-      // In ms-store-badge.js, swap out the local iframe for the production deployed iframe
-      '../src/iframe.html': 'https://get.microsoft.com/iframe.html',
+      // Mark us as production
+      'global.__rollup_injected_env': '"prod"',
 
-      // In  ms-store-badge.js, swap out the local images for the images on the CDN
-      '../images': 'https://getbadgecdn.azureedge.net/images',
-
-      delimiters: ['', '']
+      delimiters: ['', ''],
+      preventAssignment: true
     }),
     copy({
       targets: [
+        { src: 'images', dest: 'dist' },
         { src: 'src/staticwebapp.config.json', dest: 'dist' },
-
         { src: 'src/iframe.html', dest: 'dist' },
-
         { src: 'src/index.html', dest: 'dist' },
-
-        // When copying create-your-own.html, use production URL for script
-        { src: 'src/create-your-own.html', dest: 'dist', transform: (contents) => contents.toString().replace(new RegExp('../ms-store-badge.js', 'g'), 'https://getbadgecdn.azureedge.net/ms-store-badge.bundled.js') }
+        {
+          src: 'src/index.html',
+          dest: 'dist',
+          transform: (contents) => contents.toString().replace(new RegExp('/ms-store-badge.js', 'g'), 'https://getbadgecdn.azureedge.net/ms-store-badge.bundled.js')
+        }
       ]
     }),
     resolve(),
     terser({
-      ecma: 2017,
+      ecma: 2020,
       module: true,
       warnings: true,
       mangle: {

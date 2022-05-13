@@ -6,66 +6,27 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Microsoft Store Popup Badge</title>
-    <style>
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
-        .largeBadge .smallBadge {
-            width: auto;
-        }
-
-        .largeBadge {
-            height: 104px;
-        }
-
-        .smallBadge {
-            height: 52px;
-        }
-
-        button {
-            border: none;
-            margin: 0;
-            padding: 0;
-            width: auto;
-            overflow: visible;
-            cursor: pointer;
-        }
-    </style>
 
 <body>
 </body>
 
 </html>
 <script>
-    const params = new URLSearchParams(document.location.search);
-    const imgUrl = params.get('imgUrl');
-    const targetUrl = params.get('targetUrl');
-    const badgeSize = params.get('size');
+    // Listen for when we're asked to launch the mini PDP
+    window.addEventListener("message", function (e) {
+        if (e.data && e.data.message === "launch") {
+            // Validate product ID.
+            if (!e.data.productId) {
+                return;
+            }
 
-    let bigBadge = false;
-    if (badgeSize && badgeSize === 'large') {
-        bigBadge = true;
-    }
-    const buttonElement = document.createElement('button');
-    let badgeImage = document.createElement("img");
-    if (bigBadge) {
-        badgeImage.setAttribute("class", 'largeBadge');
-    }
-    else {
-        badgeImage.setAttribute("class", 'smallBadge');
-    }
-    badgeImage.setAttribute("src", imgUrl);
-
-    badgeImage.setAttribute("id", 'msStoreBadgeImg');
-    badgeImage.setAttribute("alt", 'Microsoft Store badge logo');
-    buttonElement.appendChild(badgeImage);
-    buttonElement.addEventListener("click", function () {
-        const desiredUrl = targetUrl + "&mode=mini&pos=" + Math.floor(window.screenLeft * window.devicePixelRatio) + "," + Math.floor(window.screenTop * window.devicePixelRatio) + "," + Math.floor(window.outerWidth * window.devicePixelRatio) + "," + Math.floor(window.outerHeight * window.devicePixelRatio);
-        location.href = desiredUrl;
-        //window.open(targetUrl + "&mode=mini&pos=" + Math.floor(window.screenLeft * window.devicePixelRatio) + "," + Math.floor(window.screenTop * window.devicePixelRatio) + "," + Math.floor(window.outerWidth * window.devicePixelRatio) + "," + Math.floor(window.outerHeight * window.devicePixelRatio));
+            const desiredUrl = "ms-windows-store://pdp/" +
+                "?productid=" + e.data.productId +
+                "&mode=mini&pos=" + Math.floor(window.screenLeft * window.devicePixelRatio) +
+                "," + Math.floor(window.screenTop * window.devicePixelRatio) +
+                "," + Math.floor(window.outerWidth * window.devicePixelRatio) +
+                "," + Math.floor(window.outerHeight * window.devicePixelRatio);
+            location.href = desiredUrl;
+        }
     });
-    document.body.appendChild(buttonElement);
 </script>
