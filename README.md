@@ -28,6 +28,16 @@ Example using all the available options:
 <ms-store-badge productid="9wzdncrfhvjl" size="small" language="he"></ms-store-badge>
 ```
 
+To style the button, you can use the CSS part:
+
+```css
+/* Customize the badge's appearance */
+ms-store-badge::part(img) {
+    max-height: 52px;
+    border-radius: 2px;
+}
+```
+
 ## Why a web component?
 
 Most app store badges are a simple image with a link to the web store. Why is this a web component?
@@ -35,9 +45,8 @@ Most app store badges are a simple image with a link to the web store. Why is th
 In short, for better localization and better user experience.
 
 - Localization: the web component supports automatic detection of the user's locale, showing a localized button to the user based on the user's browser locale.
-- Better user experience: the web component detects if you're on Windows, and if so, allows the install to jump right into your app's product description page (PDP).
-- Better user experience 2x: the web component works with Edge's whitelist to skip security prompts ("this site wants to launch Microsoft Store...") when the user is running on Edge.
-- Better user experience 3x: Where supported, rather than launch the full store app, a user who clicks your app badge on Windows will get a mini PDP centered within the page, allowing for inline install. The user doesn't lose context.
+- Better user experience: if the user is on Edge on Windows, no browser security prompt ("this site is trying to launch Microsoft Store") is shown. 
+- Better user experience 2x: Where supported, rather than launch the full store app, a user who clicks your app badge on Windows will get a mini PDP centered within the page, allowing for inline install. The user doesn't lose context.
 
 ## Running the code
 
