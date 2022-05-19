@@ -30,7 +30,7 @@ Example using all the available options:
 
 ## Styling the badge
 
-To style the app badge, use CSS to target the badge image:
+To style the app badge web component, use [CSS parts]([url](https://developer.mozilla.org/en-US/docs/Web/CSS/::part)) to style the badge image:
 
 ```css
 /* Customize the badge's appearance */
