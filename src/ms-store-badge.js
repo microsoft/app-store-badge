@@ -36,7 +36,7 @@ class MSStoreBadge extends HTMLElement {
          */
         this.language = "";
         _MSStoreBadge_languageDetails.set(this, MSStoreBadge.englishLanguage);
-        _MSStoreBadge_env.set(this, global.__rollup_injected_env || "dev");
+        _MSStoreBadge_env.set(this, window.__rollup_injected_env || "dev");
         _MSStoreBadge_iframeLocation.set(this, __classPrivateFieldGet(this, _MSStoreBadge_env, "f") === "dev" ? "iframe.html" : "https://get.microsoft.com/iframe.html");
         _MSStoreBadge_imagesLocation.set(this, __classPrivateFieldGet(this, _MSStoreBadge_env, "f") === "dev" ? "/images" : "https://getbadgecdn.azureedge.net/images");
         _MSStoreBadge_platformDetails.set(this, { isWindows: false, windowsVersion: null, isEdgeBrowser: false });

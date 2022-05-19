@@ -24,7 +24,7 @@ class MSStoreBadge extends HTMLElement {
   language: string | null = "";
 
   #languageDetails: SupportedLanguage = MSStoreBadge.englishLanguage;
-  #env: "dev" | "prod" = (global as any).__rollup_injected_env || "dev";
+  #env: "dev" | "prod" = (window as any).__rollup_injected_env || "dev";
   #iframeLocation = this.#env === "dev" ? "iframe.html" : "https://get.microsoft.com/iframe.html";
   #imagesLocation = this.#env === "dev" ? "/images" : "https://getbadgecdn.azureedge.net/images";
   #platformDetails: PlatformDetails = { isWindows: false, windowsVersion: null, isEdgeBrowser: false };

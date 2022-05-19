@@ -20,7 +20,7 @@ export default {
       'Reflect.decorate': 'undefined',
 
       // Mark us as production
-      'global.__rollup_injected_env': '"prod"',
+      'window.__rollup_injected_env': '"prod"',
 
       delimiters: ['', ''],
       preventAssignment: true
