@@ -28,7 +28,7 @@ class MSStoreBadge extends HTMLElement {
          */
         this.productId = "";
         /**
-         * The optional campaign code of your app.
+         * The optional campaign ID of your app.
          */
         this.cid = "";
         /**

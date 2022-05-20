@@ -14,7 +14,7 @@ declare class MSStoreBadge extends HTMLElement {
      */
     productId: string;
     /**
-     * The optional campaign code of your app.
+     * The optional campaign ID of your app.
      */
     cid: string;
     /**
