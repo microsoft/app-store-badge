@@ -14,6 +14,10 @@ declare class MSStoreBadge extends HTMLElement {
      */
     productId: string;
     /**
+     * The optional campaign code of your app.
+     */
+    cid: string;
+    /**
      * Sets the size of the badge. Should be "small" or "large"
      */
     size: "small" | "large";

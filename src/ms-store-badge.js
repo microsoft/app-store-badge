@@ -28,6 +28,10 @@ class MSStoreBadge extends HTMLElement {
          */
         this.productId = "";
         /**
+         * The optional campaign code of your app.
+         */
+        this.cid = "";
+        /**
          * Sets the size of the badge. Should be "small" or "large"
          */
         this.size = "large";
@@ -66,6 +70,7 @@ class MSStoreBadge extends HTMLElement {
     static get observedAttributes() {
         return [
             "productid",
+            "cid",
             "size",
             "language"
         ];
@@ -83,6 +88,9 @@ class MSStoreBadge extends HTMLElement {
         }
         else if (name === "productid" && newValue !== oldValue && typeof newValue === "string") {
             this.productId = newValue;
+        }
+        else if (name === "cid" && newValue !== oldValue && typeof newValue === "string") {
+            this.cid = newValue;
         }
     }
     createStyle() {
@@ -245,11 +253,13 @@ class MSStoreBadge extends HTMLElement {
     launchStoreAppPdp() {
         const appLaunchUrl = "ms-windows-store://pdp/" +
             "?productid=" + this.productId +
+            "&cid=" + this.cid +
             "&mode=mini&pos=" + Math.floor(window.screenLeft * window.devicePixelRatio) +
             "," + Math.floor(window.screenTop * window.devicePixelRatio) +
             "," + Math.floor(window.outerWidth * window.devicePixelRatio) +
             "," + Math.floor(window.outerHeight * window.devicePixelRatio);
         location.href = appLaunchUrl;
+        console.log(appLaunchUrl);
     }
     launchStoreAppPdpViaWhitelistedDomain() {
         var _a, _b;
@@ -263,7 +273,7 @@ class MSStoreBadge extends HTMLElement {
         }
     }
     launchStoreWebPdp(e) {
-        const url = `https://apps.microsoft.com/store/detail/${this.productId}`;
+        const url = `https://apps.microsoft.com/store/detail/${this.productId}/${this.cid}`;
         if (e.ctrlKey) {
             window.open(url, "_blank");
         }
