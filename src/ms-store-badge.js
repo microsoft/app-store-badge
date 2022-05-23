@@ -32,6 +32,10 @@ class MSStoreBadge extends HTMLElement {
          */
         this.cid = "";
         /**
+         * Specify whether app costs money or is free.
+         */
+        this.paid = false;
+        /**
          * Sets the size of the badge. Should be "small" or "large"
          */
         this.size = "large";
@@ -71,6 +75,7 @@ class MSStoreBadge extends HTMLElement {
         return [
             "productid",
             "cid",
+            "paid",
             "size",
             "language"
         ];
@@ -253,12 +258,13 @@ class MSStoreBadge extends HTMLElement {
     launchStoreAppPdp() {
         const appLaunchUrl = "ms-windows-store://pdp/" +
             "?productid=" + this.productId +
-            "&cid=" + this.cid +
-            "&mode=mini&pos=" + Math.floor(window.screenLeft * window.devicePixelRatio) +
+            "&cid=" + this.cid + 
+            (this.paid ?  "&mode=&pos=" : "&mode=mini&pos=") + Math.floor(window.screenLeft * window.devicePixelRatio) +
             "," + Math.floor(window.screenTop * window.devicePixelRatio) +
             "," + Math.floor(window.outerWidth * window.devicePixelRatio) +
             "," + Math.floor(window.outerHeight * window.devicePixelRatio);
         location.href = appLaunchUrl;
+        console.log(appLaunchUrl);
     }
     launchStoreAppPdpViaWhitelistedDomain() {
         var _a, _b;

@@ -17,7 +17,12 @@ class MSStoreBadge extends HTMLElement {
    * The optional campaign ID of your app. 
    */
   cid: string = "";
-  
+
+  /**
+    * Indicates whether app costs money or is free.
+    */
+  paid: boolean = false;
+
   /**
    * Sets the size of the badge. Should be "small" or "large"
    */
@@ -70,6 +75,7 @@ class MSStoreBadge extends HTMLElement {
     return [
       "productid",
       "cid",
+      "paid",
       "size",
       "language"
     ];

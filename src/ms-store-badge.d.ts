@@ -18,6 +18,10 @@ declare class MSStoreBadge extends HTMLElement {
      */
     cid: string;
     /**
+      * Indicates whether app costs money or is free.
+      */
+    paid: boolean;
+    /**
      * Sets the size of the badge. Should be "small" or "large"
      */
     size: "small" | "large";
