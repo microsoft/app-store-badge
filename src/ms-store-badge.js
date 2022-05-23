@@ -259,7 +259,6 @@ class MSStoreBadge extends HTMLElement {
             "," + Math.floor(window.outerWidth * window.devicePixelRatio) +
             "," + Math.floor(window.outerHeight * window.devicePixelRatio);
         location.href = appLaunchUrl;
-        console.log(appLaunchUrl);
     }
     launchStoreAppPdpViaWhitelistedDomain() {
         var _a, _b;
@@ -273,7 +272,7 @@ class MSStoreBadge extends HTMLElement {
         }
     }
     launchStoreWebPdp(e) {
-        const url = `https://apps.microsoft.com/store/detail/${this.productId}/${this.cid}`;
+        const url = `https://apps.microsoft.com/store/detail/${this.productId}?${this.cid}`;
         if (e.ctrlKey) {
             window.open(url, "_blank");
         }

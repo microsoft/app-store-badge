@@ -17,7 +17,7 @@ class MSStoreBadge extends HTMLElement {
    * The optional campaign ID of your app. 
    */
   cid: string = "";
-
+  
   /**
    * Sets the size of the badge. Should be "small" or "large"
    */
@@ -273,7 +273,6 @@ class MSStoreBadge extends HTMLElement {
       "," + Math.floor(window.outerWidth * window.devicePixelRatio) +
       "," + Math.floor(window.outerHeight * window.devicePixelRatio);
     location.href = appLaunchUrl;
-    console.log(appLaunchUrl);
   }
 
   launchStoreAppPdpViaWhitelistedDomain() {
@@ -288,7 +287,7 @@ class MSStoreBadge extends HTMLElement {
   }
 
   launchStoreWebPdp(e: MouseEvent) {
-    const url = `https://apps.microsoft.com/store/detail/${this.productId}/${this.cid}`;
+    const url = `https://apps.microsoft.com/store/detail/${this.productId}?${this.cid}`;
     if (e.ctrlKey) {
       window.open(url, "_blank");
     } else {
