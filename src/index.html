@@ -187,16 +187,12 @@
       if (!appId || appId.length < 12) {
         return;
       }
-      /*
-      // If campaign code exists, ensure length validity
-      if(campaignId && campaignId.length < 6) {
-        return;
-      }
-      */
 
       const badgeElement = document.createElement("ms-store-badge");
       badgeElement.setAttribute("productId", appId);
       badgeElement.setAttribute("cid", campaignId);
+      badgeElement.setAttribute("popup", "true");
+      badgeElement.setAttribute("darkMode", "true");
       badgeElement.setAttribute("id", "badgeSample");
       badgeElement.setAttribute("size", isLargeSize ? "large" : "small");
       if (language) {

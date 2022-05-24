@@ -18,9 +18,13 @@ declare class MSStoreBadge extends HTMLElement {
      */
     cid: string;
     /**
-      * Indicates whether app costs money or is free.
+      * Indicates whether popup or full mode should be launched.
       */
-    paid: boolean;
+    popup: string;
+    /**
+      * Indicates whether badge should be in dark mode or light mode.
+      */
+    darkMode: string;
     /**
      * Sets the size of the badge. Should be "small" or "large"
      */
@@ -55,6 +59,8 @@ interface SupportedLanguage {
     name: string;
     imageSmall: SupportedLanguageImage;
     imageLarge: SupportedLanguageImage;
+    imageSmallLight: SupportedLanguageImage;
+    imageLargeLight: SupportedLanguageImage;
     code: string;
 }
 interface SupportedLanguageImage {
