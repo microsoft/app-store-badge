@@ -242,15 +242,33 @@ class MSStoreBadge extends HTMLElement {
     }
     getImageSource() {
         var fileName = null;
+        //Dark mode
         if (this.darkMode === "true") {
             fileName = this.size === "large" ?
                 __classPrivateFieldGet(this, _MSStoreBadge_languageDetails, "f").imageLarge.fileName :
                 __classPrivateFieldGet(this, _MSStoreBadge_languageDetails, "f").imageSmall.fileName;
         }
+        //Light mode
         else if (this.darkMode === "") {
             fileName = this.size === "large" ?
                 __classPrivateFieldGet(this, _MSStoreBadge_languageDetails, "f").imageLargeLight.fileName :
                 __classPrivateFieldGet(this, _MSStoreBadge_languageDetails, "f").imageSmallLight.fileName;
+        }
+        //Auto mode
+        else if (this.darkMode === "auto") {
+            const isDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+            if (isDark) { //If detected dark mode
+                fileName = this.size === "large" ?
+                    __classPrivateFieldGet(this, _MSStoreBadge_languageDetails, "f").imageLarge.fileName :
+                    __classPrivateFieldGet(this, _MSStoreBadge_languageDetails, "f").imageSmall.fileName;
+                console.log("dark");
+            }
+            else { //If detected light mode
+                fileName = this.size === "large" ?
+                    __classPrivateFieldGet(this, _MSStoreBadge_languageDetails, "f").imageLargeLight.fileName :
+                    __classPrivateFieldGet(this, _MSStoreBadge_languageDetails, "f").imageSmallLight.fileName;
+                console.log("light");
+            }
         }
         return `${__classPrivateFieldGet(this, _MSStoreBadge_imagesLocation, "f")}/${fileName}`;
     }

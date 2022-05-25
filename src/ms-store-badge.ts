@@ -254,15 +254,33 @@ class MSStoreBadge extends HTMLElement {
 
   getImageSource(): string {
     var fileName = null;
+    //Dark mode
     if(this.darkMode === "true") {
       fileName = this.size === "large" ?
       this.#languageDetails.imageLarge.fileName :
       this.#languageDetails.imageSmall.fileName;
     }
+    //Light mode
     else if(this.darkMode === "") {
       fileName = this.size === "large" ?
       this.#languageDetails.imageLargeLight.fileName :
       this.#languageDetails.imageSmallLight.fileName;
+    }
+    //Auto mode
+    else if(this.darkMode === "auto") {
+      const isDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+        if(isDark) { //If detected dark mode
+          fileName = this.size === "large" ?
+          this.#languageDetails.imageLarge.fileName :
+          this.#languageDetails.imageSmall.fileName;
+          console.log("dark");
+        }
+        else { //If detected light mode
+          fileName = this.size === "large" ?
+          this.#languageDetails.imageLargeLight.fileName :
+          this.#languageDetails.imageSmallLight.fileName;
+          console.log("light");
+        }   
     }
     return `${this.#imagesLocation}/${fileName}`;
   }
