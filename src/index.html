@@ -191,8 +191,8 @@
       const badgeElement = document.createElement("ms-store-badge");
       badgeElement.setAttribute("productId", appId);
       badgeElement.setAttribute("cid", campaignId);
-      badgeElement.setAttribute("popup", "true");
-      badgeElement.setAttribute("darkMode", "true");
+      badgeElement.setAttribute("windowMode", "popup");
+      badgeElement.setAttribute("theme", "dark");
       badgeElement.setAttribute("id", "badgeSample");
       badgeElement.setAttribute("size", isLargeSize ? "large" : "small");
       if (language) {

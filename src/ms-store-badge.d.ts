@@ -20,11 +20,11 @@ declare class MSStoreBadge extends HTMLElement {
     /**
       * Indicates whether popup or full mode should be launched.
       */
-    popup: string;
+    windowMode: "popup" | "full";
     /**
-      * Indicates whether badge should be in dark mode or light mode.
+      * Indicates whether badge should be in dark mode, light mode, or auto mode.
       */
-    darkMode: string;
+    theme: "dark" | "light" | "auto";
     /**
      * Sets the size of the badge. Should be "small" or "large"
      */
