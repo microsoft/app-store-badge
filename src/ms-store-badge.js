@@ -301,7 +301,7 @@ class MSStoreBadge extends HTMLElement {
         }
     }
     launchStoreWebPdp(e) {
-        const url = `https://apps.microsoft.com/store/detail/${this.productId}?${this.cid}`;
+        const url = `https://apps.microsoft.com/store/detail/${this.productId}?cid=${this.cid}`;
         if (e.ctrlKey) {
             window.open(url, "_blank");
         }
