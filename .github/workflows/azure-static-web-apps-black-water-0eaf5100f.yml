@@ -30,6 +30,7 @@ jobs:
           cd src
           tsc -t es2015 ms-store-badge.ts
           npm install -g concurrently
+          npm install rollup
           npm run build:prod
           
   build_and_deploy_job:
