@@ -27,6 +27,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
+          cd src
+      - run: |
           tsc ms-badge-store.ts
           
   build_and_deploy_job:
