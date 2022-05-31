@@ -26,7 +26,7 @@ class MSStoreBadge extends HTMLElement {
   /**
     * Indicates whether badge should be in dark mode, light mode, or auto mode.
     */
-  theme: "dark" | "light" | "auto" = "dark";
+  theme: "dark" | "light" | "auto" = "auto";
 
   /**
    * Sets the size of the badge. Should be "small" or "large"
@@ -135,6 +135,7 @@ class MSStoreBadge extends HTMLElement {
       img.large {
         max-height: 104px;
       }
+
     `;
 
     const element = document.createElement("style");
