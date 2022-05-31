@@ -95,12 +95,40 @@
             </div>
           </div>
           <div class="mb-3">
-            <label for="appIdInput" class="form-label">
-              App ID
-              <i class="bi bi-info-circle"
-                title="12 character ID of your app. You can find this in the URL of your Store product description page, or in your App Identity page in Partner Center"></i>
-            </label>
+            <span>
+              <label for="appIdInput" class="form-label">
+                App ID
+                <i class="bi bi-info-circle"
+                  title="12 character ID of your app. You can find this in the URL of your Store product description page, or in your App Identity page in Partner Center"></i>
+              </label>
+              <!----Potential Form Validation
+              <label class="form-label" style="color: red">
+                Ensure app ID is 12 characters.
+              </label>
+              -->
+            </span>
             <input type="text" class="form-control" id="appIdInput" value="9wzdncrfhvjl" placeholder="9wzdncrfhvjl">
+          </div>
+          <div class="mb-3">
+            <span>
+              <label for="campaignIdInput" class="form-label">
+                Campaign ID (Optional)
+                <i class="bi bi-info-circle"
+                  title="6 character code for your campaign. You can find this in the URL of your Store product description page, or in your App Identity page in Partner Center"></i>
+              </label>
+              <!----
+              <label class="form-label" id="yesno"></label>
+              <script>
+                const appId = document.querySelector("#appIdInput").value;
+                var text = appId.length < 12 ? "Yes" : "No";
+                document.getElementById("yesno").innerHTML = text;
+              </script>
+              <label class="form-label" style="color: red">
+                Ensure campaign code is 6 characters.
+              </label>
+              -->
+            </span>
+            <input type="text" class="form-control" id="campaignIdInput" value="" placeholder="">
           </div>
           <div class="mb-3" style="position: relative;">
             <label for="codeInput" class="form-label">
@@ -153,6 +181,7 @@
       const language = document.querySelector("#languageSelector").value;
       const isLargeSize = document.querySelector("#largeSizeBtn").checked;
       const appId = document.querySelector("#appIdInput").value;
+      const campaignId = document.querySelector("#campaignIdInput").value;
 
       // We must have an app ID
       if (!appId || appId.length < 12) {
@@ -161,6 +190,9 @@
 
       const badgeElement = document.createElement("ms-store-badge");
       badgeElement.setAttribute("productId", appId);
+      badgeElement.setAttribute("cid", campaignId);
+      badgeElement.setAttribute("windowMode", "popup");
+      badgeElement.setAttribute("theme", "dark");
       badgeElement.setAttribute("id", "badgeSample");
       badgeElement.setAttribute("size", isLargeSize ? "large" : "small");
       if (language) {
@@ -188,7 +220,8 @@
         "#languageSelector",
         "#smallSizeBtn",
         "#largeSizeBtn",
-        "#appIdInput"
+        "#appIdInput",
+        "#campaignIdInput"
       ];
       inputs.forEach(i => document.querySelector(i).addEventListener("change", () => queueUpdate()));
       document.querySelector("#copyBtn").addEventListener("click", () => copyCode());
