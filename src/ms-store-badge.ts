@@ -316,7 +316,6 @@ class MSStoreBadge extends HTMLElement {
       "," + Math.floor(window.outerWidth * window.devicePixelRatio) +
       "," + Math.floor(window.outerHeight * window.devicePixelRatio);
     location.href = appLaunchUrl;
-    console.log(appLaunchUrl);
   }
 
   launchStoreAppPdpViaWhitelistedDomain() {
