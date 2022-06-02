@@ -311,6 +311,8 @@ class MSStoreBadge extends HTMLElement {
     const appLaunchUrl = "ms-windows-store://pdp/" +
       "?productid=" + this.productId +
       "&cid=" + this.cid +
+      "&referrer=" + "appbadge" +
+      "&source=" + encodeURIComponent(window.location.host) +
       (this.windowMode === "popup" ? "&mode=mini&pos=" : "&pos=") + Math.floor(window.screenLeft * window.devicePixelRatio) +
       "," + Math.floor(window.screenTop * window.devicePixelRatio) +
       "," + Math.floor(window.outerWidth * window.devicePixelRatio) +
@@ -335,7 +337,7 @@ class MSStoreBadge extends HTMLElement {
   }
 
   launchStoreWebPdp(e: MouseEvent) {
-    const url = `https://apps.microsoft.com/store/detail/${this.productId}?cid=${this.cid}`;
+    const url = `https://apps.microsoft.com/store/detail/${this.productId}?cid=${this.cid}&referrer=appbadge&source=${encodeURIComponent(window.location.host)}`;
     if (e.ctrlKey) {
       window.open(url, "_blank");
     } else {
