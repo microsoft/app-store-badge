@@ -37,24 +37,12 @@ jobs:
     deploy_misc:
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v2
-        - uses: azure/login@v1
-          with:
-              creds: ${{ secrets.AZURE_CREDENTIALS }}
-
         - name: Upload to Blob Storage
-          uses: Azure/CLI@v1
+          uses: LanceMcCarthy/Action-AzureBlobUpload@vX.X.X
           with:
-            inlineScript: |
-                az storage blob upload --account-name badgedelivery --account-key ${{ secrets.AZURE_BLOB_STORAGE_ACCESS_KEY }} --container-name '$web' --file /dist/ms-store-badge.bundled.js --name 'ms-store-badge.bundled.js'
-        - name: Purge CDN
-          uses: Azure/CLI@v1
-          with:
-            inlineScript: |
-                az cdn endpoint purge --content-paths "/*" --profile-name "getbadgecdn" --name "getbadgecdn.azureedge.net" --resource-group "rg-store-app-badge"
-
-
-
+            connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
+            container_name: $web
+            source_folder: /dist/ms-store-badge.bundled.js
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
