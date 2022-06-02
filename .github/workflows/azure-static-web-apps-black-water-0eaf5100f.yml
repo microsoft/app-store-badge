@@ -40,10 +40,10 @@ jobs:
       - name: Upload to Blob Storage
         uses: LanceMcCarthy/Action-AzureBlobUpload@v1.11.0
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
           container_name: $web
           source_folder: dist\ms-store-badge.bundled.js
+          is_recursive: false
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
