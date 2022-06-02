@@ -34,15 +34,15 @@ jobs:
           api_location: "" # Api source code path - optional
           output_location: "/dist" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
-    deploy_misc:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Upload to Blob Storage
-          uses: LanceMcCarthy/Action-AzureBlobUpload@vX.X.X
-          with:
-            connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
-            container_name: $web
-            source_folder: /dist/ms-store-badge.bundled.js
+  deploy_misc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload to Blob Storage
+        uses: LanceMcCarthy/Action-AzureBlobUpload@vX.X.X
+        with:
+          connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
+          container_name: $web
+          source_folder: /dist/ms-store-badge.bundled.js
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
