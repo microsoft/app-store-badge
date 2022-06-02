@@ -46,7 +46,7 @@ jobs:
           uses: Azure/CLI@v1
           with:
             inlineScript: |
-                az storage blob upload --account-name badgedelivery --account-key 2ngmcw/u/QDpUUTcMc71xuoCJ8MhCmq4OmV2+LL9MiAfwi+EMp1r9EPcDWALk8+J4U9CeGgTMvQnwSzvpesjfA== --container-name '$web' --file /dist/ms-store-badge.bundled.js --name 'ms-store-badge.bundled.js'
+                az storage blob upload --account-name badgedelivery --account-key ${{ secrets.AZURE_BLOB_STORAGE_ACCESS_KEY }} --container-name '$web' --file /dist/ms-store-badge.bundled.js --name 'ms-store-badge.bundled.js'
         - name: Purge CDN
           uses: Azure/CLI@v1
           with:
