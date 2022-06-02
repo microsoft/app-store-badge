@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "dist/**"
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
@@ -42,8 +44,7 @@ jobs:
         with:
           connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
           container_name: $web
-          source_folder: dist\
-          is_recursive: true
+          source_folder: dist\ms-store-badge.bundled.js
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
