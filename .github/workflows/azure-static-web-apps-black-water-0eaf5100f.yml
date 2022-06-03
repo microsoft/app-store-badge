@@ -36,9 +36,10 @@ jobs:
           ###### End of Repository/Build Configurations ######
   deploy_misc:
     runs-on: ubuntu-latest
+    name: Upload to Blob Storage
     steps:
-      - name: Upload to Blob Storage
-        uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
+      - uses: actions/checkout@v2
+      - uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
         with:
           connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
           container_name: $web
