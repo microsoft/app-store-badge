@@ -14,6 +14,18 @@ declare class MSStoreBadge extends HTMLElement {
      */
     productId: string;
     /**
+     * The optional campaign ID of your app.
+     */
+    cid: string;
+    /**
+      * Indicates whether popup or full mode should be launched.
+      */
+    windowMode: "popup" | "full";
+    /**
+      * Indicates whether badge should be in dark mode, light mode, or auto mode.
+      */
+    theme: "dark" | "light" | "auto";
+    /**
      * Sets the size of the badge. Should be "small" or "large"
      */
     size: "small" | "large";
@@ -47,6 +59,8 @@ interface SupportedLanguage {
     name: string;
     imageSmall: SupportedLanguageImage;
     imageLarge: SupportedLanguageImage;
+    imageSmallLight: SupportedLanguageImage;
+    imageLargeLight: SupportedLanguageImage;
     code: string;
 }
 interface SupportedLanguageImage {
