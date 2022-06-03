@@ -39,11 +39,10 @@ jobs:
     steps:
       - name: Upload to Blob Storage
         uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
-        uses: actions/checkout@v2
         with:
           connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
           container_name: $web
-          source_folder: dist
+          source_folder: dist/ms-store-badge.bundled.js
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
