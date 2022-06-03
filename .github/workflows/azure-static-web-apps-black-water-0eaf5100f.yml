@@ -3,14 +3,13 @@ name: Azure Static Web Apps CI/CD
 on:
   push:
     branches:
-      - main
+    - main
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - main
+    - main
 
 jobs:     
-  if: github.ref == 'refs/heads/main'
   build_and_deploy_job:
     if: (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed'))
     runs-on: ubuntu-latest
