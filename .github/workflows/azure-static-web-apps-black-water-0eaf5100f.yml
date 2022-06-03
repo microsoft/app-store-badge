@@ -34,20 +34,16 @@ jobs:
           api_location: "" # Api source code path - optional
           output_location: "/dist" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
-  show_directory:
-    runs-on: ubuntu-latest
-    steps:
-      -run: |
-        echo "$GITHUB_WORKSPACE/BB/bin" >> $GITHUB_PATH
   deploy_misc:
     runs-on: ubuntu-latest
     steps:
       - name: Upload to Blob Storage
         uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
+        uses: actions/checkout@v2
         with:
           connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
           container_name: $web
-          source_folder: /home/runner/
+          source_folder: dist
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
