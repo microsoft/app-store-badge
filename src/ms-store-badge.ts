@@ -44,7 +44,7 @@ class MSStoreBadge extends HTMLElement {
   #imagesLocation = this.#env === "dev" ? "/images" : "https://getbadgecdn.azureedge.net/images";
   #platformDetails: PlatformDetails = { isWindows: false, windowsVersion: null, isEdgeBrowser: false };
 
-  static englishLanguage: SupportedLanguage = { name: "English", code: "en", imageSmall: { fileName: "English_S.png", }, imageSmallLight: { fileName: "English_L.png"}, imageLarge: { fileName: "English_L.png" }, imageLargeLight: {fileName: "English_L.png"} };
+  static englishLanguage: SupportedLanguage = { name: "English", code: "en", imageSmall: { fileName: "English_S.png", }, imageSmallLight: { fileName: "English_L.png"}, imageLarge: { fileName: "English_L.png" }, imageLargeLight: {fileName: "English_LL.svg"} };
   static supportedLanguages = MSStoreBadge.createSupportedLanguages();
 
   constructor() {
@@ -346,52 +346,65 @@ class MSStoreBadge extends HTMLElement {
   }
 
   static createSupportedLanguages(): SupportedLanguage[] {
-    return [
-      { name: "Arabic", code: "ar", imageSmall: { fileName: "Arabic_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Arabic_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Bosnian", code: "be", imageSmall: { fileName: "Bosnian_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Bosnian_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Bengali", code: "bn", imageSmall: { fileName: "Bengali_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Bengali_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Bosnian", code: "bs", imageSmall: { fileName: "Bosnian_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Bosnian_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Bulgarian", code: "bg", imageSmall: { fileName: "Bulgarian_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Bulgarian_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Chinese (Simplified)", code: "zh-cn", imageSmall: { fileName: "Chinese_Simplified_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Chinese_Simplified_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Chinese (Traditional)", code: "zh-tw", imageSmall: { fileName: "Chinese_Traditional_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Chinese_Traditional_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Croatian", code: "hr", imageSmall: { fileName: "Croatian_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Croatian_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Czech", code: "cs", imageSmall: { fileName: "Czech_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Czech_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Danish", code: "da", imageSmall: { fileName: "Danish_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Danish_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Dutch", code: "nl", imageSmall: { fileName: "Dutch_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Dutch_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      MSStoreBadge.englishLanguage,
-      { name: "Estonian", code: "et", imageSmall: { fileName: "Estonian_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Estonian_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Filipino", code: "fil", imageSmall: { fileName: "Filipino_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Filipino_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Finnish", code: "fi", imageSmall: { fileName: "Finnish_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Finnish_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "French", code: "fr", imageSmall: { fileName: "French_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "French_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "German", code: "de", imageSmall: { fileName: "German_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "German_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Greek", code: "el", imageSmall: { fileName: "Greek_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Greek_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Hebrew", code: "he", imageSmall: { fileName: "Hebrew_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Hebrew_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Hindi", code: "hi", imageSmall: { fileName: "Hindi_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Hindi_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Hungarian", code: "hu", imageSmall: { fileName: "Hungarian_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Hungarian_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Indonesian", code: "id", imageSmall: { fileName: "Indonesian_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Indonesian_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Italian", code: "it", imageSmall: { fileName: "Italian_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Italian_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Japanese", code: "ja", imageSmall: { fileName: "Japanese_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Japanese_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Korean", code: "ko", imageSmall: { fileName: "Korean_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Korean_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Latvian", code: "lv", imageSmall: { fileName: "Latvian_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Latvian_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Lithuanian", code: "lt", imageSmall: { fileName: "Lithuanian_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Lithuanian_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Malay", code: "ms", imageSmall: { fileName: "Malay_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Malay_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Norwegian", code: "no", imageSmall: { fileName: "Norwegian_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Norwegian_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Polish", code: "pl", imageSmall: { fileName: "Polish_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Polish_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Portuguese (Brazil)", code: "pt-br", imageSmall: { fileName: "Portuguese_Brazil_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Portuguese_Brazil_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Portuguese (Portugal)", code: "pt", imageSmall: { fileName: "Portuguese_Portugal_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Portuguese_Portugal_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Romanian", code: "ro", imageSmall: { fileName: "Romanian_S.png", }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Romanian_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Russian", code: "ru", imageSmall: { fileName: "Russian_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Russian_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Serbian", code: "sr", imageSmall: { fileName: "Serbian_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Serbian_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Slovak", code: "sk", imageSmall: { fileName: "Slovak_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Slovak_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Slovenian", code: "sl", imageSmall: { fileName: "Slovenian_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Slovenian_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Spanish", code: "es", imageSmall: { fileName: "Spanish_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Spanish_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Swahili", code: "sw", imageSmall: { fileName: "Swahili_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Swahili_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Swedish", code: "sv", imageSmall: { fileName: "Swedish_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Swedish_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Thai", code: "th", imageSmall: { fileName: "Thai_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Thai_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Turkish", code: "tr", imageSmall: { fileName: "Turkish_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Turkish_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Ukranian", code: "uk", imageSmall: { fileName: "Ukranian_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Ukranian_L.png" }, imageLargeLight: { fileName: "English_L.png"} },
-      { name: "Vietnamese", code: "vi", imageSmall: { fileName: "Vietnamese_S.png" }, imageSmallLight: {fileName: "English_L.png"}, imageLarge: { fileName: "Vietnamese_L.png" }, imageLargeLight: { fileName: "English_L.png"} }
-    ];
+    let languageMap = new Map<string, string>();
+    languageMap.set("Arabic", "ar");
+    languageMap.set("Belarusian", "be");
+    languageMap.set("Bengali", "bn");
+    languageMap.set("Bosnian", "bs");
+    languageMap.set("Bulgarian", "bg");
+    languageMap.set("Chinese_Simplified", "zh-cn");
+    languageMap.set("Chinese_Traditional", "zh-tw");
+    languageMap.set("Croatian", "hr");
+    languageMap.set("Czech", "cs");
+    languageMap.set("Danish", "da");
+    languageMap.set("Dutch", "nl");
+    languageMap.set("English", "en");
+    languageMap.set("Estonian", "et");
+    languageMap.set("Filipino", "fil");
+    languageMap.set("Finnish", "fi");
+    languageMap.set("French", "fr");
+    languageMap.set("German", "el");
+    languageMap.set("Greek", "be");
+    languageMap.set("Hebrew", "he");
+    languageMap.set("Hindi", "hi");
+    languageMap.set("Hungarian", "hu");
+    languageMap.set("Indonesian", "id");
+    languageMap.set("Italian", "it");
+    languageMap.set("Japanese", "ja");
+    languageMap.set("Korean", "ko");
+    languageMap.set("Latvian", "lv");
+    languageMap.set("Lithuanian", "lt");
+    languageMap.set("Malay", "ms");
+    languageMap.set("Norwegian", "no");
+    languageMap.set("Polish", "pl");
+    languageMap.set("Portuguese_Brazil", "pt-br");
+    languageMap.set("Portuguese_Portugal", "pt");
+    languageMap.set("Romanian", "ro");
+    languageMap.set("Russian", "ru");
+    languageMap.set("Serbian", "sr");
+    languageMap.set("Slovak", "sk");
+    languageMap.set("Slovenian", "sl");
+    languageMap.set("Spanish", "es");
+    languageMap.set("Swahili", "sw");
+    languageMap.set("Thai", "th");
+    languageMap.set("Turkish", "tr");
+    languageMap.set("Ukranian", "uk");
+    languageMap.set("Vietnamese", "vi");
+    
+    let language: SupportedLanguage[] = [];
+
+    for(let name of languageMap.keys()) {
+      let currLanguage: SupportedLanguage =  {
+        name: name, 
+        imageSmall: {fileName: name.concat("_S.png")},
+        imageLarge: {fileName: name.concat("_L.png")},
+        imageSmallLight: {fileName: name.concat("_SL.png")},
+        imageLargeLight: {fileName: name.concat("_LL.svg")},
+        code: languageMap.get(name) || ""
+      }
+      language.push(currLanguage);
+    }
+    return language;
   }
 }
 
