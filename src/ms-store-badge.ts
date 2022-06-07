@@ -320,7 +320,7 @@
   launchStoreAppPdp() {
     const appLaunchUrl = "ms-windows-store://pdp/" +
       "?productid=" + this.productId +
-      ((this.cid === "" || this.cid === null || this.cid === undefined) ? "" : "&cid=" + encodeURIComponent(this.cid)) +
+      ((!this.cid) ? "" : "&cid=" + encodeURIComponent(this.cid)) +
       "&referrer=" + "appbadge" +
       "&source=" + encodeURIComponent(window.location.host) +
       (this.windowMode === "popup" ? "&mode=mini&pos=" : "&pos=") + Math.floor(window.screenLeft * window.devicePixelRatio) +
@@ -348,7 +348,7 @@
 
   launchStoreWebPdp(e: MouseEvent) {
     var url = "";
-    if(this.cid === "" || this.cid === null || this.cid === undefined) {
+    if(!this.cid) {
       url = `https://apps.microsoft.com/store/detail/${this.productId}?referrer=appbadge&source=${encodeURIComponent(window.location.host)}`;
     }
     else {
