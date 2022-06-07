@@ -31,7 +31,9 @@ Example using all the available options:
 <ms-store-badge productid="9wzdncrfhvjl" size="small" language="he"></ms-store-badge>
 ```
 
-To style the button, you can use the CSS part:
+## Styling the badge
+
+To style the app badge web component, use [CSS parts](https://developer.mozilla.org/en-US/docs/Web/CSS/::part) to style the badge image. Specifically the app badge web component exposes the badge image as `img` part:
 
 ```css
 /* Customize the badge's appearance */

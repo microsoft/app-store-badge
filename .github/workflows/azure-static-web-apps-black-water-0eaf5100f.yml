@@ -4,14 +4,10 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - main
 
 jobs:     
   build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed'))
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
@@ -34,30 +30,21 @@ jobs:
           api_location: "" # Api source code path - optional
           output_location: "/dist" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
-    deploy_misc:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        - uses: azure/login@v1
-          with:
-              creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-        - name: Upload to Blob Storage
-          uses: Azure/CLI@v1
-          with:
-            inlineScript: |
-                az storage blob upload --account-name badgedelivery --account-key ${{ secrets.AZURE_BLOB_STORAGE_ACCESS_KEY }} --container-name '$web' --file /dist/ms-store-badge.bundled.js --name 'ms-store-badge.bundled.js'
-        - name: Purge CDN
-          uses: Azure/CLI@v1
-          with:
-            inlineScript: |
-                az cdn endpoint purge --content-paths "/*" --profile-name "getbadgecdn" --name "getbadgecdn.azureedge.net" --resource-group "rg-store-app-badge"
-
-
-
+          
+  deploy_misc:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    name: Upload to Blob Storage
+    steps:
+      - uses: actions/checkout@v2
+      - uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
+        with:
+          connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
+          container_name: $web
+          source_folder: /home/runner/work/app-store-badge/app-store-badge/dist/ms-store-badge.bundled.js
 
   close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'pull_request' && github.event.action == 'closed')
     runs-on: ubuntu-latest
     name: Close Pull Request Job
     steps:
