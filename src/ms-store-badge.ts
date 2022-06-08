@@ -127,7 +127,7 @@
         width: auto;
         border-radius: 8px;
       }
-      
+ 
       img.small {
         max-height: 52px;
       }
@@ -275,13 +275,13 @@
       const isDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
         if(isDark) { //If detected dark mode
           fileName = this.size === "large" ?
-          this.#languageDetails.imageLarge.fileName :
-          this.#languageDetails.imageSmall.fileName;
+          this.#languageDetails.imageLargeLight.fileName :
+          this.#languageDetails.imageSmallLight.fileName;
         }
         else { //If detected light mode
           fileName = this.size === "large" ?
-          this.#languageDetails.imageLargeLight.fileName :
-          this.#languageDetails.imageSmallLight.fileName;
+          this.#languageDetails.imageLarge.fileName :
+          this.#languageDetails.imageSmall.fileName;
         }   
     }
     return `${this.#imagesLocation}/${fileName}`;
