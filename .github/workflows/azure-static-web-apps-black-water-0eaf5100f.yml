@@ -34,6 +34,7 @@ jobs:
   deploy_misc:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    needs: build_and_deploy_job
     name: Upload to Blob Storage
     steps:
       - uses: actions/checkout@v2
