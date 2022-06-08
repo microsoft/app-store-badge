@@ -27,7 +27,7 @@ export default {
     }),
     copy({
       targets: [
-        { src: 'images', dest: 'dist' },
+        { src: 'src/images', dest: 'dist' },
         { src: 'src/staticwebapp.config.json', dest: 'dist' },
         { src: 'src/iframe.html', dest: 'dist' },
         { src: 'src/index.html', dest: 'dist' },
