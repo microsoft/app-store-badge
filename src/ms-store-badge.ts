@@ -126,16 +126,7 @@
       img {
         width: auto;
         border-radius: 8px;
-        box-shadow: none;
-        transition: 0.35s ease;
       }
-            
-      XXXXimg:hover {
-        XXXXtransform: translate(0, -4px);
-        XXXXcursor: pointer;
-        XXXXbox-shadow: 0 12px 40px 2px rgba(0, 0, 0, 0.05);
-        XXXXtransition: 0.35s ease;
-      XXXX}
       
       img.small {
         max-height: 52px;
