@@ -31,11 +31,11 @@ jobs:
           output_location: "/dist" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
           
-  deploy_misc:
+  deploy_bundle:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: build_and_deploy_job
-    name: Upload to Blob Storage
+    name: Upload Bundle to Blob Storage
     steps:
       - uses: actions/checkout@v2
       - uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
@@ -43,6 +43,21 @@ jobs:
           connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
           container_name: $web
           source_folder: /home/runner/work/app-store-badge/app-store-badge/dist/ms-store-badge.bundled.js
+
+  deploy_images:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: build_and_deploy_job
+    name: Upload Images to Blob Storage
+    steps:
+      - uses: actions/checkout@v2
+      - uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
+        with:
+          connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
+          container_name: $web
+          source_folder: /home/runner/work/app-store-badge/app-store-badge/src/images
+          destination_folder: /images
+
 
   close_pull_request_job:
     if: github.ref == 'refs/heads/main' && (github.event_name == 'pull_request' && github.event.action == 'closed')
