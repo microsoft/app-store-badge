@@ -127,7 +127,7 @@
         width: auto;
         border-radius: 8px;
       }
- 
+      
       img.small {
         max-height: 52px;
       }
