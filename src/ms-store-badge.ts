@@ -414,8 +414,8 @@
         name: name, 
         imageSmall: {fileName: name.concat("_S.png")},
         imageLarge: {fileName: name.concat("_L.png")},
-        imageSmallLight: {fileName: name.concat("_SL.png")},
-        imageLargeLight: {fileName: name.concat("_LL.svg")},
+        imageSmallLight: {fileName: name.concat("_S.png")},
+        imageLargeLight: {fileName: "English_LL.svg"},
         code: languageMap.get(name) || ""
       }
       language.push(currLanguage);
