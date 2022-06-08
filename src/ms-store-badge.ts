@@ -130,12 +130,12 @@
         transition: 0.35s ease;
       }
             
-      img:hover {
-        transform: translate(0, -4px);
-        cursor: pointer;
-        box-shadow: 0 12px 40px 2px rgba(0, 0, 0, 0.05);
-        transition: 0.35s ease;
-      }
+      XXXXimg:hover {
+        XXXXtransform: translate(0, -4px);
+        XXXXcursor: pointer;
+        XXXXbox-shadow: 0 12px 40px 2px rgba(0, 0, 0, 0.05);
+        XXXXtransition: 0.35s ease;
+      XXXX}
       
       img.small {
         max-height: 52px;
