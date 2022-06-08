@@ -126,6 +126,15 @@
       img {
         width: auto;
         border-radius: 8px;
+        box-shadow: none;
+        transition: 0.35s ease;
+      }
+            
+      img:hover {
+        transform: translate(0, -4px);
+        cursor: pointer;
+        box-shadow: 0 12px 40px 2px rgba(0, 0, 0, 0.05);
+        transition: 0.35s ease;
       }
       
       img.small {
@@ -275,13 +284,13 @@
       const isDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
         if(isDark) { //If detected dark mode
           fileName = this.size === "large" ?
-          this.#languageDetails.imageLarge.fileName :
-          this.#languageDetails.imageSmall.fileName;
+          this.#languageDetails.imageLargeLight.fileName :
+          this.#languageDetails.imageSmallLight.fileName;
         }
         else { //If detected light mode
           fileName = this.size === "large" ?
-          this.#languageDetails.imageLargeLight.fileName :
-          this.#languageDetails.imageSmallLight.fileName;
+          this.#languageDetails.imageLarge.fileName :
+          this.#languageDetails.imageSmall.fileName;
         }   
     }
     return `${this.#imagesLocation}/${fileName}`;
@@ -319,6 +328,7 @@
       "," + Math.floor(window.outerWidth * window.devicePixelRatio) +
       "," + Math.floor(window.outerHeight * window.devicePixelRatio);
     location.href = appLaunchUrl;
+    console.log(appLaunchUrl);
   }
 
   launchStoreAppPdpViaWhitelistedDomain() {
