@@ -26,7 +26,7 @@
   /**
     * Indicates whether badge should be in dark mode, light mode, or auto mode.
     */
-  theme: "dark" | "light" | "auto" = "auto";
+  theme: "dark" | "light" | "auto" = "dark";
 
   /**
    * Sets the size of the badge. Should be "small" or "large"
