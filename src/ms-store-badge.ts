@@ -38,6 +38,11 @@
    */
   language: string | null = "";
 
+  /**
+   * Indicates whether badge transition should be applied or not.
+   */
+  transition: "on" | "off" = "off";
+
   #languageDetails: SupportedLanguage = MSStoreBadge.englishLanguage;
   #env: "dev" | "prod" = (window as any).__rollup_injected_env || "dev";
   #iframeLocation = this.#env === "dev" ? "iframe.html" : "https://get.microsoft.com/iframe.html";
@@ -83,7 +88,8 @@
       "windowmode",
       "theme",
       "size",
-      "language"
+      "language",
+      "transition",
     ];
   }
 
@@ -106,11 +112,16 @@
     } else if (name === "theme" && (newValue == "dark" || newValue === "light" || newValue === "auto") && oldValue !== newValue) {
       this.theme = newValue;
       this.updateImageSrc();
+    } else if (name === "transition" && (newValue === "on" || newValue === "off") && oldValue !== newValue) {
+      this.transition = newValue;
+      this.shadowRoot?.appendChild(this.createStyle());
     }
   }
 
   createStyle(): HTMLStyleElement {
-    const styleString = `
+    var styleString = '';
+    if(this.transition === "on") {
+      styleString = `
       :host {
         display: inline-block;
         cursor: pointer;
@@ -141,11 +152,35 @@
 
       img.large {
         max-height: 104px;
+      }`
+    }
+    else {
+      styleString = `
+      :host {
+        display: inline-block;
+        cursor: pointer;
+        height: fit-content;
       }
-      
 
-    `;
+      iframe {
+        border: none;
+        width: 0px;
+        height: 0px;
+      }
 
+      img {
+        width: auto;
+        border-radius: 8px;
+      }
+
+      img.small {
+        max-height: 52px;
+      }
+
+      img.large {
+        max-height: 104px;
+      }`
+    }
     const element = document.createElement("style");
     element.textContent = styleString;
     return element;
@@ -320,12 +355,13 @@
       "?productid=" + this.productId +
       ((!this.cid) ? "" : "&cid=" + encodeURIComponent(this.cid)) +
       "&referrer=" + "appbadge" +
-      "&source=" + encodeURIComponent(window.location.host) +
+      "&source=" + encodeURIComponent(window.location.hostname.toLowerCase()) +
       (this.windowMode === "popup" ? "&mode=mini&pos=" : "&pos=") + Math.floor(window.screenLeft * window.devicePixelRatio) +
       "," + Math.floor(window.screenTop * window.devicePixelRatio) +
       "," + Math.floor(window.outerWidth * window.devicePixelRatio) +
       "," + Math.floor(window.outerHeight * window.devicePixelRatio);
     location.href = appLaunchUrl;
+    console.log(appLaunchUrl);
   }
 
   launchStoreAppPdpViaWhitelistedDomain() {
@@ -347,10 +383,10 @@
   launchStoreWebPdp(e: MouseEvent) {
     var url = "";
     if(!this.cid) {
-      url = `https://apps.microsoft.com/store/detail/${this.productId}?referrer=appbadge&source=${encodeURIComponent(window.location.host)}`;
+      url = `https://apps.microsoft.com/store/detail/${this.productId}?referrer=appbadge&source=${encodeURIComponent(window.location.hostname.toLowerCase())}`;
     }
     else {
-      url = `https://apps.microsoft.com/store/detail/${this.productId}?cid=${encodeURIComponent(this.cid)}&referrer=appbadge&source=${encodeURIComponent(window.location.host)}`;
+      url = `https://apps.microsoft.com/store/detail/${this.productId}?cid=${encodeURIComponent(this.cid)}&referrer=appbadge&source=${encodeURIComponent(window.location.hostname.toLowerCase())}`;
     }
     if (e.ctrlKey) {
       window.open(url, "_blank");

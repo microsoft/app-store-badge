@@ -33,6 +33,10 @@ declare class MSStoreBadge extends HTMLElement {
      * Sets the language. If null or omitted, the language will be auto-detected from the user's browser language.
      */
     language: string | null;
+    /**
+     * Indicates whether badge transition should be applied or not.
+     */
+    transition: "on" | "off";
     static englishLanguage: SupportedLanguage;
     static supportedLanguages: SupportedLanguage[];
     constructor();
