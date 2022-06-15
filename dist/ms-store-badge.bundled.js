@@ -31,7 +31,7 @@ class o extends HTMLElement {
       (this.theme = "dark"),
       (this.size = "large"),
       (this.language = ""),
-      (this.transition = "off"),
+      (this.animation = "off"),
       e.set(this, o.englishLanguage),
       i.set(this, "prod"),
       t.set(
@@ -74,7 +74,7 @@ class o extends HTMLElement {
       "theme",
       "size",
       "language",
-      "transition",
+      "animation",
     ];
   }
   attributeChangedCallback(i, t, n) {
@@ -89,10 +89,10 @@ class o extends HTMLElement {
           ? "theme" !== i ||
             ("dark" != n && "light" !== n && "auto" !== n) ||
             t === n
-            ? "transition" !== i ||
+            ? "animation" !== i ||
               ("on" !== n && "off" !== n) ||
               t === n ||
-              ((this.transition = n),
+              ((this.animation = n),
               null === (a = this.shadowRoot) ||
                 void 0 === a ||
                 a.appendChild(this.createStyle()))
@@ -106,7 +106,7 @@ class o extends HTMLElement {
   createStyle() {
     var e = "";
     e =
-      "on" === this.transition
+      "on" === this.animation
         ? "\n      :host {\n        display: inline-block;\n        cursor: pointer;\n        height: fit-content;\n      }\n\n      iframe {\n        border: none;\n        width: 0px;\n        height: 0px;\n      }\n\n      img {\n        width: auto;\n        border-radius: 8px;\n      }\n\n      img:hover {\n      transform: translate(0, -4px);\n        cursor: pointer;\n        box-shadow: 0 12px 40px 2px rgba(0, 0, 0, 0.05);\n        transition: 0.35s ease;\n      }\n      \n      img.small {\n        max-height: 52px;\n      }\n\n      img.large {\n        max-height: 104px;\n      }"
         : "\n      :host {\n        display: inline-block;\n        cursor: pointer;\n        height: fit-content;\n      }\n\n      iframe {\n        border: none;\n        width: 0px;\n        height: 0px;\n      }\n\n      img {\n        width: auto;\n        border-radius: 8px;\n      }\n\n      img.small {\n        max-height: 52px;\n      }\n\n      img.large {\n        max-height: 104px;\n      }";
     const i = document.createElement("style");
@@ -234,7 +234,7 @@ class o extends HTMLElement {
       this.productId +
       (this.cid ? "&cid=" + encodeURIComponent(this.cid) : "") +
       "&referrer=appbadge&source=" +
-      encodeURIComponent(window.location.host) +
+      encodeURIComponent(window.location.hostname.toLowerCase()) +
       ("popup" === this.windowMode ? "&mode=mini&pos=" : "&pos=") +
       Math.floor(window.screenLeft * window.devicePixelRatio) +
       "," +
@@ -266,11 +266,13 @@ class o extends HTMLElement {
           this.productId
         }?cid=${encodeURIComponent(
           this.cid
-        )}&referrer=appbadge&source=${encodeURIComponent(window.location.host)}`
+        )}&referrer=appbadge&source=${encodeURIComponent(
+          window.location.hostname.toLowerCase()
+        )}`
       : `https://apps.microsoft.com/store/detail/${
           this.productId
         }?referrer=appbadge&source=${encodeURIComponent(
-          window.location.host
+          window.location.hostname.toLowerCase()
         )}`),
       e.ctrlKey ? window.open(i, "_blank") : (window.location.href = i);
   }
