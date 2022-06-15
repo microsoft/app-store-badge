@@ -39,9 +39,9 @@
   language: string | null = "";
 
   /**
-   * Indicates whether badge transition should be applied or not.
+   * Indicates whether badge animation should be applied or not.
    */
-  transition: "on" | "off" = "off";
+  animation: "on" | "off" = "off";
 
   #languageDetails: SupportedLanguage = MSStoreBadge.englishLanguage;
   #env: "dev" | "prod" = (window as any).__rollup_injected_env || "dev";
@@ -89,7 +89,7 @@
       "theme",
       "size",
       "language",
-      "transition",
+      "animation",
     ];
   }
 
@@ -112,15 +112,15 @@
     } else if (name === "theme" && (newValue == "dark" || newValue === "light" || newValue === "auto") && oldValue !== newValue) {
       this.theme = newValue;
       this.updateImageSrc();
-    } else if (name === "transition" && (newValue === "on" || newValue === "off") && oldValue !== newValue) {
-      this.transition = newValue;
+    } else if (name === "animation" && (newValue === "on" || newValue === "off") && oldValue !== newValue) {
+      this.animation = newValue;
       this.shadowRoot?.appendChild(this.createStyle());
     }
   }
 
   createStyle(): HTMLStyleElement {
     var styleString = '';
-    if(this.transition === "on") {
+    if(this.animation === "on") {
       styleString = `
       :host {
         display: inline-block;
