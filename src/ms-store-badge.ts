@@ -355,12 +355,13 @@
       "?productid=" + this.productId +
       ((!this.cid) ? "" : "&cid=" + encodeURIComponent(this.cid)) +
       "&referrer=" + "appbadge" +
-      "&source=" + encodeURIComponent(window.location.host) +
+      "&source=" + encodeURIComponent(window.location.hostname.toLowerCase()) +
       (this.windowMode === "popup" ? "&mode=mini&pos=" : "&pos=") + Math.floor(window.screenLeft * window.devicePixelRatio) +
       "," + Math.floor(window.screenTop * window.devicePixelRatio) +
       "," + Math.floor(window.outerWidth * window.devicePixelRatio) +
       "," + Math.floor(window.outerHeight * window.devicePixelRatio);
     location.href = appLaunchUrl;
+    console.log(appLaunchUrl);
   }
 
   launchStoreAppPdpViaWhitelistedDomain() {
@@ -382,10 +383,10 @@
   launchStoreWebPdp(e: MouseEvent) {
     var url = "";
     if(!this.cid) {
-      url = `https://apps.microsoft.com/store/detail/${this.productId}?referrer=appbadge&source=${encodeURIComponent(window.location.host)}`;
+      url = `https://apps.microsoft.com/store/detail/${this.productId}?referrer=appbadge&source=${encodeURIComponent(window.location.hostname.toLowerCase())}`;
     }
     else {
-      url = `https://apps.microsoft.com/store/detail/${this.productId}?cid=${encodeURIComponent(this.cid)}&referrer=appbadge&source=${encodeURIComponent(window.location.host)}`;
+      url = `https://apps.microsoft.com/store/detail/${this.productId}?cid=${encodeURIComponent(this.cid)}&referrer=appbadge&source=${encodeURIComponent(window.location.hostname.toLowerCase())}`;
     }
     if (e.ctrlKey) {
       window.open(url, "_blank");
