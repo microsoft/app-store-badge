@@ -34,9 +34,9 @@ declare class MSStoreBadge extends HTMLElement {
      */
     language: string | null;
     /**
-     * Indicates whether badge transition should be applied or not.
+     * Indicates whether badge animation should be applied or not.
      */
-    transition: "on" | "off";
+    animation: "on" | "off";
     static englishLanguage: SupportedLanguage;
     static supportedLanguages: SupportedLanguage[];
     constructor();
