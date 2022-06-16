@@ -137,15 +137,30 @@
       img {
         width: auto;
         border-radius: 8px;
-      }
-
-      img:hover {
-      transform: translate(0, -4px);
-        cursor: pointer;
-        box-shadow: 0 12px 40px 2px rgba(0, 0, 0, 0.05);
         transition: 0.35s ease;
       }
       
+      img:hover {
+        transform: translate(0, -4px);
+        cursor: pointer;
+        box-shadow: 0 12px 40px 20px rgba(0, 0, 0, 0.05);
+      }
+
+      img:hover:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        box-shadow: 0 12px 40px 2px rgba(0, 0, 0, 0.05);
+        transition: 0.35s ease;
+      }
+
       img.small {
         max-height: 52px;
       }
