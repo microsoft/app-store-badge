@@ -26,10 +26,6 @@ declare class MSStoreBadge extends HTMLElement {
       */
     theme: "dark" | "light" | "auto";
     /**
-     * Sets the size of the badge. Should be "small" or "large"
-     */
-    size: "small" | "large";
-    /**
      * Sets the language. If null or omitted, the language will be auto-detected from the user's browser language.
      */
     language: string | null;
@@ -52,7 +48,6 @@ declare class MSStoreBadge extends HTMLElement {
     createIFrame(): HTMLIFrameElement;
     createImage(): HTMLImageElement;
     getImageSource(): string;
-    getImageClass(): string;
     launchApp(e: MouseEvent): void;
     launchStoreAppPdp(): void;
     launchStoreAppPdpViaWhitelistedDomain(): void;
@@ -61,9 +56,7 @@ declare class MSStoreBadge extends HTMLElement {
 }
 interface SupportedLanguage {
     name: string;
-    imageSmall: SupportedLanguageImage;
     imageLarge: SupportedLanguageImage;
-    imageSmallLight: SupportedLanguageImage;
     imageLargeLight: SupportedLanguageImage;
     code: string;
 }

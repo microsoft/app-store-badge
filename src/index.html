@@ -84,17 +84,6 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="sizeButtonGroup" class="form-label">Size</label>
-            <br />
-            <div id="sizeButtonGroup" class="btn-group" role="group" aria-label="Badge size button group">
-              <input type="radio" class="btn-check" name="btnradio" id="smallSizeBtn" autocomplete="off">
-              <label class="btn btn-outline-primary" for="smallSizeBtn">Small</label>
-
-              <input type="radio" class="btn-check" name="btnradio" id="largeSizeBtn" autocomplete="off" checked>
-              <label class="btn btn-outline-primary" for="largeSizeBtn">Large</label>
-            </div>
-          </div>
-          <div class="mb-3">
             <span>
               <label for="appIdInput" class="form-label">
                 App ID
@@ -179,7 +168,6 @@
 
     function addBadge() {
       const language = document.querySelector("#languageSelector").value;
-      const isLargeSize = document.querySelector("#largeSizeBtn").checked;
       const appId = document.querySelector("#appIdInput").value;
       const campaignId = document.querySelector("#campaignIdInput").value;
 
@@ -194,7 +182,6 @@
       badgeElement.setAttribute("windowMode", "popup");
       badgeElement.setAttribute("theme", "dark");
       badgeElement.setAttribute("id", "badgeSample");
-      badgeElement.setAttribute("size", isLargeSize ? "large" : "small");
       badgeElement.setAttribute("animation", "off");
       if (language) {
         badgeElement.setAttribute("language", language);
@@ -219,8 +206,6 @@
     function listenForUIChanges() {
       const inputs = [
         "#languageSelector",
-        "#smallSizeBtn",
-        "#largeSizeBtn",
         "#appIdInput",
         "#campaignIdInput"
       ];
