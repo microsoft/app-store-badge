@@ -18,6 +18,12 @@
    */
   cid: string = "";
 
+  
+  /**
+   * Sets the size of the badge. Should be "small" or "large"
+   */
+   size: "small" | "large" = "large";
+
   /**
     * Indicates whether popup or full mode should be launched. 
     */
@@ -27,11 +33,6 @@
     * Indicates whether badge should be in dark mode, light mode, or auto mode.
     */
   theme: "dark" | "light" | "auto" = "dark";
-
-  /**
-   * Sets the size of the badge. Should be "small" or "large"
-   */
-  size: "small" | "large" = "large";
 
   /**
    * Sets the language. If null or omitted, the language will be auto-detected from the user's browser language.
@@ -49,7 +50,7 @@
   #imagesLocation = this.#env === "dev" ? "/images" : "https://getbadgecdn.azureedge.net/images";
   #platformDetails: PlatformDetails = { isWindows: false, windowsVersion: null, isEdgeBrowser: false };
 
-  static englishLanguage: SupportedLanguage = { name: "English", code: "en", imageSmall: { fileName: "English_S.png", }, imageSmallLight: { fileName: "English_L.png"}, imageLarge: { fileName: "English_L.png" }, imageLargeLight: {fileName: "English_LL.svg"} };
+  static englishLanguage: SupportedLanguage = { name: "English", code: "en", imageSmall: { fileName: "English_S.png", }, imageLarge: { fileName: "English_L.png" }, imageLargeLight: {fileName: "English_LL.svg"} };
   static supportedLanguages = MSStoreBadge.createSupportedLanguages();
 
   constructor() {
@@ -95,7 +96,7 @@
 
   // Web component lifecycle callback: when an observed attribute changes.
   attributeChangedCallback(name: string, oldValue: any, newValue: any) {
-    if (name === "size" && (newValue === "large" || newValue === "small") && oldValue !== newValue) {
+      if (name === "size" && (newValue === "large" || newValue === "small") && oldValue !== newValue) {
       this.size = newValue;
       this.updateImageSrc();
     } else if (name === "language" && newValue !== oldValue && (typeof newValue === "string" || !newValue)) {
@@ -145,7 +146,7 @@
         cursor: pointer;
         box-shadow: 0 12px 40px 20px rgba(0, 0, 0, 0.05);
       }
-      
+
       img.small {
         max-height: 52px;
       }
@@ -153,6 +154,8 @@
       img.large {
         max-height: 104px;
       }`
+
+      
     }
     else {
       styleString = `
@@ -310,7 +313,7 @@
     else if(this.theme === "light") {
       fileName = this.size === "large" ?
       this.#languageDetails.imageLargeLight.fileName :
-      this.#languageDetails.imageSmallLight.fileName;
+      this.#languageDetails.imageSmall.fileName;
     }
     //Auto mode
     else if(this.theme === "auto") {
@@ -318,7 +321,7 @@
         if(isDark) { //If detected dark mode
           fileName = this.size === "large" ?
           this.#languageDetails.imageLargeLight.fileName :
-          this.#languageDetails.imageSmallLight.fileName;
+          this.#languageDetails.imageSmall.fileName;
         }
         else { //If detected light mode
           fileName = this.size === "large" ?
@@ -446,10 +449,9 @@
     for(let name of languageMap.keys()) {
       let currLanguage: SupportedLanguage =  {
         name: name, 
-        imageSmall: {fileName: name.concat("_S.png")},
         imageLarge: {fileName: name.concat("_L.png")},
-        imageSmallLight: {fileName: name.concat("_S.png")},
         imageLargeLight: {fileName: "English_LL.svg"},
+        imageSmall: {fileName: name.concat("_S.png")},
         code: languageMap.get(name) || ""
       }
       language.push(currLanguage);
@@ -460,10 +462,9 @@
 
 interface SupportedLanguage {
   name: string;
-  imageSmall: SupportedLanguageImage;
   imageLarge: SupportedLanguageImage;
-  imageSmallLight: SupportedLanguageImage;
   imageLargeLight: SupportedLanguageImage;
+  imageSmall: SupportedLanguageImage;
   code: string;
 }
 

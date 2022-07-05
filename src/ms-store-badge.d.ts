@@ -18,6 +18,10 @@ declare class MSStoreBadge extends HTMLElement {
      */
     cid: string;
     /**
+     * Sets the size of the badge. Should be "small" or "large"
+     */
+    size: "small" | "large";
+    /**
       * Indicates whether popup or full mode should be launched.
       */
     windowMode: "popup" | "full";
@@ -25,10 +29,6 @@ declare class MSStoreBadge extends HTMLElement {
       * Indicates whether badge should be in dark mode, light mode, or auto mode.
       */
     theme: "dark" | "light" | "auto";
-    /**
-     * Sets the size of the badge. Should be "small" or "large"
-     */
-    size: "small" | "large";
     /**
      * Sets the language. If null or omitted, the language will be auto-detected from the user's browser language.
      */
@@ -61,10 +61,9 @@ declare class MSStoreBadge extends HTMLElement {
 }
 interface SupportedLanguage {
     name: string;
-    imageSmall: SupportedLanguageImage;
     imageLarge: SupportedLanguageImage;
-    imageSmallLight: SupportedLanguageImage;
     imageLargeLight: SupportedLanguageImage;
+    imageSmall: SupportedLanguageImage;
     code: string;
 }
 interface SupportedLanguageImage {
