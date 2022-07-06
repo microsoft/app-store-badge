@@ -86,7 +86,7 @@
     return [
       "productid",
       "cid",
-      "windowmode",
+      "window-mode",
       "theme",
       "size",
       "language",
@@ -107,7 +107,7 @@
       this.productId = newValue;
     } else if (name === "cid" && newValue !== oldValue && typeof newValue === "string") {
       this.cid = newValue;
-    } else if (name === "windowmode" && (newValue === "popup" || newValue === "full") && oldValue !== newValue) {
+    } else if (name === "window-mode" && (newValue === "popup" || newValue === "full") && oldValue !== newValue) {
       this.windowMode = newValue;
       this.updateImageSrc();
     } else if (name === "theme" && (newValue == "dark" || newValue === "light" || newValue === "auto") && oldValue !== newValue) {
