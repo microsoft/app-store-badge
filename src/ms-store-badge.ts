@@ -50,7 +50,7 @@
   #imagesLocation = this.#env === "dev" ? "/images" : "https://getbadgecdn.azureedge.net/images";
   #platformDetails: PlatformDetails = { isWindows: false, windowsVersion: null, isEdgeBrowser: false };
 
-  static englishLanguage: SupportedLanguage = { name: "English", code: "en", imageSmall: { fileName: "English_S.png", }, imageLarge: { fileName: "English_L.png" }, imageLargeLight: {fileName: "English_LL.svg"} };
+  static englishLanguage: SupportedLanguage = { name: "English", code: "en-US", imageSmall: { fileName: "English_S.png", }, imageLarge: { fileName: "en-US dark.svg" }, imageLargeLight: {fileName: "en-US light.svg"} };
   static supportedLanguages = MSStoreBadge.createSupportedLanguages();
 
   constructor() {
@@ -136,7 +136,6 @@
       }
 
       img {
-        width: auto;
         border-radius: 8px;
         transition: 0.35s ease;
       }
@@ -153,6 +152,7 @@
 
       img.large {
         max-height: 104px;
+        height: 864px;s
       }`
 
       
@@ -182,7 +182,9 @@
 
       img.large {
         max-height: 104px;
+        height: 864px;
       }`
+      
     }
     const element = document.createElement("style");
     element.textContent = styleString;
@@ -400,57 +402,61 @@
 
   static createSupportedLanguages(): SupportedLanguage[] {
     let languageMap = new Map<string, string>();
-    languageMap.set("Arabic", "ar");
-    languageMap.set("Belarusian", "be");
-    languageMap.set("Bengali", "bn");
-    languageMap.set("Bosnian", "bs");
-    languageMap.set("Bulgarian", "bg");
+    languageMap.set("Afrikaans", "af-za");
+    languageMap.set("Arabic", "ar-sa");
+    languageMap.set("Bulgarian", "bg-bg");
+    languageMap.set("Catalan", "ca-es");
+    languageMap.set("Czech", "cs-cz");
+    languageMap.set("Welsh", "cy-gb");
+    languageMap.set("Danish", "da-dk");
+    languageMap.set("German", "de-de");
+    languageMap.set("Greek", "el-gr");
+    languageMap.set("English", "en-us");
+    languageMap.set("Spanish", "es-es");
+    languageMap.set("Estonian", "et-ee");
+    languageMap.set("Persian", "fa-ir");
+    languageMap.set("Finnish", "fi-fi");
+    languageMap.set("French", "fr-ca");
+    languageMap.set("Galician", "gl-es");
+    languageMap.set("Hebrew", "he-il");
+    languageMap.set("Hindi", "hi-in");
+    languageMap.set("Croatian", "hr-hr");
+    languageMap.set("Hungarian", "hu-hu");
+    languageMap.set("Indonesian", "id-id");
+    languageMap.set("Icelandic", "is-is");
+    languageMap.set("Italian", "it-it");
+    languageMap.set("Japanese", "ja-jp");
+    languageMap.set("Georgian", "ka-ge");
+    languageMap.set("Kazakh", "kk-kz");
+    languageMap.set("Korean", "ko-kr");
+    languageMap.set("Lithuanian", "lt-lt");
+    languageMap.set("Latvian", "lv-lv");
+    languageMap.set("Malay", "ms-my");
+    languageMap.set("Norwegian", "nb-no");
+    languageMap.set("Dutch", "nl-nl");
+    languageMap.set("Polish", "pl-pl");
+    languageMap.set("Portuguese_Brazil", "pt-br");
+    languageMap.set("Portuguese_Portugal", "pt-pt");
+    languageMap.set("Romanian", "ro-ro");
+    languageMap.set("Russian", "ru-ru");
+    languageMap.set("Slovak", "sk-sk");
+    languageMap.set("Slovenian", "sl-si");
+    languageMap.set("Serbian", "sr-Cyrl-rs");
+    languageMap.set("Swedish", "sv-se");
+    languageMap.set("Thai", "th-th");
+    languageMap.set("Turkish", "tr-tr");
+    languageMap.set("Ukrainian", "uk-ua");
+    languageMap.set("Vietnamese", "vi-vn");
     languageMap.set("Chinese_Simplified", "zh-cn");
     languageMap.set("Chinese_Traditional", "zh-tw");
-    languageMap.set("Croatian", "hr");
-    languageMap.set("Czech", "cs");
-    languageMap.set("Danish", "da");
-    languageMap.set("Dutch", "nl");
-    languageMap.set("English", "en");
-    languageMap.set("Estonian", "et");
-    languageMap.set("Filipino", "fil");
-    languageMap.set("Finnish", "fi");
-    languageMap.set("French", "fr");
-    languageMap.set("German", "el");
-    languageMap.set("Greek", "be");
-    languageMap.set("Hebrew", "he");
-    languageMap.set("Hindi", "hi");
-    languageMap.set("Hungarian", "hu");
-    languageMap.set("Indonesian", "id");
-    languageMap.set("Italian", "it");
-    languageMap.set("Japanese", "ja");
-    languageMap.set("Korean", "ko");
-    languageMap.set("Latvian", "lv");
-    languageMap.set("Lithuanian", "lt");
-    languageMap.set("Malay", "ms");
-    languageMap.set("Norwegian", "no");
-    languageMap.set("Polish", "pl");
-    languageMap.set("Portuguese_Brazil", "pt-br");
-    languageMap.set("Portuguese_Portugal", "pt");
-    languageMap.set("Romanian", "ro");
-    languageMap.set("Russian", "ru");
-    languageMap.set("Serbian", "sr");
-    languageMap.set("Slovak", "sk");
-    languageMap.set("Slovenian", "sl");
-    languageMap.set("Spanish", "es");
-    languageMap.set("Swahili", "sw");
-    languageMap.set("Thai", "th");
-    languageMap.set("Turkish", "tr");
-    languageMap.set("Ukranian", "uk");
-    languageMap.set("Vietnamese", "vi");
     
     let language: SupportedLanguage[] = [];
 
     for(let name of languageMap.keys()) {
       let currLanguage: SupportedLanguage =  {
         name: name, 
-        imageLarge: {fileName: name.concat("_L.png")},
-        imageLargeLight: {fileName: "English_LL.svg"},
+        imageLarge: {fileName: languageMap.get(name)!.concat(" ").concat("dark.svg")},
+        imageLargeLight: {fileName: languageMap.get(name)!.concat(" ").concat("light.svg")},
         imageSmall: {fileName: name.concat("_S.png")},
         code: languageMap.get(name) || ""
       }
