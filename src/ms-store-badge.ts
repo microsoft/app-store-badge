@@ -242,8 +242,8 @@
       return MSStoreBadge.getSupportedLanguageFromUserAgent();
     }
 
-    // See if the language code is a supported language.
-    const supportedLanguage = MSStoreBadge.supportedLanguages.find(l => l.code.substring(0, 2) === languageCode.toLowerCase()) || MSStoreBadge.supportedLanguages.find(l => l.code === languageCode.toLowerCase());
+    // See if the language code is a supported language. First check for edge case (same language letter codes, compare entire codes)  then check for second edge case (3 letter codes; e.g. fil), then normal case (2 letter codes).
+    const supportedLanguage = MSStoreBadge.supportedLanguages.find(l => l.code === languageCode.toLowerCase()) || MSStoreBadge.supportedLanguages.find(l => l.code.substring(0, 3) === languageCode.toLowerCase()) || MSStoreBadge.supportedLanguages.find(l => l.code.substring(0, 2) === languageCode.toLowerCase());
     if (supportedLanguage) {
       return supportedLanguage;
     }
