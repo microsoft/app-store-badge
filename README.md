@@ -51,7 +51,7 @@ In short, for better localization and better user experience.
 
 - **Localization**: the web component supports automatic detection of the user's locale, showing a localized button to the user based on the user's browser locale.
 - **Fewer security prompts**: if the user is on Edge on Windows, no browser security prompt ("this site is trying to launch Microsoft Store") is shown. 
-- **MiniPDP**: Where supported, when a user who clicks your app badge on Windows, instead of launching the full Store app, they'll get a mini popup dialog centered within the page, allowing for inline install. The user doesn't lose context. Here's what it looks like:
+- **MiniPDP**: Where supported, when a user who clicks your app badge on Windows, instead of launching the full Store app, they'll get a mini popup dialog (mini product description page, or miniPDP) centered within the page, allowing for inline install. The user doesn't lose context. Here's what it looks like: <br>
 ![miniPDP for Discord app](https://user-images.githubusercontent.com/312936/180301318-fa183964-48cc-4624-82ad-18ff12bc9b96.png)
 - **Better behavior on other OSes**: If the user is on MacOS or other non-Windows OS and they click your app badge, instead of trying (and failing) to launch the Microsoft Store app or MiniPDP, it instead launches the OS's native share dialog, allowing the user to share the link to your app.
 
