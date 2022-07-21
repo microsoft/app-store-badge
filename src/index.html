@@ -171,6 +171,7 @@
       const appId = document.querySelector("#appIdInput").value;
       const campaignId = document.querySelector("#campaignIdInput").value;
 
+      console.log(language);
       // We must have an app ID
       if (!appId || appId.length < 12) {
         return;
@@ -179,11 +180,11 @@
       const badgeElement = document.createElement("ms-store-badge");
       badgeElement.setAttribute("productId", appId);
       badgeElement.setAttribute("cid", campaignId);
-      badgeElement.setAttribute("windowMode", "popup");
+      badgeElement.setAttribute("window-mode", "popup");
       badgeElement.setAttribute("theme", "dark");
       badgeElement.setAttribute("id", "badgeSample");
       badgeElement.setAttribute("animation", "on");
-      badgeElement.setAttribute("size", "small");
+      badgeElement.setAttribute("size", "large");
       if (language) {
         badgeElement.setAttribute("language", language);
       }
