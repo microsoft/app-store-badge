@@ -152,7 +152,7 @@
 
       img.large {
         max-height: 104px;
-        height: 864px;s
+        height: 864px;
       }`
 
       
@@ -243,7 +243,7 @@
     }
 
     // See if the language code is a supported language.
-    const supportedLanguage = MSStoreBadge.supportedLanguages.find(l => l.code === languageCode.toLowerCase());
+    const supportedLanguage = MSStoreBadge.supportedLanguages.find(l => l.code.substring(0, 2) === languageCode.toLowerCase());
     if (supportedLanguage) {
       return supportedLanguage;
     }
