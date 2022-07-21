@@ -54,6 +54,7 @@ In short, for better localization and better user experience.
 - **MiniPDP**: Where supported, when a user who clicks your app badge on Windows, instead of launching the full Store app, they'll get a mini popup dialog (mini product description page, or miniPDP) centered within the page, allowing for inline install. The user doesn't lose context. Here's what it looks like: <br>
 ![miniPDP for Discord app](https://user-images.githubusercontent.com/312936/180301318-fa183964-48cc-4624-82ad-18ff12bc9b96.png)
 - **Better behavior on other OSes**: If the user is on MacOS or other non-Windows OS and they click your app badge, instead of trying (and failing) to launch the Microsoft Store app or MiniPDP, it instead launches the OS's native share dialog, allowing the user to share the link to your app.
+- **Automatic theme support**: You can configure your app badge to use automatic theme detection. When `theme="auto"`, the app badge will be themed based on whether the user has [dark mode](https://css-tricks.com/dark-modes-with-css/) enabled.
 
 ## HTML-only
 
