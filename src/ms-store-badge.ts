@@ -243,7 +243,7 @@
     }
 
     // See if the language code is a supported language.
-    const supportedLanguage = MSStoreBadge.supportedLanguages.find(l => l.code.substring(0, 2) === languageCode.toLowerCase());
+    const supportedLanguage = MSStoreBadge.supportedLanguages.find(l => l.code.substring(0, 2) === languageCode.toLowerCase()) || MSStoreBadge.supportedLanguages.find(l => l.code === languageCode.toLowerCase());
     if (supportedLanguage) {
       return supportedLanguage;
     }
