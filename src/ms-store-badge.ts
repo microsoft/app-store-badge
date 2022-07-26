@@ -7,7 +7,7 @@
  * 
  * On non-Windows 10+ machines, it will simply display an href with an image to redirect to the Web PDP
  */
- class MSStoreBadge extends HTMLElement {
+class MSStoreBadge extends HTMLElement {
   /**
    * The ID of your app. 
    */
@@ -18,11 +18,11 @@
    */
   cid: string = "";
 
-  
+
   /**
    * Sets the size of the badge. Should be "small" or "large"
    */
-   size: "small" | "large" = "large";
+  size: "small" | "large" = "large";
 
   /**
     * Indicates whether popup or full mode should be launched. 
@@ -50,7 +50,7 @@
   #imagesLocation = this.#env === "dev" ? "/images" : "https://getbadgecdn.azureedge.net/images";
   #platformDetails: PlatformDetails = { isWindows: false, windowsVersion: null, isEdgeBrowser: false };
 
-  static englishLanguage: SupportedLanguage = { name: "English", code: "en-US", imageSmall: { fileName: "English_S.png", }, imageLarge: { fileName: "en-US dark.svg" }, imageLargeLight: {fileName: "en-US light.svg"} };
+  static englishLanguage: SupportedLanguage = { name: "English", code: "en-us", imageSmall: { fileName: "English_S.png", }, imageLarge: { fileName: "en-us dark.svg" }, imageLargeLight: { fileName: "en-us light.svg" } };
   static supportedLanguages = MSStoreBadge.createSupportedLanguages();
 
   constructor() {
@@ -96,7 +96,7 @@
 
   // Web component lifecycle callback: when an observed attribute changes.
   attributeChangedCallback(name: string, oldValue: any, newValue: any) {
-      if (name === "size" && (newValue === "large" || newValue === "small") && oldValue !== newValue) {
+    if (name === "size" && (newValue === "large" || newValue === "small") && oldValue !== newValue) {
       this.size = newValue;
       this.updateImageSrc();
     } else if (name === "language" && newValue !== oldValue && (typeof newValue === "string" || !newValue)) {
@@ -121,7 +121,7 @@
 
   createStyle(): HTMLStyleElement {
     var styleString = '';
-    if(this.animation === "on") {
+    if (this.animation === "on") {
       styleString = `
       :host {
         display: inline-block;
@@ -155,7 +155,7 @@
         height: 864px;
       }`
 
-      
+
     }
     else {
       styleString = `
@@ -184,7 +184,7 @@
         max-height: 104px;
         height: 864px;
       }`
-      
+
     }
     const element = document.createElement("style");
     element.textContent = styleString;
@@ -306,30 +306,30 @@
   getImageSource(): string {
     var fileName = null;
     //Dark mode
-    if(this.theme === "dark") {
+    if (this.theme === "dark") {
       fileName = this.size === "large" ?
-      this.#languageDetails.imageLarge.fileName :
-      this.#languageDetails.imageSmall.fileName;
+        this.#languageDetails.imageLarge.fileName :
+        this.#languageDetails.imageSmall.fileName;
     }
     //Light mode
-    else if(this.theme === "light") {
+    else if (this.theme === "light") {
       fileName = this.size === "large" ?
-      this.#languageDetails.imageLargeLight.fileName :
-      this.#languageDetails.imageSmall.fileName;
+        this.#languageDetails.imageLargeLight.fileName :
+        this.#languageDetails.imageSmall.fileName;
     }
     //Auto mode
-    else if(this.theme === "auto") {
+    else if (this.theme === "auto") {
       const isDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
-        if(isDark) { //If detected dark mode
-          fileName = this.size === "large" ?
+      if (isDark) { //If detected dark mode
+        fileName = this.size === "large" ?
           this.#languageDetails.imageLargeLight.fileName :
           this.#languageDetails.imageSmall.fileName;
-        }
-        else { //If detected light mode
-          fileName = this.size === "large" ?
+      }
+      else { //If detected light mode
+        fileName = this.size === "large" ?
           this.#languageDetails.imageLarge.fileName :
           this.#languageDetails.imageSmall.fileName;
-        }   
+      }
     }
     return `${this.#imagesLocation}/${fileName}`;
   }
@@ -370,7 +370,7 @@
   }
 
   launchStoreAppPdpViaWhitelistedDomain() {
-    if(this.windowMode === "full") {
+    if (this.windowMode === "full") {
       this.launchStoreAppPdp();
     }
     else {
@@ -387,7 +387,7 @@
 
   launchStoreWebPdp(e: MouseEvent) {
     var url = "";
-    if(!this.cid) {
+    if (!this.cid) {
       url = `https://apps.microsoft.com/store/detail/${this.productId}?referrer=appbadge&source=${encodeURIComponent(window.location.hostname.toLowerCase())}`;
     }
     else {
@@ -449,15 +449,15 @@
     languageMap.set("Vietnamese", "vi-vn");
     languageMap.set("Chinese_Simplified", "zh-cn");
     languageMap.set("Chinese_Traditional", "zh-tw");
-    
+
     let language: SupportedLanguage[] = [];
 
-    for(let name of languageMap.keys()) {
-      let currLanguage: SupportedLanguage =  {
-        name: name, 
-        imageLarge: {fileName: languageMap.get(name)!.concat(" ").concat("dark.svg")},
-        imageLargeLight: {fileName: languageMap.get(name)!.concat(" ").concat("light.svg")},
-        imageSmall: {fileName: name.concat("_S.png")},
+    for (let name of languageMap.keys()) {
+      let currLanguage: SupportedLanguage = {
+        name: name,
+        imageLarge: { fileName: languageMap.get(name)!.concat(" ").concat("dark.svg") },
+        imageLargeLight: { fileName: languageMap.get(name)!.concat(" ").concat("light.svg") },
+        imageSmall: { fileName: name.concat("_S.png") },
         code: languageMap.get(name) || ""
       }
       language.push(currLanguage);
