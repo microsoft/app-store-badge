@@ -441,7 +441,7 @@ class MSStoreBadge extends HTMLElement {
     languageMap.set("Russian", "ru-ru");
     languageMap.set("Slovak", "sk-sk");
     languageMap.set("Slovenian", "sl-si");
-    languageMap.set("Serbian", "sr-Cyrl-rs");
+    languageMap.set("Serbian", "sr-cyrl-rs");
     languageMap.set("Swedish", "sv-se");
     languageMap.set("Thai", "th-th");
     languageMap.set("Turkish", "tr-tr");
