@@ -65,7 +65,7 @@
               <option value="lv">Latvian</option>
               <option value="lt">Lithuanian</option>
               <option value="ms">Malay</option>
-              <option value="no">Norwegian</option>
+              <option value="nb">Norwegian</option>
               <option value="pl">Polish</option>
               <option value="pt">Portuguese</option>
               <option value="pt-br">Portuguese (Brazilian)</option>
@@ -82,17 +82,6 @@
               <option value="uk">Ukranian</option>
               <option value="vi">Vietnamese</option>
             </select>
-          </div>
-          <div class="mb-3">
-            <label for="sizeButtonGroup" class="form-label">Size</label>
-            <br />
-            <div id="sizeButtonGroup" class="btn-group" role="group" aria-label="Badge size button group">
-              <input type="radio" class="btn-check" name="btnradio" id="smallSizeBtn" autocomplete="off">
-              <label class="btn btn-outline-primary" for="smallSizeBtn">Small</label>
-
-              <input type="radio" class="btn-check" name="btnradio" id="largeSizeBtn" autocomplete="off" checked>
-              <label class="btn btn-outline-primary" for="largeSizeBtn">Large</label>
-            </div>
           </div>
           <div class="mb-3">
             <span>
@@ -179,10 +168,10 @@
 
     function addBadge() {
       const language = document.querySelector("#languageSelector").value;
-      const isLargeSize = document.querySelector("#largeSizeBtn").checked;
       const appId = document.querySelector("#appIdInput").value;
       const campaignId = document.querySelector("#campaignIdInput").value;
 
+      console.log(language);
       // We must have an app ID
       if (!appId || appId.length < 12) {
         return;
@@ -191,11 +180,11 @@
       const badgeElement = document.createElement("ms-store-badge");
       badgeElement.setAttribute("productId", appId);
       badgeElement.setAttribute("cid", campaignId);
-      badgeElement.setAttribute("windowMode", "popup");
+      badgeElement.setAttribute("window-mode", "popup");
       badgeElement.setAttribute("theme", "dark");
       badgeElement.setAttribute("id", "badgeSample");
-      badgeElement.setAttribute("size", isLargeSize ? "large" : "small");
-      badgeElement.setAttribute("animation", "off");
+      badgeElement.setAttribute("animation", "on");
+      badgeElement.setAttribute("size", "large");
       if (language) {
         badgeElement.setAttribute("language", language);
       }
@@ -219,8 +208,6 @@
     function listenForUIChanges() {
       const inputs = [
         "#languageSelector",
-        "#smallSizeBtn",
-        "#largeSizeBtn",
         "#appIdInput",
         "#campaignIdInput"
       ];
