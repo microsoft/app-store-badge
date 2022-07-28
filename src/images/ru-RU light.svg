@@ -1,5 +1,5 @@
 <svg width="114" height="32" viewBox="0 0 114 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="0.5" y="0.5" width="113" height="31" rx="3.5" fill="white" fill-opacity="0.7"/>
+<rect x="0.5" y="0.5" width="113" height="31" rx="3.5" fill="white"/>
 <path d="M15.5559 7H7V15.5608H15.5559V7Z" fill="#F25022"/>
 <path d="M25.0001 7H16.4442V15.5608H25.0001V7Z" fill="#7FBA00"/>
 <path d="M15.5559 16.4395H7V25.0002H15.5559V16.4395Z" fill="#00A4EF"/>
