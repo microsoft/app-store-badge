@@ -404,7 +404,10 @@ class MSStoreBadge extends HTMLElement {
     let languageMap = new Map<string, string>();
     languageMap.set("Afrikaans", "af-za");
     languageMap.set("Arabic", "ar-sa");
+    languageMap.set("Belarusian", "be");
     languageMap.set("Bulgarian", "bg-bg");
+    languageMap.set("Bengali", "bn");
+    languageMap.set("Bosnian", "bs");
     languageMap.set("Catalan", "ca-es");
     languageMap.set("Czech", "cs-cz");
     languageMap.set("Welsh", "cy-gb");
@@ -416,6 +419,7 @@ class MSStoreBadge extends HTMLElement {
     languageMap.set("Estonian", "et-ee");
     languageMap.set("Persian", "fa-ir");
     languageMap.set("Finnish", "fi-fi");
+    languageMap.set("Filipino", "fil");
     languageMap.set("French", "fr-ca");
     languageMap.set("Galician", "gl-es");
     languageMap.set("Hebrew", "he-il");
@@ -443,6 +447,7 @@ class MSStoreBadge extends HTMLElement {
     languageMap.set("Slovenian", "sl-si");
     languageMap.set("Serbian", "sr-cyrl-rs");
     languageMap.set("Swedish", "sv-se");
+    languageMap.set("Swahili", "sw");
     languageMap.set("Thai", "th-th");
     languageMap.set("Turkish", "tr-tr");
     languageMap.set("Ukrainian", "uk-ua");
