@@ -17,6 +17,7 @@ jobs:
       - run: |
           cd src
           tsc -t es2015 ms-store-badge.ts
+          npm i
           npm run build:prod
       - name: Build And Deploy
         id: builddeploy
