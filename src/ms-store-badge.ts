@@ -378,7 +378,9 @@ class MSStoreBadge extends HTMLElement {
       if (iframe) {
         const args = {
           message: "launch",
-          productId: this.productId
+          productId: this.productId,
+          cid: this.cid,
+          windowMode: this.windowMode
         };
         iframe.contentWindow?.postMessage(args, "*");
       }
