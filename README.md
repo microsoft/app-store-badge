@@ -63,7 +63,7 @@ Can't use the app badge web component? For places like Github markdown or other 
 ```html
 <!-- display an HTML-only app badge. Useful when you can't execute JS, such as in Github markdown pages -->
 <a href="ms-windows-store://pdp/?ProductId=XPDC2RH70K22MN&mode=mini">
-   <img src="https://getbadgecdn.azureedge.net/images/English_L.png" alt="Download Discord" />
+   <img src="https://getbadgecdn.azureedge.net/images/en-us%20dark.svg" alt="Download Discord" />
 </a>
 ```
 
