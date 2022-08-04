@@ -57,7 +57,7 @@ In short, for better localization and better user experience.
 
 ## HTML-only
 
-Can't use the app badge web component? For places like Github markdown or other contexts without Javascript, you can use an image with link:
+While the app badge script is small (about 9k), there are contexts where a script doesn't make sense: Github markdown pages, static sites, or other contexts without Javascript available. For such contexts, you can use a simple image with link:
 
 ```html
 <!-- display an HTML-only app badge. Useful when you can't execute JS, such as in Github markdown pages -->
