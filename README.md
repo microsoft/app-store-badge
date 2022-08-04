@@ -10,7 +10,7 @@ Alternately, add the following code in your HTML where you want the button to ap
 
 ```html
 <script type="module" src="https://getbadgecdn.azureedge.net/ms-store-badge.bundled.js"></script>
-<ms-store-badge productid="9wzdncrfhvjl" size="large"></ms-store-badge>
+<ms-store-badge productid="9wzdncrfhvjl"></ms-store-badge>
 ```
 
 The component has some additional configuration options:
