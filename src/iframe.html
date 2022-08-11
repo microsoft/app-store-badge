@@ -23,10 +23,10 @@
             const desiredUrl = "ms-windows-store://pdp/" +
                 "?productid=" + e.data.productId +
                 ((!e.data.cid) ? "" : "&cid=" + encodeURIComponent(e.data.cid)) +
-                "&referrer=" + "appbadge" +
-                "&source=" + encodeURIComponent(window.location.hostname.toLowerCase()) +
+                "&referrer=appbadge" +
+                "&source=" + (e.data.source ? encodeURIComponent(e.data.source.toLowerCase()) : "") +
                 (e.data.windowMode === "popup" ? "&mode=mini&pos=" : "&pos=") +
-                      Math.floor(window.screenLeft * window.devicePixelRatio) +
+                Math.floor(window.screenLeft * window.devicePixelRatio) +
                 "," + Math.floor(window.screenTop * window.devicePixelRatio) +
                 "," + Math.floor(window.outerWidth * window.devicePixelRatio) +
                 "," + Math.floor(window.outerHeight * window.devicePixelRatio);
