@@ -9,7 +9,7 @@ Generate your own app badge using https://apps.microsoft.com/store/app-badge/
 Alternately, add the following code in your HTML where you want the button to appear:
 
 ```html
-<script type="module" src="https://getbadgecdn.azureedge.net/ms-store-badge.bundled.js"></script>
+<script type="module" src="https://get.microsoft.com/badge/ms-store-badge.bundled.js"></script>
 <ms-store-badge productid="9wzdncrfhvjl"></ms-store-badge>
 ```
 
@@ -22,12 +22,12 @@ The component has some additional configuration options:
 | window-mode | "popup" or "full" | "popup" | Configure the badge to open your app in popup store mode or full store mode.<br><br>In `popup` mode, users who click your app badge will see the popup store:<br><img src="https://user-images.githubusercontent.com/312936/180301318-fa183964-48cc-4624-82ad-18ff12bc9b96.png" width="400" /><br><br>In `full` mode, users who click your app badge will see full store app:<br><img src="https://user-images.githubusercontent.com/312936/182920385-f39fc676-afd5-43f8-a9f2-284f19b3f93e.png" width="400" />) |
 | theme | "dark" or "light" or "auto" | "dark" | Configure the badge theme dark mode, light mode, or auto mode. Auto mode detects the user's dark mode preference and sets the badge theme accordingly.<br><br>`dark` should be used on sites with light backgrounds:<br><img src="https://user-images.githubusercontent.com/312936/182922340-049d097a-dc7e-48b1-ae37-61179885e87d.png" width="200" /><br><br>`light` should be use on sites with dark backgrounds:<br><img src="https://user-images.githubusercontent.com/312936/182922409-17cf675d-24d6-4d9c-b694-96da2a8addf8.png" width="200" /> |
 | animation | "on" or "off" | "off" | When `on`, the badge will use an animation and shadow on hover. Alternately, you may build and apply your own animations by adding CSS to the `img` part. See [styling the badge](#styling-the-badge) for more information. |
-| language | string | '' | The language to display the app badge. If left empty, the language will be detected from the user's browser `navigator.userAgent.language`. <br>Sample of specifying a different language:<br><img src="https://getbadgecdn.azureedge.net/images/he-il%20dark.svg" width="270" /><br><br><details><summary>See supported languages</summary><ul><li>Afrikaans: "af"</li><li>Arabic: "ar"</li><li>Belarusian: "be"</li><li>Bulgarian: "bg"</li><li>Bengali: "bn"</li><li>Bosnian: "bs"</li><li>Catalan: "ca"</li><li>Chinese (Simplified): "zh-cn"</li><li>Chinese (Traditional): "zh-tw"<li>Czech: "cs"</li><li>Danish: "da"</li><li>Dutch: "nl"</li><li>German: "de"</li><li>Greek: "el"</li><li>English: "en"</li><li>Spanish: "es"</li><li>Estonian: "et"</li><li>Persian: "fa"</li><li>Finnish: "fi"</li><li>Filipino: "fil"</li><li>French: "fr"</li><li>Galician: "gl"</li><li>Hebrew: "he"</li><li>Hindi: "hi"</li><li>Croatian: "hr"</li><li>Hungarian: "hu"</li><li>Indonesian: "id"</li><li>Icelandic: "is"</li><li>Italian: "it"</li><li>Japanese: "ja"</li><li>Georgian: "ka"</li><li>Kazakh: "kk"</li><li>Korean: "ko"</li><li>Lithuanian: "lt"</li><li>Latvian: "lv"</li><li>Malay: "ms"</li><li>Norwegian: "nb"</li><li>Polish: "pl"</li><li>Portuguese (Brazil): "pt-br"</li><li>Portuguese (Portugal): "pt-pt"</li><li>Romanian: "ro"</li><li>Russian: "ru"</li><li>Slovak: "sk"</li><li>Slovenian: "sl"</li><li>Serbian: "sr"</li><li>Swedish: "sv"</li><li>Swahili: "sw"</li><li>Thai: "th"</li><li>Turkish: "tr"</li><li>Ukrainian: "uk"</li><li>Vietnamese: "vi"</li><li>Welsh: "cy"</li></ul></details> |
+| language | string | '' | The language to display the app badge. If left empty, the language will be detected from the user's browser `navigator.userAgent.language`. <br>Sample of specifying a different language:<br><img src="https://get.microsoft.com/images/he-il%20dark.svg" width="270" /><br><br><details><summary>See supported languages</summary><ul><li>Afrikaans: "af"</li><li>Arabic: "ar"</li><li>Belarusian: "be"</li><li>Bulgarian: "bg"</li><li>Bengali: "bn"</li><li>Bosnian: "bs"</li><li>Catalan: "ca"</li><li>Chinese (Simplified): "zh-cn"</li><li>Chinese (Traditional): "zh-tw"<li>Czech: "cs"</li><li>Danish: "da"</li><li>Dutch: "nl"</li><li>German: "de"</li><li>Greek: "el"</li><li>English: "en"</li><li>Spanish: "es"</li><li>Estonian: "et"</li><li>Persian: "fa"</li><li>Finnish: "fi"</li><li>Filipino: "fil"</li><li>French: "fr"</li><li>Galician: "gl"</li><li>Hebrew: "he"</li><li>Hindi: "hi"</li><li>Croatian: "hr"</li><li>Hungarian: "hu"</li><li>Indonesian: "id"</li><li>Icelandic: "is"</li><li>Italian: "it"</li><li>Japanese: "ja"</li><li>Georgian: "ka"</li><li>Kazakh: "kk"</li><li>Korean: "ko"</li><li>Lithuanian: "lt"</li><li>Latvian: "lv"</li><li>Malay: "ms"</li><li>Norwegian: "nb"</li><li>Polish: "pl"</li><li>Portuguese (Brazil): "pt-br"</li><li>Portuguese (Portugal): "pt-pt"</li><li>Romanian: "ro"</li><li>Russian: "ru"</li><li>Slovak: "sk"</li><li>Slovenian: "sl"</li><li>Serbian: "sr"</li><li>Swedish: "sv"</li><li>Swahili: "sw"</li><li>Thai: "th"</li><li>Turkish: "tr"</li><li>Ukrainian: "uk"</li><li>Vietnamese: "vi"</li><li>Welsh: "cy"</li></ul></details> |
 
 Example using all the available options:
 
 ```html
-<script type="module" src="https://getbadgecdn.azureedge.net/ms-store-badge.bundled.js"></script>
+<script type="module" src="https://get.microsoft.com/badge/ms-store-badge.bundled.js"></script>
 <ms-store-badge productid="9wzdncrfhvjl" language="he" cid="abc123" theme="light"></ms-store-badge>
 ```
 
@@ -62,7 +62,7 @@ While the app badge script is small (about 9k), there are contexts where a scrip
 ```html
 <!-- display an HTML-only app badge. Useful when you can't execute JS, such as in Github markdown pages -->
 <a href="ms-windows-store://pdp/?ProductId=XPDC2RH70K22MN&mode=mini">
-   <img src="https://getbadgecdn.azureedge.net/images/en-us%20dark.svg" alt="Download Discord" />
+   <img src="https://get.microsoft.com/images/en-us%20dark.svg" alt="Download Discord" />
 </a>
 ```
 
