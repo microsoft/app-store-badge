@@ -47,7 +47,7 @@ class MSStoreBadge extends HTMLElement {
   #languageDetails: SupportedLanguage = MSStoreBadge.englishLanguage;
   #env: "dev" | "prod" = (window as any).__rollup_injected_env || "dev";
   #iframeLocation = this.#env === "dev" ? "iframe.html" : "https://get.microsoft.com/iframe.html";
-  #imagesLocation = this.#env === "dev" ? "/images" : "https://getbadgecdn.azureedge.net/images";
+  #imagesLocation = this.#env === "dev" ? "/images" : "https://get.microsoft.com/images";
   #platformDetails: PlatformDetails = { isWindows: false, windowsVersion: null, isEdgeBrowser: false };
 
   static englishLanguage: SupportedLanguage = { name: "English", code: "en-us", imageSmall: { fileName: "English_S.png", }, imageLarge: { fileName: "en-us dark.svg" }, imageLargeLight: { fileName: "en-us light.svg" } };
