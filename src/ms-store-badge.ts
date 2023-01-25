@@ -375,7 +375,22 @@ class MSStoreBadge extends HTMLElement {
     }
     else {
       const iframe = this.shadowRoot?.querySelector("iframe");
-      if (iframe) {
+      if (iframe && iframe.contentWindow) {
+        // Listen for content security policy (CSP) errors. This error can happen if the user's domain
+        // has blocked iframe navigation to get.microsoft.com via their CSP.
+        // If that happens, we'll fallback to launching the app via the ms-store-app:// protocol.
+        const cspErrorEventName = "securitypolicyviolation";
+        const cspErrorListener = (e: SecurityPolicyViolationEvent) => {
+          if (e.violatedDirective === "frame-src" && e.type === cspErrorEventName) {
+            this.launchStoreAppPdp();
+          }
+        }
+        document.addEventListener(cspErrorEventName, cspErrorListener, { once: true });
+
+        // Remove the CSP error listener 3s after we try to launch. We don't want to listen for other CSP errors that may exist on the page.
+        setTimeout(() => document.removeEventListener(cspErrorEventName, cspErrorListener), 3000);
+
+        // Now launch via the whitelisted iframe. 
         const args = {
           message: "launch",
           productId: this.productId,
@@ -383,7 +398,9 @@ class MSStoreBadge extends HTMLElement {
           windowMode: this.windowMode,
           source: window.location.hostname,
         };
-        iframe.contentWindow?.postMessage(args, "*");
+        iframe.contentWindow.postMessage(args, "*");
+      } else {
+        this.launchStoreAppPdp();
       }
     }
   }

@@ -21,7 +21,7 @@
             }
 
             const desiredUrl = "ms-windows-store://pdp/" +
-                "?productid=" + e.data.productId +
+                "?productid=" + encodeURIComponent(e.data.productId) +
                 ((!e.data.cid) ? "" : "&cid=" + encodeURIComponent(e.data.cid)) +
                 "&referrer=appbadge" +
                 "&source=" + (e.data.source ? encodeURIComponent(e.data.source.toLowerCase()) : "") +
