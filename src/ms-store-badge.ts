@@ -49,6 +49,7 @@ class MSStoreBadge extends HTMLElement {
   #iframeLocation = this.#env === "dev" ? "iframe.html" : "https://get.microsoft.com/iframe.html";
   #imagesLocation = this.#env === "dev" ? "/images" : "https://get.microsoft.com/images";
   #platformDetails: PlatformDetails = { isWindows: false, windowsVersion: null, isEdgeBrowser: false };
+  #cspErrorOccurred = false;
 
   static englishLanguage: SupportedLanguage = { name: "English", code: "en-us", imageSmall: { fileName: "English_S.png", }, imageLarge: { fileName: "en-us dark.svg" }, imageLargeLight: { fileName: "en-us light.svg" } };
   static supportedLanguages = MSStoreBadge.createSupportedLanguages();
@@ -356,56 +357,53 @@ class MSStoreBadge extends HTMLElement {
   }
 
   launchStoreAppPdp() {
-    const appLaunchUrl = "ms-windows-store://pdp/" +
-      "?productid=" + this.productId +
-      ((!this.cid) ? "" : "&cid=" + encodeURIComponent(this.cid)) +
-      "&referrer=" + "appbadge" +
-      "&source=" + encodeURIComponent(window.location.hostname.toLowerCase()) +
-      (this.windowMode === "popup" ? "&mode=mini&pos=" : "&pos=") + Math.floor(window.screenLeft * window.devicePixelRatio) +
-      "," + Math.floor(window.screenTop * window.devicePixelRatio) +
-      "," + Math.floor(window.outerWidth * window.devicePixelRatio) +
-      "," + Math.floor(window.outerHeight * window.devicePixelRatio);
-    location.href = appLaunchUrl;
-    console.log(appLaunchUrl);
+    const searchParams = new URLSearchParams();
+    searchParams.append("productid", this.productId);
+    searchParams.append("referrer", "appbadge");
+    searchParams.append("source", window.location.hostname.toLowerCase());
+    
+    if (this.cid) {
+      searchParams.append("cid", this.cid);
+    }
+
+    if (this.windowMode === "popup") {
+      searchParams.append("mode", "mini");
+      const position = [
+        Math.floor(window.screenLeft * window.devicePixelRatio), 
+        Math.floor(window.screenTop * window.devicePixelRatio), 
+        Math.floor(window.outerWidth * window.devicePixelRatio),
+        Math.floor(window.outerHeight * window.devicePixelRatio)
+      ];
+      searchParams.append("pos", position.join(","))
+    }
+
+    location.href = "ms-windows-store://pdp/?" + searchParams.toString();
   }
 
   launchStoreAppPdpViaWhitelistedDomain() {
-    if (this.windowMode === "full") {
+    const iframe = this.shadowRoot?.querySelector("iframe");
+    // If a CSP error has alread occurred due to blocked iframe, or if we don't have our whitelisted iframe,
+    // then we punt and just launch via the normal ms-windows-store protocol.
+    if (this.#cspErrorOccurred || !iframe || !iframe.contentWindow) {
+      // If a CSP error occurred due to the whitelisted iframe, we can't launch via whitelisted iframe.
+      // Fallback to using the ms-windows-store:// protocol.
       this.launchStoreAppPdp();
-    }
-    else {
-      const iframe = this.shadowRoot?.querySelector("iframe");
-      if (iframe && iframe.contentWindow) {
-        // Listen for content security policy (CSP) errors. This error can happen if the user's domain
-        // has blocked iframe navigation to get.microsoft.com via their CSP.
-        // If that happens, we'll fallback to launching the app via the ms-store-app:// protocol.
-        const cspErrorEventName = "securitypolicyviolation";
-        const cspErrorListener = (e: SecurityPolicyViolationEvent) => {
-          if (e.violatedDirective === "frame-src" && e.type === cspErrorEventName) {
-            this.launchStoreAppPdp();
-          }
-        }
-        document.addEventListener(cspErrorEventName, cspErrorListener, { once: true });
+    } else {
+      this.#launchViaProtocolOnCspError();
 
-        // Remove the CSP error listener 3s after we try to launch. We don't want to listen for other CSP errors that may exist on the page.
-        setTimeout(() => document.removeEventListener(cspErrorEventName, cspErrorListener), 3000);
-
-        // Now launch via the whitelisted iframe. 
-        const args = {
-          message: "launch",
-          productId: this.productId,
-          cid: this.cid,
-          windowMode: this.windowMode,
-          source: window.location.hostname,
-        };
-        iframe.contentWindow.postMessage(args, "*");
-      } else {
-        this.launchStoreAppPdp();
-      }
+      // Now launch via the whitelisted iframe. 
+      const args = {
+        message: "launch",
+        productId: this.productId,
+        cid: this.cid,
+        windowMode: this.windowMode,
+        source: window.location.hostname,
+      };
+      iframe.contentWindow.postMessage(args, "*");
     }
   }
 
-  launchStoreWebPdp(e: MouseEvent) {
+  launchStoreWebPdp(e: MouseEvent): void {
     var url = "";
     if (!this.cid) {
       url = `https://apps.microsoft.com/store/detail/${this.productId}?referrer=appbadge&source=${encodeURIComponent(window.location.hostname.toLowerCase())}`;
@@ -418,6 +416,27 @@ class MSStoreBadge extends HTMLElement {
     } else {
       window.location.href = url;
     }
+  }
+
+  /**
+   * Listens for content security policy (CSP) errors in the document for a moment. If one occurs due to CSP blocking our whitelisted iframe,
+   * we will launch via the ms-windows-store:// protocol as a fallback.
+   */
+  #launchViaProtocolOnCspError(): void {
+    // Listen for content security policy (CSP) errors. This error can happen if the user's domain
+    // has blocked iframe navigation to our whitelisted get.microsoft.com domain via their CSP.
+    // If that happens, we'll fallback to launching the app via the ms-store-app:// protocol.
+    const cspErrorEventName = "securitypolicyviolation";
+    const cspErrorListener = (e: SecurityPolicyViolationEvent) => {
+      if (e.violatedDirective === "frame-src" && e.type === cspErrorEventName) {
+        this.#cspErrorOccurred = true;
+        this.launchStoreAppPdp();
+      }
+    }
+    document.addEventListener(cspErrorEventName, cspErrorListener, { once: true }); // Once, because we'll only get the error once, even if we try to launch multiple times.
+
+    // Remove the CSP error listener 2s after we try to launch. We don't want to listen for other CSP errors that may exist on the page.
+    setTimeout(() => document.removeEventListener(cspErrorEventName, cspErrorListener), 2000);
   }
 
   static createSupportedLanguages(): SupportedLanguage[] {
