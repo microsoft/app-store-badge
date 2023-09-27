@@ -30,6 +30,7 @@ export default {
         { src: 'src/images', dest: 'dist' },
         { src: 'src/staticwebapp.config.json', dest: 'dist' },
         { src: 'src/iframe.html', dest: 'dist' },
+        { src: 'src/testinst.html', dest: 'dist' },
         { src: 'src/index.html', dest: 'dist' },
         { src: 'dist/ms-store-badge.bundled.js', dest: 'dist/badge' }, // Copy to a badge subdirectory so that we can serve the badge script from get.microsoft.com/badge/ms-store-badge.bundled.js
         {
