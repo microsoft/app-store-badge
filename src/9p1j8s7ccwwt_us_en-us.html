@@ -80,6 +80,30 @@
             }
         }
 
+        /* Used for testing only */
+        body.forced-dark-mode {
+            --divider-color: #49494b;
+            --accent-color: #4CC2FF;
+            --accent-hover-color: #47B1E8;
+            --accent-border-light: #5AC7FF;
+            --accent-border-dark: #42A7DC;
+            --accent-border-hover-light: #55B7EA;
+            --accent-border-hover-dark: #3D99C8;
+            --accent-border-active-light: #42A1D2;
+            --accent-border-active-dark: #42A1D2;
+            --accent-active-color: #42A1D2;
+            --accent-active-text-color: #23526C;
+            --button-text-color: black;
+            --body-text-color: white;
+            --link-color:  #8ED8EA;
+            --link-hover-color: var(--link-color);
+            --link-active-color: #49B3EA;
+            --link-hover-background: #2D2D2D;
+            --link-muted-color: white;
+            --logo-box-shadow-color: rgba(50, 50, 50, 0.1);
+            --gray-text: #9FA0A4;
+        }
+
         h1,
         h2,
         h3,
@@ -360,6 +384,12 @@ Leave us a rating and review in the App Store so others can join in on the fun.
         let appInsights = null;
 
         function init() {
+            // For testing only:
+            // If we have darkmode in the URL query param, apply the dark mode class.
+            if (window.location.search.includes("darkmode")) {
+                document.body.classList.add("forced-dark-mode");
+            }
+
             // Hide the Show More button if the description is not long enough to be truncated.
             const description = document.querySelector('.description');
             if (description.scrollHeight <= description.clientHeight) {
