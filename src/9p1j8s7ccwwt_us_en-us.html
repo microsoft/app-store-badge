@@ -22,7 +22,6 @@
             background-color: transparent;
             scrollbar-width: thin;
         }
-
         body {
             --header-font: Segoe UI Variable Display, 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
             --body-font: Segoe UI Variable Text, 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
@@ -103,6 +102,40 @@
             --link-muted-color: white;
             --logo-box-shadow-color: rgba(50, 50, 50, 0.1);
             --gray-text: #9FA0A4;
+        }
+
+        /* Used for testing only */
+        body.forced-light-mode {
+            --header-font: Segoe UI Variable Display, 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+            --body-font: Segoe UI Variable Text, 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+            --divider-color: #e3e4e8;
+            --accent-color: #0067C0;
+            --accent-hover-color: #1975C5;
+            --accent-border-light: #1473C5;
+            --accent-border-dark: #003E73;
+            --accent-border-hover-light: #2B80CA;
+            --accent-border-hover-dark: #0F4676;
+            --accent-border-active-light: #3183CB;
+            --accent-border-active-dark: #3183CB;
+            --accent-active-color: #3183CB;
+            --accent-active-text-color: #C2DAF0;
+            --button-text-color: white;
+            --body-text-color: black;
+            --link-color: var(--accent-color);
+            --link-hover-color: #001A68;
+            --link-active-color: #0067C0;
+            --link-hover-background: #f5f6f997;
+            --link-muted-color: black;
+            --logo-box-shadow-color: rgba(150, 150, 150, 0.1);
+            --hover-transition: all 0.1s ease-in-out;
+            --gray-text: #71717a;
+
+            color: var(--body-text-color);
+            display: flex;
+            flex-direction: column;
+            padding: 22px 28px;
+            font-family: var(--body-font);
+            gap: 16px;
         }
 
         h1,
@@ -389,6 +422,9 @@ Leave us a rating and review in the App Store so others can join in on the fun.
             // If we have darkmode in the URL query param, apply the dark mode class.
             if (window.location.search.includes("darkmode")) {
                 document.body.classList.add("forced-dark-mode");
+            }
+            if (window.location.search.includes("lightmode")) {
+                document.body.classList.add("forced-light-mode");
             }
 
             // Hide the Show More button if the description is not long enough to be truncated.
