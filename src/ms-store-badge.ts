@@ -1,5 +1,5 @@
-import { performPSIAcquisition } from "./psi-service.js";
-import { throttle } from "./throttle-async.js";
+import { performPSIAcquisition } from "./psi-service";
+import { throttle } from "./throttle-async";
 
 /**
  * <ms-store-badge> web component
