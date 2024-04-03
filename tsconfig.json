@@ -19,7 +19,8 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "types": [ "uuid" ]
   },
   "include": ["src/**/*.ts"],
   "exclude": []
