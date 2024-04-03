@@ -18,7 +18,7 @@ export async function performPSIAcquisition(productId, productName, options = {}
             "X-Correlation-Id": cid,
             "Content-Type": "application/octet-stream"
         },
-        cache: "no-cache",
+        cache: "no-cache", // Don't cache locally, need to request new template from server
         params: new URLSearchParams(url)
     };
     const mergedOptions = { ...defaultOptions, ...options };
