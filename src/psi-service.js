@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 /**
  * PSI service class which helps perform the default product acquisition method by calling the service endpoint
  * and fetching an installer template for the user to receive back on the client-side and install the product.
@@ -6,7 +5,6 @@ import { v4 as uuidv4 } from "uuid";
 // Perform PSI acquisition flow using download URL, send error if invalid response
 export async function performPSIAcquisition(productId, productName, options = {}, url) {
     const psiServiceFailedOcidPrefix = "psi_f_svc";
-    const cid = uuidv4();
     // Set up request
     const defaultOptions = {
         method: "GET",
@@ -15,7 +13,7 @@ export async function performPSIAcquisition(productId, productName, options = {}
             "Origin": "https://apps.microsoft.com",
             "Referer": document.URL,
             "Access-Control-Request-Method": "GET",
-            "X-Correlation-Id": cid,
+            "X-Correlation-Id": crypto.randomUUID(),
             "Content-Type": "application/octet-stream"
         },
         cache: "no-cache",
