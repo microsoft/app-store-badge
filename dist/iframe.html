@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Microsoft Store Popup Badge</title>
+    <title>Microsoft Store Pop up Badge</title>
 
 <body>
 </body>
@@ -25,7 +25,7 @@
                 ((!e.data.cid) ? "" : "&cid=" + encodeURIComponent(e.data.cid)) +
                 "&referrer=appbadge" +
                 "&source=" + (e.data.source ? encodeURIComponent(e.data.source.toLowerCase()) : "") +
-                (e.data.windowMode === "popup" ? "&mode=mini&pos=" : "&pos=") +
+                (e.data.windowMode === "pop up" ? "&mode=mini&pos=" : "&pos=") +
                 Math.floor(window.screenLeft * window.devicePixelRatio) +
                 "," + Math.floor(window.screenTop * window.devicePixelRatio) +
                 "," + Math.floor(window.outerWidth * window.devicePixelRatio) +
