@@ -32,9 +32,9 @@ class MSStoreBadge extends HTMLElement {
   size: "small" | "large" = "large";
 
   /**
-    * Indicates whether pop up or full mode should be launched. 
+    * Indicates whether popup or full mode should be launched. 
     */
-  windowMode: "direct" | "pop up" | "full" = "pop up";
+  windowMode: "direct" | "popup" | "full" = "popup";
 
   /**
     * Indicates whether badge should be in dark mode, light mode, or auto mode.
@@ -137,7 +137,7 @@ class MSStoreBadge extends HTMLElement {
       this.productName = newValue;
     } else if (name === "cid" && newValue !== oldValue && typeof newValue === "string") {
       this.cid = newValue;
-    } else if (name === "window-mode" && (newValue === "pop up" || newValue === "full" || newValue === "direct") && oldValue !== newValue) {
+    } else if (name === "window-mode" && (newValue === "popup" || newValue === "full" || newValue === "direct") && oldValue !== newValue) {
       this.windowMode = newValue;
       this.updateImageSrc();
       this.updateListeners();
@@ -405,7 +405,7 @@ class MSStoreBadge extends HTMLElement {
       searchParams.append("cid", this.cid);
     }
 
-    if (this.windowMode === "pop up") {
+    if (this.windowMode === "popup") {
       searchParams.append("mode", "mini");
       const position = [
         Math.floor(window.screenLeft * window.devicePixelRatio), 
