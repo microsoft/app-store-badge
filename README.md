@@ -62,7 +62,7 @@ While the app badge script is small (about 9k), there are contexts where a scrip
 
 ```html
 <!-- display an HTML-only app badge. Useful when you can't execute JS, such as in Github markdown pages -->
-<a href="ms-windows-store://pdp/?ProductId=XPDC2RH70K22MN&mode=mini">
+<a href="ms-windows-store://pdp/?ProductId=XPDC2RH70K22MN&mode=direct">
    <img src="https://get.microsoft.com/images/en-us%20dark.svg" alt="Download Discord" />
 </a>
 ```
