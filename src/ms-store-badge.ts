@@ -34,7 +34,7 @@ class MSStoreBadge extends HTMLElement {
   /**
     * Indicates whether popup or full mode should be launched. 
     */
-  windowMode: "direct" | "popup" | "full" = "popup";
+  windowMode: "direct" | "popup" | "full" = "direct";
 
   /**
     * Indicates whether badge should be in dark mode, light mode, or auto mode.
@@ -63,7 +63,7 @@ class MSStoreBadge extends HTMLElement {
 
   private readonly PSIDownloadUrl: string = "https://get.microsoft.com/installer/download/";
   private readonly throttleDownload = throttle(performPSIAcquisition, 1500);
-  private readonly imgPSIHandler = () => this.throttleDownload(this.productId, this.productName, undefined, this.getPSIUrl());
+  private readonly imgPSIHandler = () => this.throttleDownload(this.productId, this.productName || "Microsoft Store Direct", undefined, this.getPSIUrl());
   private readonly imgPDPHandler = (e: MouseEvent) => this.launchApp(e);
 
   constructor() {

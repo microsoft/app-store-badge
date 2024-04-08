@@ -198,7 +198,6 @@
       const theme = document.querySelector("#themeSelector").value;
       const animation = document.querySelector("#animationSelector").value;
 
-      console.log(language);
       // We must have an app ID
       if (!appId || appId.length < 12) {
         return;
@@ -206,7 +205,6 @@
 
       const badgeElement = document.createElement("ms-store-badge");
       badgeElement.setAttribute("productId", appId);
-      badgeElement.setAttribute("productname", "Placeholder");
       badgeElement.setAttribute("cid", campaignId);
       badgeElement.setAttribute("window-mode", launchMode);
       badgeElement.setAttribute("theme", theme);
