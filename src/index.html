@@ -120,8 +120,9 @@
           <div class="mb-3">
             <label for="launchModeSelector" class="form-label">Launch Mode</label>
             <select id="launchModeSelector" class="form-control">
-              <option value="popup" selected>Popup</option>
+              <option value="direct" selected>Direct</option>
               <option value="full">Full</option>
+              <option value="popup">Popup</option>
             </select>
           </div>
 
@@ -197,7 +198,6 @@
       const theme = document.querySelector("#themeSelector").value;
       const animation = document.querySelector("#animationSelector").value;
 
-      console.log(language);
       // We must have an app ID
       if (!appId || appId.length < 12) {
         return;

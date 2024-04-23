@@ -1,3 +1,6 @@
+import { performPSIAcquisition } from "./psi-service";
+import { throttle } from "./throttle-async";
+
 /**
  * <ms-store-badge> web component
  *
@@ -14,10 +17,14 @@ class MSStoreBadge extends HTMLElement {
   productId: string = "";
 
   /**
+   * The name of your app, used in PSI service.
+   */
+  productName: string = "";
+  
+  /**
    * The optional campaign ID of your app. 
    */
   cid: string = "";
-
 
   /**
    * Sets the size of the badge. Should be "small" or "large"
@@ -27,7 +34,7 @@ class MSStoreBadge extends HTMLElement {
   /**
     * Indicates whether popup or full mode should be launched. 
     */
-  windowMode: "popup" | "full" = "popup";
+  windowMode: "direct" | "popup" | "full" = "direct";
 
   /**
     * Indicates whether badge should be in dark mode, light mode, or auto mode.
@@ -54,6 +61,11 @@ class MSStoreBadge extends HTMLElement {
   static englishLanguage: SupportedLanguage = { name: "English", code: "en-us", imageSmall: { fileName: "English_S.png", }, imageLarge: { fileName: "en-us dark.svg" }, imageLargeLight: { fileName: "en-us light.svg" } };
   static supportedLanguages = MSStoreBadge.createSupportedLanguages();
 
+  private readonly PSIDownloadUrl: string = "https://get.microsoft.com/installer/download/";
+  private readonly throttleDownload = throttle(performPSIAcquisition, 1500);
+  private readonly imgPSIHandler = () => this.throttleDownload(this.productId, this.productName || "Microsoft Store Direct", undefined, this.getPSIUrl());
+  private readonly imgPDPHandler = (e: MouseEvent) => this.launchApp(e);
+
   constructor() {
     super();
 
@@ -78,6 +90,20 @@ class MSStoreBadge extends HTMLElement {
     }
   }
 
+  updateListeners() {
+    const img = this.shadowRoot?.querySelector("img");
+    // Remove previous listeners if any
+    img?.removeEventListener("click", this.imgPDPHandler);
+    img?.removeEventListener("click", this.imgPSIHandler);
+
+    // Attach new listeners
+    if (this.windowMode === "direct") {
+      img?.addEventListener("click", this.imgPSIHandler);
+    } else {
+      img?.addEventListener("click", this.imgPDPHandler);
+    }
+  }
+
   // Web component lifecycle callback: component added to DOM
   connectedCallback() {
   }
@@ -86,6 +112,7 @@ class MSStoreBadge extends HTMLElement {
   static get observedAttributes(): string[] {
     return [
       "productid",
+      "productname",
       "cid",
       "window-mode",
       "theme",
@@ -106,11 +133,14 @@ class MSStoreBadge extends HTMLElement {
       this.updateImageSrc();
     } else if (name === "productid" && newValue !== oldValue && typeof newValue === "string") {
       this.productId = newValue;
+    } else if (name === "productname" && newValue !== oldValue && typeof newValue === "string") {
+      this.productName = newValue;
     } else if (name === "cid" && newValue !== oldValue && typeof newValue === "string") {
       this.cid = newValue;
-    } else if (name === "window-mode" && (newValue === "popup" || newValue === "full") && oldValue !== newValue) {
+    } else if (name === "window-mode" && (newValue === "popup" || newValue === "full" || newValue === "direct") && oldValue !== newValue) {
       this.windowMode = newValue;
       this.updateImageSrc();
+      this.updateListeners();
     } else if (name === "theme" && (newValue == "dark" || newValue === "light" || newValue === "auto") && oldValue !== newValue) {
       this.theme = newValue;
       this.updateImageSrc();
@@ -300,7 +330,12 @@ class MSStoreBadge extends HTMLElement {
     image.src = this.getImageSource();
     image.className = this.getImageClass();
     image.alt = "Microsoft Store app badge";
-    image.addEventListener("click", (e: MouseEvent) => this.launchApp(e));
+    // Default launch method is now direct, which is PSI
+    if (this.windowMode === "direct") {
+      image.addEventListener("click", this.imgPSIHandler);
+    } else {
+      image.addEventListener("click", this.imgPDPHandler);
+    }
     return image;
   }
 
@@ -354,6 +389,10 @@ class MSStoreBadge extends HTMLElement {
       // We're not on Windows so we can't launch the app. Navigate to the web PDP.
       this.launchStoreWebPdp(e);
     }
+  }
+
+  getPSIUrl(): string {
+    return `${this.PSIDownloadUrl}${this.productId.toUpperCase()}?referrer=appbadge&source=${encodeURIComponent(window.location.hostname.toLowerCase())}`;
   }
 
   launchStoreAppPdp() {
