@@ -51,7 +51,7 @@ jobs:
       - uses: azure/CLI@v1
         with:
           inlineScript: |
-              az storage blob upload --account-name ${{ secrets.AZURE_BLOB_STORAGE_NAME }} -c '$web' -f /home/runner/work/app-store-badge/app-store-badge/dist/ms-store-badge.bundled.js --auth-mode key
+              az storage blob upload --account-name ${{ secrets.AZURE_BLOB_STORAGE_NAME }} -c '$web' -f /home/runner/work/app-store-badge/app-store-badge/dist/ms-store-badge.bundled.js --auth-mode login
 
   deploy_images:
     if: github.ref == 'refs/heads/main'
@@ -68,7 +68,7 @@ jobs:
       - uses: azure/CLI@v1
         with:
           inlineScript: |
-              az storage blob upload-batch --account-name ${{ secrets.AZURE_BLOB_STORAGE_NAME }} -d '$web' --destination-path /images -s /home/runner/work/app-store-badge/app-store-badge/dist/images --auth-mode key
+              az storage blob upload-batch --account-name ${{ secrets.AZURE_BLOB_STORAGE_NAME }} -d $web --destination-path /images -s /home/runner/work/app-store-badge/app-store-badge/dist/images --auth-mode login
 
   close_pull_request_job:
     if: github.ref == 'refs/heads/main' && (github.event_name == 'pull_request' && github.event.action == 'closed')
