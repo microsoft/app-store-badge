@@ -4,8 +4,11 @@ on:
   push:
     branches:
       - main
+permissions:
+  id-token: write
+  contents: read
 
-jobs:     
+jobs:
   build_and_deploy_job:
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed'))
     runs-on: ubuntu-latest
@@ -32,19 +35,23 @@ jobs:
           api_location: "" # Api source code path - optional
           output_location: "/dist" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
-          
+
   deploy_bundle:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: build_and_deploy_job
     name: Upload Bundle to Blob Storage
     steps:
-      - uses: actions/checkout@v2
-      - uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
+      - uses: azure/login@v1
         with:
-          connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
-          container_name: $web
-          source_folder: /home/runner/work/app-store-badge/app-store-badge/dist/ms-store-badge.bundled.js
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - uses: actions/checkout@v2
+      - uses: azure/CLI@v1
+        with:
+          inlineScript: |
+              az storage blob upload --account-name ${{ secrets.AZURE_BLOB_STORAGE_NAME }} -c '$web' -f /home/runner/work/app-store-badge/app-store-badge/dist/ms-store-badge.bundled.js --auth-mode login
 
   deploy_images:
     if: github.ref == 'refs/heads/main'
@@ -52,14 +59,16 @@ jobs:
     needs: build_and_deploy_job
     name: Upload Images to Blob Storage
     steps:
-      - uses: actions/checkout@v2
-      - uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
+      - uses: azure/login@v1
         with:
-          connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
-          container_name: $web
-          source_folder: /home/runner/work/app-store-badge/app-store-badge/dist/images
-          destination_folder: /images
-
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - uses: actions/checkout@v2
+      - uses: azure/CLI@v1
+        with:
+          inlineScript: |
+              az storage blob upload-batch --account-name ${{ secrets.AZURE_BLOB_STORAGE_NAME }} -d $web --destination-path /images -s /home/runner/work/app-store-badge/app-store-badge/dist/images --auth-mode login
 
   close_pull_request_job:
     if: github.ref == 'refs/heads/main' && (github.event_name == 'pull_request' && github.event.action == 'closed')
