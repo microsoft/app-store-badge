@@ -177,13 +177,8 @@ class MSStoreBadge extends HTMLElement {
         box-shadow: 0 12px 40px 20px rgba(0, 0, 0, 0.05);
       }
 
-      img.small {
-        max-height: 52px;
-      }
-
       img.large {
-        max-height: 104px;
-        height: 864px;
+        height: 104px;
       }`
 
 
@@ -207,13 +202,8 @@ class MSStoreBadge extends HTMLElement {
         border-radius: 8px;
       }
 
-      img.small {
-        max-height: 52px;
-      }
-
       img.large {
-        max-height: 104px;
-        height: 864px;
+        height: 104px;
       }`
 
     }
