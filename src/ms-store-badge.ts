@@ -27,14 +27,14 @@ class MSStoreBadge extends HTMLElement {
   cid: string = "";
 
   /**
-   * Sets the size of the badge. Should be "small" or "large"
+   * Sets the size of the badge. Should be "large"
    */
-  size: "small" | "large" = "large";
+  size = "large";
 
   /**
     * Indicates whether popup or full mode should be launched. 
     */
-  windowMode: "direct" | "popup" | "full" = "popup";
+  windowMode: "direct" | "popup" | "full" = "direct";
 
   /**
     * Indicates whether badge should be in dark mode, light mode, or auto mode.
@@ -58,7 +58,7 @@ class MSStoreBadge extends HTMLElement {
   #platformDetails: PlatformDetails = { isWindows: false, windowsVersion: null, isEdgeBrowser: false };
   #cspErrorOccurred = false;
 
-  static englishLanguage: SupportedLanguage = { name: "English", code: "en-us", imageSmall: { fileName: "English_S.png", }, imageLarge: { fileName: "en-us dark.svg" }, imageLargeLight: { fileName: "en-us light.svg" } };
+  static englishLanguage: SupportedLanguage = { name: "English", code: "en-us", imageLarge: { fileName: "en-us dark.svg" }, imageLargeLight: { fileName: "en-us light.svg" } };
   static supportedLanguages = MSStoreBadge.createSupportedLanguages();
 
   private readonly PSIDownloadUrl: string = "https://get.microsoft.com/installer/download/";
@@ -343,28 +343,20 @@ class MSStoreBadge extends HTMLElement {
     var fileName = null;
     //Dark mode
     if (this.theme === "dark") {
-      fileName = this.size === "large" ?
-        this.#languageDetails.imageLarge.fileName :
-        this.#languageDetails.imageSmall.fileName;
+      fileName = this.#languageDetails.imageLarge.fileName
     }
     //Light mode
     else if (this.theme === "light") {
-      fileName = this.size === "large" ?
-        this.#languageDetails.imageLargeLight.fileName :
-        this.#languageDetails.imageSmall.fileName;
+      fileName = this.#languageDetails.imageLargeLight.fileName
     }
     //Auto mode
     else if (this.theme === "auto") {
       const isDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
       if (isDark) { //If detected dark mode
-        fileName = this.size === "large" ?
-          this.#languageDetails.imageLargeLight.fileName :
-          this.#languageDetails.imageSmall.fileName;
+        fileName = this.#languageDetails.imageLargeLight.fileName
       }
       else { //If detected light mode
-        fileName = this.size === "large" ?
-          this.#languageDetails.imageLarge.fileName :
-          this.#languageDetails.imageSmall.fileName;
+        fileName = this.#languageDetails.imageLarge.fileName
       }
     }
     return `${this.#imagesLocation}/${fileName}`;
@@ -480,58 +472,83 @@ class MSStoreBadge extends HTMLElement {
 
   static createSupportedLanguages(): SupportedLanguage[] {
     let languageMap = new Map<string, string>();
-    languageMap.set("Afrikaans", "af-za");
-    languageMap.set("Arabic", "ar-sa");
-    languageMap.set("Belarusian", "be");
-    languageMap.set("Bulgarian", "bg-bg");
+    languageMap.set("Afrikaans", "af");
+    languageMap.set("Albanian", "sq");
+    languageMap.set("Amharic", "am");
+    languageMap.set("Arabic", "ar");
+    languageMap.set("Armenian", "hy");
+    languageMap.set("Assamese", "as");
+    languageMap.set("Azerbaijani", "az");
     languageMap.set("Bengali", "bn");
     languageMap.set("Bosnian", "bs");
-    languageMap.set("Catalan", "ca-es");
-    languageMap.set("Czech", "cs-cz");
-    languageMap.set("Welsh", "cy-gb");
-    languageMap.set("Danish", "da-dk");
-    languageMap.set("German", "de-de");
-    languageMap.set("Greek", "el-gr");
-    languageMap.set("English", "en-us");
-    languageMap.set("Spanish", "es-es");
-    languageMap.set("Estonian", "et-ee");
-    languageMap.set("Persian", "fa-ir");
-    languageMap.set("Finnish", "fi-fi");
-    languageMap.set("Filipino", "fil");
-    languageMap.set("French", "fr-ca");
-    languageMap.set("Galician", "gl-es");
-    languageMap.set("Hebrew", "he-il");
-    languageMap.set("Hindi", "hi-in");
-    languageMap.set("Croatian", "hr-hr");
-    languageMap.set("Hungarian", "hu-hu");
-    languageMap.set("Indonesian", "id-id");
-    languageMap.set("Icelandic", "is-is");
-    languageMap.set("Italian", "it-it");
-    languageMap.set("Japanese", "ja-jp");
-    languageMap.set("Georgian", "ka-ge");
-    languageMap.set("Kazakh", "kk-kz");
-    languageMap.set("Korean", "ko-kr");
-    languageMap.set("Lithuanian", "lt-lt");
-    languageMap.set("Latvian", "lv-lv");
-    languageMap.set("Malay", "ms-my");
-    languageMap.set("Norwegian", "nb-no");
-    languageMap.set("Dutch", "nl-nl");
-    languageMap.set("Polish", "pl-pl");
-    languageMap.set("Portuguese_Brazil", "pt-br");
-    languageMap.set("Portuguese_Portugal", "pt-pt");
-    languageMap.set("Romanian", "ro-ro");
-    languageMap.set("Russian", "ru-ru");
-    languageMap.set("Slovak", "sk-sk");
-    languageMap.set("Slovenian", "sl-si");
-    languageMap.set("Serbian", "sr-cyrl-rs");
-    languageMap.set("Swedish", "sv-se");
-    languageMap.set("Swahili", "sw");
-    languageMap.set("Thai", "th-th");
-    languageMap.set("Turkish", "tr-tr");
-    languageMap.set("Ukrainian", "uk-ua");
-    languageMap.set("Vietnamese", "vi-vn");
+    languageMap.set("Bulgarian", "bg");
+    languageMap.set("Catalan", "ca");
     languageMap.set("Chinese_Simplified", "zh-cn");
     languageMap.set("Chinese_Traditional", "zh-tw");
+    languageMap.set("Croatian", "hr");
+    languageMap.set("Czech", "cs");
+    languageMap.set("Danish", "da");
+    languageMap.set("Dutch", "nl");
+    languageMap.set("English", "en-us");
+    languageMap.set("Estonian", "et");
+    languageMap.set("Filipino", "fil");
+    languageMap.set("Finnish", "fi");
+    languageMap.set("French", "fr");
+    languageMap.set("Galician", "gl");
+    languageMap.set("Georgian", "ka");
+    languageMap.set("German", "de");
+    languageMap.set("Greek", "el");
+    languageMap.set("Gujarati", "gu");
+    languageMap.set("Hebrew", "he");
+    languageMap.set("Hindi", "hi");
+    languageMap.set("Hungarian", "hu");
+    languageMap.set("Icelandic", "is");
+    languageMap.set("Indonesian", "id");
+    languageMap.set("Irish", "ga");
+    languageMap.set("Italian", "it");
+    languageMap.set("Japanese", "ja");
+    languageMap.set("Kannada", "kn");
+    languageMap.set("Kazakh", "kk");
+    languageMap.set("Khmer", "km");
+    languageMap.set("Konkani", "kok");
+    languageMap.set("Korean", "ko");
+    languageMap.set("Lao", "lo");
+    languageMap.set("Latvian", "lv");
+    languageMap.set("Lithuanian", "lt");
+    languageMap.set("Luxembourgish", "lb");
+    languageMap.set("Macedonian", "mk");
+    languageMap.set("Malay", "ms");
+    languageMap.set("Malayalam", "ml");
+    languageMap.set("Maltese", "mt");
+    languageMap.set("Māori", "mi");
+    languageMap.set("Marathi", "mr");
+    languageMap.set("Nepali", "ne");
+    languageMap.set("Norwegian", "nn");
+    languageMap.set("Oriya", "or");
+    languageMap.set("Persian", "fa");
+    languageMap.set("Polish", "pl");
+    languageMap.set("Portuguese_Brazil", "pt-br");
+    languageMap.set("Portuguese_Portugal", "pt-pt");
+    languageMap.set("Punjabi", "pa");
+    languageMap.set("Quechua", "quz");
+    languageMap.set("Romanian", "ro");
+    languageMap.set("Russian", "ru");
+    languageMap.set("Scottish_Gaelic", "gd");
+    languageMap.set("Serbian", "sr");
+    languageMap.set("Slovak", "sk");
+    languageMap.set("Slovenian", "sl");
+    languageMap.set("Spanish", "es");
+    languageMap.set("Swedish", "sv");
+    languageMap.set("Tamil", "ta");
+    languageMap.set("Telugu", "te");
+    languageMap.set("Thai", "th");
+    languageMap.set("Turkish", "tr");
+    languageMap.set("Uighur", "ug");
+    languageMap.set("Ukrainian", "uk");
+    languageMap.set("Urdu", "ur");
+    languageMap.set("Uzbek", "uz");
+    languageMap.set("Vietnamese", "vi");
+    languageMap.set("Welsh", "cy");
 
     let language: SupportedLanguage[] = [];
 
@@ -540,7 +557,6 @@ class MSStoreBadge extends HTMLElement {
         name: name,
         imageLarge: { fileName: languageMap.get(name)!.concat(" ").concat("dark.svg") },
         imageLargeLight: { fileName: languageMap.get(name)!.concat(" ").concat("light.svg") },
-        imageSmall: { fileName: name.concat("_S.png") },
         code: languageMap.get(name) || ""
       }
       language.push(currLanguage);
@@ -553,7 +569,6 @@ interface SupportedLanguage {
   name: string;
   imageLarge: SupportedLanguageImage;
   imageLargeLight: SupportedLanguageImage;
-  imageSmall: SupportedLanguageImage;
   code: string;
 }
 
