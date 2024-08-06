@@ -179,6 +179,10 @@ class MSStoreBadge extends HTMLElement {
 
       img.large {
         height: 104px;
+      }
+      
+      div {
+        height: 104px;
       }`
 
 
@@ -203,6 +207,10 @@ class MSStoreBadge extends HTMLElement {
       }
 
       img.large {
+        height: 104px;
+      }
+
+      div {
         height: 104px;
       }`
 
