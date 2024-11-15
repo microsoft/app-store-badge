@@ -8,7 +8,15 @@ steps:
   - checkout: self
     submodules: true
 
-  # Build and deploy to Azure Static Web App
+  # Build steps for the project
+  - script: |
+      cd src
+      tsc -t es2015 ms-store-badge.ts
+      npm install
+      npm run build:prod
+    displayName: 'Build Project'
+
+  # Deploy to Azure Static Web App
   - task: AzureStaticWebApp@0
     inputs:
       app_location: '/' 
