@@ -24,29 +24,9 @@ steps:
       output_location: '/dist'  # Built app content directory relative to app_location
       azure_static_web_apps_api_token: $(DEPLOYMENT_TOKEN)
 
-  # Upload bundle to Blob Storage
-  - task: AzureCLI@2
-    displayName: 'Upload Bundle to Blob Storage'
+  # Publish build artifacts
+  - task: PublishBuildArtifacts@1
     inputs:
-      azureSubscription: $(AZURE_SUBSCRIPTION_CONNECTION)
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        az storage blob upload \
-          --account-name $(AZURE_STORAGE_ACCOUNT_NAME) \
-          --container-name $web \
-          --file "$(System.DefaultWorkingDirectory)/dist/ms-store-badge.bundled.js" \
-          --name ms-store-badge.bundled.js
-
-  # Upload images to Blob Storage
-  - task: AzureCLI@2
-    displayName: 'Upload Images to Blob Storage'
-    inputs:
-      azureSubscription: $(AZURE_SUBSCRIPTION_CONNECTION)
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        az storage blob upload-batch \
-          --account-name $(AZURE_STORAGE_ACCOUNT_NAME) \
-          --destination $web/images \
-          --source "$(System.DefaultWorkingDirectory)/dist/images"
+      PathtoPublish: '$(System.DefaultWorkingDirectory)/dist'
+      ArtifactName: 'ms-store-badge-artifacts'
+      publishLocation: 'Container'
