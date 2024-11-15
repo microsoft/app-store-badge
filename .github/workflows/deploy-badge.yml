@@ -1,0 +1,74 @@
+name: Azure Static Web Apps CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:     
+  build_and_deploy_job:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed'))
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - run: |
+          cd src
+          tsc -t es2015 ms-store-badge.ts
+          npm i
+          npm run build:prod
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_KIND_POND }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: "upload"
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: "/" # App source code path
+          api_location: "" # Api source code path - optional
+          output_location: "/dist" # Built app content directory - optional
+          ###### End of Repository/Build Configurations ######
+          
+  deploy_bundle:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: build_and_deploy_job
+    name: Upload Bundle to Blob Storage
+    steps:
+      - uses: actions/checkout@v2
+      - uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
+        with:
+          connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
+          container_name: $web
+          source_folder: /home/runner/work/app-store-badge/app-store-badge/dist/ms-store-badge.bundled.js
+
+  deploy_images:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: build_and_deploy_job
+    name: Upload Images to Blob Storage
+    steps:
+      - uses: actions/checkout@v2
+      - uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
+        with:
+          connection_string: ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}
+          container_name: $web
+          source_folder: /home/runner/work/app-store-badge/app-store-badge/dist/images
+          destination_folder: /images
+
+
+  close_pull_request_job:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'pull_request' && github.event.action == 'closed')
+    runs-on: ubuntu-latest
+    name: Close Pull Request Job
+    steps:
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ICY_CLIFF_0FFBDD510 }}
+          action: "close"

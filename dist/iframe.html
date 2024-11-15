@@ -1,0 +1,36 @@
+<!-- Page to be hosted on a specific domain, allowed by default to do protocol launch in Edge, to be injected as an iframe on ISVs website -->
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Microsoft Store Popup Badge</title>
+
+<body>
+</body>
+
+</html>
+<script>
+    // Listen for when we're asked to launch the mini PDP
+    window.addEventListener("message", function (e) {
+        if (e.data && e.data.message === "launch") {
+            // Validate product ID.
+            if (!e.data.productId) {
+                return;
+            }
+
+            const desiredUrl = "ms-windows-store://pdp/" +
+                "?productid=" + encodeURIComponent(e.data.productId) +
+                ((!e.data.cid) ? "" : "&cid=" + encodeURIComponent(e.data.cid)) +
+                "&referrer=appbadge" +
+                "&source=" + (e.data.source ? encodeURIComponent(e.data.source.toLowerCase()) : "") +
+                (e.data.windowMode === "popup" ? "&mode=mini&pos=" : "&pos=") +
+                Math.floor(window.screenLeft * window.devicePixelRatio) +
+                "," + Math.floor(window.screenTop * window.devicePixelRatio) +
+                "," + Math.floor(window.outerWidth * window.devicePixelRatio) +
+                "," + Math.floor(window.outerHeight * window.devicePixelRatio);
+            location.href = desiredUrl;
+        }
+    });
+</script>
