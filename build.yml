@@ -1,0 +1,60 @@
+trigger:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - checkout: self
+    submodules: true
+
+  # Build steps for the project
+  - script: |
+      cd src
+      tsc -t es2015 ms-store-badge.ts
+      npm install
+      npm run build:prod
+    displayName: 'Build Project'
+
+  # Deploy to Azure Static Web App
+  - task: AzureStaticWebApp@0
+    inputs:
+      app_location: '/' 
+      api_location: '' 
+      output_location: '/dist'  # Built app content directory relative to app_location
+      azure_static_web_apps_api_token: $(DEPLOYMENT_TOKEN)
+
+  # Upload bundle to Blob Storage
+  - task: AzureCLI@2
+    displayName: 'Upload Bundle to Blob Storage'
+    inputs:
+      azureSubscription: $(AZURE_SUBSCRIPTION_CONNECTION)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az storage blob upload \
+          --account-name $(AZURE_STORAGE_ACCOUNT_NAME) \
+          --container-name $web \
+          --file "$(System.DefaultWorkingDirectory)/dist/ms-store-badge.bundled.js" \
+          --name ms-store-badge.bundled.js
+
+  # Upload images to Blob Storage
+  - task: AzureCLI@2
+    displayName: 'Upload Images to Blob Storage'
+    inputs:
+      azureSubscription: $(AZURE_SUBSCRIPTION_CONNECTION)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az storage blob upload-batch \
+          --account-name $(AZURE_STORAGE_ACCOUNT_NAME) \
+          --destination $web/images \
+          --source "$(System.DefaultWorkingDirectory)/dist/images"
+
+  # Optional: Clean up any closed pull requests
+  - task: AzureStaticWebApp@0
+    condition: eq(variables['Build.Reason'], 'PullRequest') && eq(variables['System.PullRequest.IsFork'], False)
+    displayName: 'Close Pull Request'
+    inputs:
+      action: 'close'
+      azure_static_web_apps_api_token: $(DEPLOYMENT_TOKEN)
