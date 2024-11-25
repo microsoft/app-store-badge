@@ -7,6 +7,11 @@ pool:
 steps:
   - checkout: self
     submodules: true
+    
+  # Authenticate to NPM
+  - task: NpmAuthenticate@1
+    inputs:
+      workingFile: '.npmrc'
 
   # Build steps for the project
   - script: |
