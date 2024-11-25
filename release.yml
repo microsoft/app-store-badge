@@ -1,0 +1,67 @@
+trigger: none
+resources:
+  repositories:
+  - repository: 1ESPipelineTemplates
+    type: git
+    name: 1ESPipelineTemplates/1ESPipelineTemplates
+    ref: refs/tags/release
+  pipelines:
+  - pipeline: PrimaryArtifact
+    source: Store Web - Badge Build
+    project: Universal Store
+
+extends:
+  template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
+  parameters:
+    serviceTreeId: 1a9bb503-6b08-4768-9991-beb0f1c8e7ba
+    pool:
+      name: Azure-Pipelines-1ESPT-ExDShared
+      image: windows-latest
+      os: windows
+    stages:
+    - stage: Prod_prod_0
+      displayName: Request Lockbox approval
+      templateContext:
+        cloud: Public
+        isProduction: true
+        approval:
+          workflow: lockbox
+          scope:
+            serviceGroupName: Microsoft.M365.OneBranch.Standard
+            subscriptionIds:
+            - 74a6c3e5-c954-4157-b6b2-2a2eb1fbc922
+    
+    - stage: Prod_prod_1
+      displayName: Upload bundle and images to Torus subscription
+      jobs:
+      - job: DropFilesInStorageAccount
+        displayName: Drop Files in Storage Account
+        pool:
+          name: Azure-Pipelines-1ESPT-ExDShared
+          vmImage: 'windows-latest'
+        steps:
+        - task: AzureCLI@2
+          inputs:
+            azureSubscription: 'Arm-Public-Placeholder-Endpoint'
+            scriptType: 'ps'
+            scriptLocation: 'inlineScript'
+            inlineScript: |
+              # Define variables
+              $storageAccountName = 'sabadgedelivery'
+              $containerName = '$web'
+              $sourceFilePath = '$(System.DefaultWorkingDirectory)/_Store Web - Badge Build/ms-store-badge-artifacts/badge/ms-store-badge.bundled.js'
+              $sourceDirPath = '$(System.DefaultWorkingDirectory)/_Store Web - Badge Build/ms-store-badge-artifacts/images'
+
+              # Upload file to storage account
+              az storage blob upload `
+                --account-name $storageAccountName `
+                --container-name $containerName `
+                --file $sourceFilePath `
+                --auth-mode login
+
+              # Upload directory to storage account
+              az storage blob upload-batch `
+                --account-name $storageAccountName `
+                --destination $containerName `
+                --source $sourceDirPath `
+                --auth-mode login
