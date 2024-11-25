@@ -11,9 +11,9 @@ steps:
     # Authenticate npm
   - script: |
       npm install -g vsts-npm-auth 
-      vsts-npm-auth -config .npmrc
+      vsts-npm-auth -config .npmrc -f
     displayName: 'Authenticate npm registry'
-    
+
   # Build steps for the project
   - script: |
       cd src
