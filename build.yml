@@ -9,7 +9,7 @@ steps:
     submodules: true
     
   # Authenticate to NPM
-  - task: NpmAuthenticate@1
+  - task: NpmAuthenticate@0
     inputs:
       workingFile: '.npmrc'
 
