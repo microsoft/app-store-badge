@@ -7,6 +7,14 @@ pool:
 steps:
   - checkout: self
     submodules: true
+
+  # Set permissions
+  - script: |
+      ls -l .npmrc
+      ls -l
+      sudo chmod -R 644 .
+    displayName: 'Fix Repository Permissions'
+
     
   # Authenticate to NPM
   - task: NpmAuthenticate@0
