@@ -11,12 +11,13 @@ steps:
   - script: |
       sudo chmod -R 777 /home/vsts/work/1/s
       ls -l /home/vsts/work/1/s/.npmrc
-    displayName: 'Fix Permissions for Directory and .npmrc'
+    displayName: 'Add vsts directory permissions'
     
   # Authenticate to NPM
   - task: NpmAuthenticate@0
     inputs:
       workingFile: '.npmrc'
+    displayName: 'Authenticate to NPM'
 
   # Build steps for the project
   - script: |
@@ -24,8 +25,7 @@ steps:
       tsc -t es2015 ms-store-badge.ts
       npm install
       npm run build:prod
-      cd ..
-    displayName: 'Build Project'
+    displayName: 'Build badge'
 
   # Deploy to Azure Static Web App
   - task: AzureStaticWebApp@0
@@ -34,6 +34,7 @@ steps:
       api_location: '' 
       output_location: '/dist'  # Built app content directory relative to app_location
       azure_static_web_apps_api_token: $(DEPLOYMENT_TOKEN)
+    displayName: 'Deploy to SWA'
 
   # Publish build artifacts
   - task: PublishBuildArtifacts@1
@@ -41,3 +42,4 @@ steps:
       PathtoPublish: '$(System.DefaultWorkingDirectory)/dist'
       ArtifactName: 'ms-store-badge-artifacts'
       publishLocation: 'Container'
+    displayName: 'Publish build artifact'
