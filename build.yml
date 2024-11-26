@@ -10,8 +10,8 @@ steps:
 
   # Add .npmrc permissions to pipeline user
   - script: |
-    sudo chmod 644 .npmrc
-   displayName: 'Fix .npmrc Permissions'
+      sudo chmod 644 .npmrc
+    displayName: 'Fix .npmrc Permissions'
     
   # Authenticate to NPM
   - task: NpmAuthenticate@0
