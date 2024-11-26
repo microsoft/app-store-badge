@@ -7,6 +7,11 @@ pool:
 steps:
   - checkout: self
     submodules: true
+
+  # Add .npmrc permissions to pipeline user
+  - script: |
+    sudo chmod 644 .npmrc
+   displayName: 'Fix .npmrc Permissions'
     
   # Authenticate to NPM
   - task: NpmAuthenticate@0
