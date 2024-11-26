@@ -12,7 +12,6 @@ steps:
   - script: |
       ls -l .npmrc
       ls -l
-      sudo chmod -R 644 .
     displayName: 'Fix Repository Permissions'
 
     
