@@ -8,11 +8,10 @@ steps:
   - checkout: self
     submodules: true
 
-  # Set permissions
   - script: |
-      ls -ld /home/vsts/work/1/s
+      sudo chmod -R 777 /home/vsts/work/1/s
       ls -l /home/vsts/work/1/s/.npmrc
-    displayName: 'Check Directory and .npmrc Permissions'
+    displayName: 'Fix Permissions for Directory and .npmrc'
     
   # Authenticate to NPM
   - task: NpmAuthenticate@0
