@@ -8,6 +8,7 @@
     },
     "allowedForwardedHosts": [
       "getbadgefd.azurefd.net",
+      "getbadgefd-fve8angnggd6gwc7.b02.azurefd.net",
       "get.microsoft.com"
     ]
   }

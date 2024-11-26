@@ -19,6 +19,7 @@ steps:
       tsc -t es2015 ms-store-badge.ts
       npm install
       npm run build:prod
+      cd ..
     displayName: 'Build Project'
 
   # Deploy to Azure Static Web App
