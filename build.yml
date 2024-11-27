@@ -63,8 +63,8 @@ steps:
 
       git checkout github/main
 
-      # Merge changes from ADO repository
-      git merge origin/main --allow-unrelated-histories --no-edit
+      # Merge changes from ADO repository, take our side, and allow unrelated histories
+      git merge origin/main -X ours --allow-unrelated-histories --no-edit
 
       # Push the changes to GH
       git push github main
