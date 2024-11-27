@@ -77,4 +77,4 @@ To build for production, `npm run build`. This will create the production artifa
 
 ## Deploying
 
-Github actions are set to deploy successful builds of main to the app badge CDN.
+ADO release pipeline is set to deploy successful builds of main to the app badge CDN. Code changes are then synced to GH repo for open source visibility.
