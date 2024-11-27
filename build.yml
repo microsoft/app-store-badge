@@ -52,7 +52,7 @@ steps:
       git config --global user.name "Justin Lau"
       git config --global user.email "justinlau@microsoft.com"
 
-      # Add remote GH repository
+      # Add remote GH badge repo
       git remote add github https://$(GITHUB_TOKEN)@github.com/microsoft/app-store-badge.git
 
       # Fetch the latest changes
