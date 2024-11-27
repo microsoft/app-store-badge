@@ -71,7 +71,7 @@ steps:
       git commit -m "Sync from ADO repo" || echo "No changes to commit"
 
       # Push the changes to GH
-      git push github/main HEAD:main
+      git push github HEAD:main --force
 
     displayName: 'Sync ADO Repo to GitHub'
     env:
