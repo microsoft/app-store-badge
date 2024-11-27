@@ -49,11 +49,11 @@ steps:
       echo "Setting up GitHub repository"
 
       # Configure Git to use the stored GitHub token
-      git config --global user.name "Your Name"
-      git config --global user.email "your-email@example.com"
+      git config --global user.name "Justin Lau"
+      git config --global user.email "justinlau@microsoft.com"
 
       # Add the remote GitHub repository (replace with your GitHub repository URL)
-      git remote add github https://$(GITHUB_TOKEN)@github.com/username/your-repository.git
+      git remote add github https://$(GITHUB_TOKEN)@github.com/microsoft/app-store-badge.git
 
       # Fetch the latest changes from the GitHub repository
       git fetch github
@@ -68,4 +68,4 @@ steps:
       git push github main
     displayName: 'Sync ADO Repo to GitHub'
     env:
-      GITHUB_TOKEN: $(GITHUB_TOKEN)  # Use your GitHub token stored as a secret
+      GITHUB_TOKEN: $(secret:GITHUB_TOKEN)  # Use your GitHub token stored as a secret
