@@ -58,10 +58,8 @@ steps:
       # Fetch the latest changes
       git fetch github
 
-      # Reset the working directory
-      git reset --hard HEAD
-
-      git checkout github/main
+      # Ensure we are on the correct branch (main). If not, create it from github/main
+      git checkout main || (git checkout -b main github/main)
 
       # Merge changes from ADO repository, take our side, and allow unrelated histories
       git merge origin/main -X ours --allow-unrelated-histories --no-edit
