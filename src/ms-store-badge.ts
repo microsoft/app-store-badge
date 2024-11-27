@@ -8,6 +8,8 @@ import { throttle } from "./throttle-async";
  * the browser security pop-up asking to launch another apps. Browsers other than Edge will show the
  * security pop-up.
  * 
+ * Code lives in ADO repo, migrated from GitHub as of 11/2024.
+ * 
  * On non-Windows 10+ machines, it will simply display an href with an image to redirect to the Web PDP
  */
 class MSStoreBadge extends HTMLElement {
