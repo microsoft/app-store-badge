@@ -64,6 +64,9 @@ steps:
       # Merge changes from ADO repository, take our side, and allow unrelated histories
       git merge origin/main -X ours --allow-unrelated-histories --no-edit
 
+      # Add changes
+      git add -A
+
       # Commit changes
       git commit -m "Sync from ADO repo" || echo "No changes to commit"
 
