@@ -59,7 +59,7 @@ steps:
       git fetch github
 
       # Checkout the branch you want to sync to (replace 'main' with your branch)
-      git checkout main
+      git checkout github/main
 
       # Merge changes from ADO repository
       git merge origin/main --no-edit
