@@ -52,20 +52,23 @@ steps:
       git config --global user.name "Justin Lau"
       git config --global user.email "justinlau@microsoft.com"
 
-      # Add the remote GitHub repository (replace with your GitHub repository URL)
+      # Add remote GH repository
       git remote add github https://$(GITHUB_TOKEN)@github.com/microsoft/app-store-badge.git
 
-      # Fetch the latest changes from the GitHub repository
+      # Fetch the latest changes
       git fetch github
 
-      # Checkout the branch you want to sync to (replace 'main' with your branch)
+      # Reset the working directory
+      git reset --hard HEAD
+
       git checkout github/main
 
       # Merge changes from ADO repository
       git merge origin/main --no-edit
 
-      # Push the changes to GitHub repository
+      # Push the changes to GH
       git push github main
     displayName: 'Sync ADO Repo to GitHub'
     env:
-      GITHUB_TOKEN: $(secret:GITHUB_TOKEN)  # Use your GitHub token stored as a secret
+      GITHUB_TOKEN: $(GITHUB_TOKEN)
+
