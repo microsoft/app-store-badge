@@ -285,7 +285,7 @@ class MSStoreBadge extends HTMLElement {
 
   static getSupportedLanguageFromUserAgent(): SupportedLanguage {
     // Is the navigator language one of our supported languages? If so, use that.
-    const navigatorLanguage = MSStoreBadge.supportedLanguages.find(l => l.name === navigator.language);
+    const navigatorLanguage = MSStoreBadge.supportedLanguages.find(l => l.code.toLowerCase() === (navigator.language || '').toLowerCase());
     if (navigatorLanguage) {
       return navigatorLanguage;
     }
@@ -306,7 +306,7 @@ class MSStoreBadge extends HTMLElement {
     const dashIndex = navigator.language.indexOf("-");
     if (dashIndex > 0) {
       const languageOnly = navigator.language.substring(0, dashIndex);
-      const supportedLanguage = MSStoreBadge.supportedLanguages.find(l => l.name === languageOnly);
+      const supportedLanguage = MSStoreBadge.supportedLanguages.find(l => l.code.toLowerCase() === languageOnly.toLowerCase());
       if (supportedLanguage) {
         return supportedLanguage;
       }
