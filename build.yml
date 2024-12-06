@@ -64,8 +64,8 @@ steps:
       # Merge changes from ADO repository, take our side by default, and allow unrelated histories
       git merge origin/main -X ours --allow-unrelated-histories --no-edit
 
-      # Checkout the .npmrc file from the GitHub repository (take GH's version of .npmrc)
-      git checkout github/main -- .npmrc
+      # Remove .npmrc file
+      git rm .npmrc
 
       # Add changes
       git add -A
