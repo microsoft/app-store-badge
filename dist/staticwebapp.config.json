@@ -1,11 +1,10 @@
 {
-    "networking": {
-    "allowedIpRanges": ["AzureFrontDoor.Backend"]
+  "networking": {
+    "allowedIpRanges": [
+      "AzureFrontDoor.Backend"
+    ]
   },
   "forwardingGateway": {
-    "requiredHeaders": {
-      "X-Azure-FDID" : "a882ef8d-9361-432a-98f6-fd73c300d6a3"
-    },
     "allowedForwardedHosts": [
       "getbadgefd.azurefd.net",
       "getbadgefd-fve8angnggd6gwc7.b02.azurefd.net",
