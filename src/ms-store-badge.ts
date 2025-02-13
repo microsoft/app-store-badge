@@ -34,9 +34,10 @@ class MSStoreBadge extends HTMLElement {
   size = "large";
 
   /**
-    * Indicates whether popup or full mode should be launched. 
+    * Indicates whether direct or full mode should be launched. Direct is PSI, full is full PDP. 
+    * If popup (mini) is specified, it falls back to full. Otherwise, fallback is direct.
     */
-  windowMode: "direct" | "popup" | "full" = "direct";
+  windowMode: "direct" | "full" | "popup" = "direct";
 
   /**
     * Indicates whether badge should be in dark mode, light mode, or auto mode.
@@ -140,6 +141,10 @@ class MSStoreBadge extends HTMLElement {
     } else if (name === "cid" && newValue !== oldValue && typeof newValue === "string") {
       this.cid = newValue;
     } else if (name === "window-mode" && (newValue === "popup" || newValue === "full" || newValue === "direct") && oldValue !== newValue) {
+      // Deprecated mini mode. If sent, fallback to full.
+      if (this.windowMode === "popup") {
+        this.windowMode = "full";
+      }
       this.windowMode = newValue;
       this.updateImageSrc();
       this.updateListeners();
@@ -372,11 +377,11 @@ class MSStoreBadge extends HTMLElement {
     }
 
     if (this.#platformDetails.isWindows && this.#platformDetails.isEdgeBrowser) {
-      // Are we on Edge on Windows? Launch the mini PDP via the iframe hosted on Edge's whitelisted domain.
+      // Are we on Edge on Windows? Launch the full PDP via the iframe hosted on Edge's whitelisted domain.
       this.launchStoreAppPdpViaWhitelistedDomain();
     } else if (this.#platformDetails.isWindows) {
       // We're on some other browser on Windows. Launch via ms-store-app:// protocol.
-      this.launchStoreAppPdp();
+      this.launchFullStoreApp();
     } else {
       // We're not on Windows so we can't launch the app. Navigate to the web PDP.
       this.launchStoreWebPdp(e);
@@ -387,7 +392,7 @@ class MSStoreBadge extends HTMLElement {
     return `${this.PSIDownloadUrl}${this.productId.toUpperCase()}?referrer=appbadge&source=${encodeURIComponent(window.location.hostname.toLowerCase())}`;
   }
 
-  launchStoreAppPdp() {
+  launchFullStoreApp() {
     const searchParams = new URLSearchParams();
     searchParams.append("productid", this.productId);
     searchParams.append("referrer", "appbadge");
@@ -395,17 +400,6 @@ class MSStoreBadge extends HTMLElement {
     
     if (this.cid) {
       searchParams.append("cid", this.cid);
-    }
-
-    if (this.windowMode === "popup") {
-      searchParams.append("mode", "mini");
-      const position = [
-        Math.floor(window.screenLeft * window.devicePixelRatio), 
-        Math.floor(window.screenTop * window.devicePixelRatio), 
-        Math.floor(window.outerWidth * window.devicePixelRatio),
-        Math.floor(window.outerHeight * window.devicePixelRatio)
-      ];
-      searchParams.append("pos", position.join(","))
     }
 
     location.href = "ms-windows-store://pdp/?" + searchParams.toString();
@@ -418,7 +412,7 @@ class MSStoreBadge extends HTMLElement {
     if (this.#cspErrorOccurred || !iframe || !iframe.contentWindow) {
       // If a CSP error occurred due to the whitelisted iframe, we can't launch via whitelisted iframe.
       // Fallback to using the ms-windows-store:// protocol.
-      this.launchStoreAppPdp();
+      this.launchFullStoreApp();
     } else {
       this.#launchViaProtocolOnCspError();
 
@@ -461,7 +455,7 @@ class MSStoreBadge extends HTMLElement {
     const cspErrorListener = (e: SecurityPolicyViolationEvent) => {
       if (e.violatedDirective === "frame-src" && e.type === cspErrorEventName) {
         this.#cspErrorOccurred = true;
-        this.launchStoreAppPdp();
+        this.launchFullStoreApp();
       }
     }
     document.addEventListener(cspErrorEventName, cspErrorListener, { once: true }); // Once, because we'll only get the error once, even if we try to launch multiple times.
