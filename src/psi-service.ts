@@ -47,6 +47,11 @@ export async function performPSIAcquisition(productId: string, productName: stri
             }
         }
 
+        // Ensure filename has .exe extension
+        if (!filename.toLowerCase().endsWith('.exe')) {
+            filename += '.exe';
+        }
+
         const data = await response.blob();
         const fileURL = URL.createObjectURL(data);
 

@@ -45,6 +45,10 @@ export async function performPSIAcquisition(productId, productName, options = {}
                 filename = match[1];
             }
         }
+        // Ensure filename has .exe extension
+        if (!filename.toLowerCase().endsWith('.exe')) {
+            filename += '.exe';
+        }
         const data = await response.blob();
         const fileURL = URL.createObjectURL(data);
         // Create a hidden link element and initiate the download
