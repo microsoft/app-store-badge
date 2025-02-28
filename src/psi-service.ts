@@ -38,19 +38,8 @@ export async function performPSIAcquisition(productId: string, productName: stri
 
     // Helper method to retrieve installer template from response
     async function getDownload(response: Response) {
-        const contentDisposition = response.headers.get("Content-Disposition");
-        let filename = `${productName} Installer.exe`; // Default file name
-        if (contentDisposition) {
-            const match = contentDisposition?.match(/filename\*=UTF-8''([\w%]*)/i);
-            if (match && match[1]) {
-                filename = match[1];
-            }
-        }
-
-        // Ensure filename has .exe extension
-        if (!filename.toLowerCase().endsWith('.exe')) {
-            filename += '.exe';
-        }
+        // Grab file name from custom header. Otherwise, use fallback title.
+        const psiFileName = response.headers.get("X-PSI-FileName") ?? `${productName} Installer.exe`;
 
         const data = await response.blob();
         const fileURL = URL.createObjectURL(data);
@@ -58,7 +47,7 @@ export async function performPSIAcquisition(productId: string, productName: stri
         // Create a hidden link element and initiate the download
         const link = document.createElement("a");
         link.href = fileURL;
-        link.download = decodeURIComponent(filename);
+        link.download = decodeURIComponent(psiFileName);
         link.style.display = "none";
         document.body.appendChild(link);
 
