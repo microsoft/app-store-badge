@@ -1,67 +1,100 @@
+# This Yaml Document has been converted by ESAI Yaml Pipeline Conversion Tool.
 trigger: none
+name: $(Date:yyyyMMdd).$(Rev:r)
 resources:
+  pipelines:
+  - pipeline: '_StoreWeb-BadgeBuild'
+    project: 'Universal Store'
+    source: 'Store Web - Badge Build'
   repositories:
   - repository: 1ESPipelineTemplates
     type: git
     name: 1ESPipelineTemplates/1ESPipelineTemplates
     ref: refs/tags/release
-  pipelines:
-  - pipeline: PrimaryArtifact
-    source: Store Web - Badge Build
-    project: Universal Store
-
 extends:
   template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
   parameters:
-    serviceTreeId: 1a9bb503-6b08-4768-9991-beb0f1c8e7ba
     pool:
-      name: Azure-Pipelines-1ESPT-ExDShared
-      image: windows-latest
-      os: windows
+      name: StoreWebBuildPool-Centeral
+    serviceTreeId: 74a6c3e5-c954-4157-b6b2-2a2eb1fbc922
+    customBuildTags:
+    - ES365AIMigrationTooling-Release-MOBR
     stages:
-    - stage: Prod_prod_0
-      displayName: Request Lockbox approval
+    - stage: Deploy_Static_Web_App
+      displayName: Deploy Static Web App
+      jobs:
+      - job: DeployJob
+        displayName: Deploy Static Web App Job
+        condition: succeeded()
+        timeoutInMinutes: 0
+        templateContext:
+          inputs:
+          - input: pipelineArtifact
+            buildType: specific
+            project: Universal Store
+            definition: 151610
+            branchName: main
+            artifactName: 'ms-store-badge-artifacts'
+            targetPath: '$(System.ArtifactsDirectory)'
+        steps:
+        - task: NodeTool@0
+          displayName: 'Install Node.js'
+          inputs:
+            versionSpec: '18.x'
+
+        - script: |
+            npm install -g @azure/static-web-apps-cli
+            swa deploy "$(System.ArtifactsDirectory)/dist" --deployment-token $(DEPLOYMENT_TOKEN)
+          displayName: 'Deploy to Static Web App using swa CLI'
+
+
+    - stage: Deploy_To_PROD_SA
+      displayName: Drop badge build to Prod SA
       templateContext:
         cloud: Public
         isProduction: true
         approval:
           workflow: lockbox
           scope:
-            serviceGroupName: Microsoft.M365.OneBranch.Standard
+            serviceGroupName: APS Store Web
             subscriptionIds:
             - 74a6c3e5-c954-4157-b6b2-2a2eb1fbc922
-    
-    - stage: Prod_prod_1
-      displayName: Upload bundle and images to Torus subscription
       jobs:
-      - job: DropFilesInStorageAccount
-        displayName: Drop Files in Storage Account
-        pool:
-          name: Azure-Pipelines-1ESPT-ExDShared
-          vmImage: 'windows-latest'
-        steps:
-        - task: AzureCLI@2
+      - job: Job_2
+        displayName: Agent job
+        condition: succeeded()
+        timeoutInMinutes: 0
+        templateContext:
+          type: releaseJob
           inputs:
-            azureSubscription: 'Arm-Public-Placeholder-Endpoint'
-            scriptType: 'ps'
-            scriptLocation: 'inlineScript'
-            inlineScript: |
-              # Define variables
-              $storageAccountName = 'sabadgedelivery'
-              $containerName = '$web'
-              $sourceFilePath = '$(System.DefaultWorkingDirectory)/_Store Web - Badge Build/ms-store-badge-artifacts/badge/ms-store-badge.bundled.js'
-              $sourceDirPath = '$(System.DefaultWorkingDirectory)/_Store Web - Badge Build/ms-store-badge-artifacts/images'
+          - input: pipelineArtifact
+            buildType: specific
+            project: Universal Store
+            definition: 151610
+            branchName: GitOps/S360Breeze/ChangeSet/PipelineMigration_ESPipelineMigrationScenarioFeb122025FullRun1_7daaff26-c200-46c3-90b7-5246c49b800b
+            artifactName: 'ms-store-badge-artifacts'
+            targetPath: '$(System.ArtifactsDirectory)'
+          workflow: m365-custom
+        steps:
+        - task: prepare-deployment@1
+          inputs:
+            taskType: credentialFetchTaskAzureRM
+            armserviceconnection: Arm-Public-Placeholder-Endpoint
+            subscriptionid: 74a6c3e5-c954-4157-b6b2-2a2eb1fbc922
 
-              # Upload file to storage account
-              az storage blob upload `
-                --account-name $storageAccountName `
-                --container-name $containerName `
-                --file $sourceFilePath `
-                --auth-mode login
-
-              # Upload directory to storage account
-              az storage blob upload-batch `
-                --account-name $storageAccountName `
-                --destination $containerName `
-                --source $sourceDirPath `
-                --auth-mode login
+        - task: AzureFileCopy@6
+          displayName: ' File Copy Bundle'
+          inputs:
+            SourcePath: $(System.ArtifactsDirectory)/badge/ms-store-badge.bundled.js
+            ConnectedServiceNameARM: Arm-Public-Placeholder-Endpoint
+            Destination: AzureBlob
+            StorageAccountRM: sabadgedelivery
+            ContainerName: $web
+        - task: AzureFileCopy@6
+          displayName: ' File Copy Images'
+          inputs:
+            SourcePath: $(System.ArtifactsDirectory)/images
+            ConnectedServiceNameARM: Arm-Public-Placeholder-Endpoint
+            Destination: AzureBlob
+            StorageAccountRM: sabadgedelivery
+            ContainerName: $web

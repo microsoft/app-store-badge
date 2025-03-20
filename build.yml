@@ -1,82 +1,77 @@
+# This Yaml Document has been converted by ESAI Yaml Pipeline Conversion Tool.
+
 trigger:
-  - main
+- main
+resources:
+  repositories:
+  - repository: 1ESPipelineTemplates
+    type: git
+    name: 1ESPipelineTemplates/1ESPipelineTemplates
+    ref: refs/tags/release
+extends:
+  template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
+  parameters:
+    pool:
+      name: StoreWebBuildPool-Centeral
+    customBuildTags:
+    - ES365AIMigrationTooling
+    stages:
+    - stage: stage
+      jobs:
+      - job: job
+        templateContext:
+          outputs:
+          - output: pipelineArtifact
+            displayName: 'Publish build artifact'
+            targetPath: '$(System.DefaultWorkingDirectory)/dist'
+            artifactName: 'ms-store-badge-artifacts'
+            publishLocation: 'Container'
+        steps:
+        - checkout: self
+          submodules: true
 
-pool:
-  vmImage: ubuntu-latest
+        - script: |
+            icacls "$(Build.SourcesDirectory)" /grant Everyone:F /T
+            if exist "$(Build.SourcesDirectory)\.npmrc" (
+              dir "$(Build.SourcesDirectory)\.npmrc"
+            ) else (
+              echo .npmrc file not found
+              echo. > "$(Build.SourcesDirectory)\.npmrc"
+            )
+          displayName: 'Add vsts directory permissions'
 
-steps:
-  - checkout: self
-    submodules: true
-
-  - script: |
-      sudo chmod -R 777 /home/vsts/work/1/s
-      ls -l /home/vsts/work/1/s/.npmrc
-    displayName: 'Add vsts directory permissions'
-    
-  # Authenticate to NPM
-  - task: NpmAuthenticate@0
-    inputs:
-      workingFile: '.npmrc'
-    displayName: 'Authenticate to NPM'
-
-  # Build steps for the project
-  - script: |
-      cd src
-      tsc -t es2015 ms-store-badge.ts
-      npm install
-      npm run build:prod
-    displayName: 'Build badge'
-
-  # Deploy to Azure Static Web App
-  - task: AzureStaticWebApp@0
-    inputs:
-      app_location: '/' 
-      api_location: '' 
-      output_location: '/dist'  # Built app content directory relative to app_location
-      azure_static_web_apps_api_token: $(DEPLOYMENT_TOKEN)
-    displayName: 'Deploy to SWA'
-
-  # Publish build artifacts
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(System.DefaultWorkingDirectory)/dist'
-      ArtifactName: 'ms-store-badge-artifacts'
-      publishLocation: 'Container'
-    displayName: 'Publish build artifact'
-
-  # Sync ADO Repo to GitHub Repo
-  - script: |
-      echo "Setting up GitHub repository"
-
-      # Configure Git to use the stored GitHub token
-      git config --global user.name "Justin Lau"
-      git config --global user.email "justinlau@microsoft.com"
-
-      # Add remote GH badge repo
-      git remote add github https://$(GITHUB_TOKEN)@github.com/microsoft/app-store-badge.git
-
-      # Fetch the latest changes
-      git fetch github
-
-      # Ensure we are on the GH main branch
-      git checkout github/main
-
-      # Merge changes from ADO repository, take our side by default, and allow unrelated histories
-      git merge origin/main -X ours --allow-unrelated-histories --no-edit
-
-      # Remove .npmrc file
-      git rm .npmrc -f
-
-      # Add changes
-      git add -A
-
-      # Commit changes
-      git commit -m "Sync from ADO repo" || echo "No changes to commit"
-
-      # Push the changes to GH
-      git push github HEAD:main --force
-
-    displayName: 'Sync ADO Repo to GitHub'
-    env:
-      GITHUB_TOKEN: $(GITHUB_TOKEN)
-
+        - task: NpmAuthenticate@0
+          inputs:
+            workingFile: '.npmrc'
+          displayName: 'Authenticate to NPM'
+        - script: |
+            cd src
+            tsc -t es2015 ms-store-badge.ts
+            npm install
+            npm run build:prod
+          displayName: 'Build badge'
+          
+        - script: |
+            echo "Setting up GitHub repository"
+            # Configure Git to use the stored GitHub token
+            git config --global user.name "Justin Lau"
+            git config --global user.email "justinlau@microsoft.com"
+            # Add remote GH badge repo
+            git remote add github https://$(GITHUB_TOKEN)@github.com/microsoft/app-store-badge.git
+            # Fetch the latest changes
+            git fetch github
+            # Ensure we are on the GH main branch
+            git checkout github/main
+            # Merge changes from ADO repository, take our side by default, and allow unrelated histories
+            git merge origin/main -X ours --allow-unrelated-histories --no-edit
+            # Remove .npmrc file
+            git rm .npmrc -f
+            # Add changes
+            git add -A
+            # Commit changes
+            git commit -m "Sync from ADO repo" || echo "No changes to commit"
+            # Push the changes to GH
+            git push github HEAD:main --force
+          displayName: 'Sync ADO Repo to GitHub'
+          env:
+            GITHUB_TOKEN: $(GITHUB_TOKEN)
