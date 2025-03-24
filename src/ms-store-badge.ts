@@ -543,6 +543,7 @@ class MSStoreBadge extends HTMLElement {
     languageMap.set("Uzbek", "uz");
     languageMap.set("Vietnamese", "vi");
     languageMap.set("Welsh", "cy");
+    languageMap.set("Xhosa", "xh");
 
     let language: SupportedLanguage[] = [];
 
