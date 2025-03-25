@@ -52,7 +52,7 @@ extends:
           displayName: 'Install SWA CLI'
 
         - script: |
-            swa deploy "$(System.ArtifactsDirectory)/dist" --deployment-token $(DEPLOYMENT_TOKEN)
+            swa deploy "$(System.ArtifactsDirectory)" --deployment-token $(DEPLOYMENT_TOKEN)
           displayName: Deploy to SWA using Deployment Token
 
 
