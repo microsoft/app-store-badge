@@ -58,6 +58,7 @@ extends:
 
     - stage: Deploy_To_PROD_SA
       displayName: Drop badge build to Prod SA
+      trigger: manual
       templateContext:
         cloud: Public
         isProduction: true
