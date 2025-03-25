@@ -44,8 +44,11 @@ extends:
 
         - script: |
             npm install -g @azure/static-web-apps-cli
+          displayName: 'Install SWA CLI'
+
+        - script: |
             swa deploy "$(System.ArtifactsDirectory)/dist" --deployment-token $(DEPLOYMENT_TOKEN)
-          displayName: 'Deploy to Static Web App using swa CLI'
+          displayName: Deploy to SWA using Deployment Token
 
 
     - stage: Deploy_To_PROD_SA
