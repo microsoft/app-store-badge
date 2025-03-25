@@ -41,6 +41,11 @@ extends:
           displayName: 'Install Node.js'
           inputs:
             versionSpec: '18.x'
+        
+        - script: |
+            echo "Listing contents of artifact directory:"
+            ls -R "$(System.ArtifactsDirectory)"
+          displayName: 'List Artifact Contents'
 
         - script: |
             npm install -g @azure/static-web-apps-cli
