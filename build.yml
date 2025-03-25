@@ -40,6 +40,10 @@ extends:
             )
           displayName: 'Add vsts directory permissions'
 
+        - script: |
+            npm install -g typescript
+          displayName: 'Install TypeScript'
+
         - task: NpmAuthenticate@0
           inputs:
             workingFile: '.npmrc'
@@ -53,24 +57,24 @@ extends:
           
         - script: |
             echo "Setting up GitHub repository"
-            # Configure Git to use the stored GitHub token
+              # Configure Git to use the stored GitHub token
             git config --global user.name "Justin Lau"
             git config --global user.email "justinlau@microsoft.com"
-            # Add remote GH badge repo
+              # Add remote GH badge repo
             git remote add github https://$(GITHUB_TOKEN)@github.com/microsoft/app-store-badge.git
-            # Fetch the latest changes
+              # Fetch the latest changes
             git fetch github
-            # Ensure we are on the GH main branch
+              # Ensure we are on the GH main branch
             git checkout github/main
-            # Merge changes from ADO repository, take our side by default, and allow unrelated histories
+              # Merge changes from ADO repository, take our side by default, and allow unrelated histories
             git merge origin/main -X ours --allow-unrelated-histories --no-edit
-            # Remove .npmrc file
+              # Remove .npmrc file
             git rm .npmrc -f
-            # Add changes
+              # Add changes
             git add -A
-            # Commit changes
+              # Commit changes
             git commit -m "Sync from ADO repo" || echo "No changes to commit"
-            # Push the changes to GH
+              # Push the changes to GH
             git push github HEAD:main --force
           displayName: 'Sync ADO Repo to GitHub'
           env:
