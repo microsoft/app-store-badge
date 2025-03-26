@@ -60,6 +60,11 @@ extends:
           displayName: 'Build badge'
           
         - script: |
+            echo "Listing current directory contents:"
+            dir
+          displayName: 'List current directory contents'
+
+        - script: |
             echo "Setting up GitHub repository"
               # Configure Git to use the stored GitHub token
             git config --global user.name "Justin Lau"
