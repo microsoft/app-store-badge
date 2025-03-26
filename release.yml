@@ -32,8 +32,7 @@ extends:
           - input: pipelineArtifact
             buildType: specific
             project: Universal Store
-            definition: 151610
-            branchName: main
+            branchName: user/kendzisah/fix-deployment-to-swa
             artifactName: 'ms-store-badge-artifacts'
             targetPath: '$(System.ArtifactsDirectory)'
         steps:
@@ -79,8 +78,7 @@ extends:
           - input: pipelineArtifact
             buildType: specific
             project: Universal Store
-            definition: 151610
-            branchName: GitOps/S360Breeze/ChangeSet/PipelineMigration_ESPipelineMigrationScenarioFeb122025FullRun1_7daaff26-c200-46c3-90b7-5246c49b800b
+            branchName: user/kendzisah/fix-deployment-to-swa
             artifactName: 'ms-store-badge-artifacts'
             targetPath: '$(System.ArtifactsDirectory)'
           workflow: m365-custom
