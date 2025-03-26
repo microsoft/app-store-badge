@@ -48,7 +48,7 @@ extends:
           inputs:
             workingFile: '.npmrc'
           displayName: 'Authenticate to NPM'
-          
+
         - script: |
             cd src
             tsc -t es2015 ms-store-badge.ts
@@ -66,9 +66,9 @@ extends:
               # Fetch the latest changes
             git fetch github
               # Ensure we are on the GH main branch
-            git checkout github/main
+            git merge origin/main
               # Merge changes from ADO repository, take our side by default, and allow unrelated histories
-            git merge origin/main -X ours --allow-unrelated-histories --no-edit
+            git checkout github/main -X ours --allow-unrelated-histories --no-edit
               # Remove .npmrc file
             git rm .npmrc -f
               # Add changes
