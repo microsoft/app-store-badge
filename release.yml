@@ -32,6 +32,7 @@ extends:
           - input: pipelineArtifact
             buildType: specific
             project: Universal Store
+            definition: 151610
             branchName: user/kendzisah/fix-deployment-to-swa
             artifactName: 'ms-store-badge-artifacts'
             targetPath: '$(System.ArtifactsDirectory)'
@@ -77,6 +78,7 @@ extends:
           inputs:
           - input: pipelineArtifact
             buildType: specific
+            definition: 151610
             project: Universal Store
             branchName: user/kendzisah/fix-deployment-to-swa
             artifactName: 'ms-store-badge-artifacts'
