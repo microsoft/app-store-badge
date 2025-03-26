@@ -57,6 +57,11 @@ extends:
         - script: |
             npm install
           displayName: 'Install dependencies'
+
+        - script: |
+            echo "Listing current directory contents:"
+            dir
+          displayName: 'List directory contents after install'
           
         - script: |
             npm run build:prod
@@ -65,7 +70,7 @@ extends:
         - script: |
             echo "Listing current directory contents:"
             dir
-          displayName: 'List current directory contents'
+          displayName: 'List current directory contents after build'
 
         - script: |
             echo "Setting up GitHub repository"
