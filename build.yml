@@ -48,6 +48,15 @@ extends:
           inputs:
             workingFile: '.npmrc'
           displayName: 'Authenticate to NPM'
+        
+        - script: |
+            rm -rf node_modules
+            rm -rf dist
+            npm cache clean --force
+            npm install
+            npm run build:prod
+          displayName: 'Clean build'
+
         - script: |
             cd src
             tsc -t es2015 ms-store-badge.ts
