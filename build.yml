@@ -55,7 +55,6 @@ extends:
           displayName: 'Clean dist directory'
           
         - script: |
-            tsc -t es2015 ms-store-badge.ts
             npm install
             npm run build:prod
           displayName: 'Build badge'
