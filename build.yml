@@ -62,6 +62,11 @@ extends:
             echo "Listing current directory contents:"
             dir
           displayName: 'List directory contents after install'
+
+        - script: |
+            cd src
+            tsc -t es2015 ms-store-badge.ts
+          displayName: 'Compile TypeScript'
           
         - script: |
             npm run build:prod
