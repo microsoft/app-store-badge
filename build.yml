@@ -58,7 +58,6 @@ extends:
           displayName: 'Clean build'
 
         - script: |
-            cd src
             tsc -t es2015 ms-store-badge.ts
             npm install
             npm run build:prod
