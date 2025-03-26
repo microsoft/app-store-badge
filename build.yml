@@ -65,7 +65,7 @@ extends:
 
         - script: |
             cd src
-            tsc -t es2015 ms-store-badge.ts
+            tsc -t es2015 --moduleResolution node ms-store-badge.ts
           displayName: 'Compile TypeScript'
           
         - script: |
