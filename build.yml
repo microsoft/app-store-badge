@@ -50,18 +50,28 @@ extends:
           displayName: 'Authenticate to NPM'
         
         - script: |
+            
+            # Clean up previous build artifacts
             rm -rf node_modules
             rm -rf dist
+            
+            # Install dependencies and build once
             npm cache clean --force
             npm install
+            
+            # Show debug info 
+            echo "Files in current directory:"
+            ls -la
+            echo "Content of src directory:"
+            ls -la src/
+            
+            # Run the production build (which should handle TypeScript compilation)
             npm run build:prod
+            
+            # Verify build output
+            echo "Build complete, checking output:"
+            ls -la dist/
           displayName: 'Clean build'
-
-        - script: |
-            tsc -t es2015 ms-store-badge.ts
-            npm install
-            npm run build:prod
-          displayName: 'Build badge'
           
         - script: |
             echo "Setting up GitHub repository"
