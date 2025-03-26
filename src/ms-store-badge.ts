@@ -71,8 +71,6 @@ class MSStoreBadge extends HTMLElement {
 
   constructor() {
     super();
-    MSStoreBadge.verifyLanguagesAvailable(); // Verify that all languages are available in the bundle.
-    MSStoreBadge._forceIncludeXhosa();
     // Create our state.
     this.getPlatformDetails().then(details => this.#platformDetails = details);
     this.#languageDetails = MSStoreBadge.getSupportedLanguageFromCode(this.language);
@@ -86,13 +84,6 @@ class MSStoreBadge extends HTMLElement {
     shadow.appendChild(html);
 
     
-  }
-
-  private static _forceIncludeXhosa() {
-    const xhosa = MSStoreBadge.supportedLanguages.find(l => l.name === "Xhosa");
-    if (!xhosa) {
-      console.error("Xhosa language is missing!");
-    }
   }
 
   updateImageSrc() {
@@ -552,8 +543,6 @@ class MSStoreBadge extends HTMLElement {
     languageMap.set("Urdu", "ur");
     languageMap.set("Uzbek", "uz");
     languageMap.set("Vietnamese", "vi");
-    languageMap.set("Welsh", "cy");
-    languageMap.set("Xhosa", "xh");
 
     let language: SupportedLanguage[] = [];
 
@@ -569,17 +558,6 @@ class MSStoreBadge extends HTMLElement {
     return language;
   }
 
-  static verifyLanguagesAvailable() {
-    // Add this near the end of your class
-    const expectedLanguages = ["English", "Xhosa", /* other critical languages */];
-    const missingLanguages = expectedLanguages.filter(
-      lang => !MSStoreBadge.supportedLanguages.some(l => l.name === lang)
-    );
-    
-    if (missingLanguages.length > 0) {
-      console.warn(`Missing languages in bundle: ${missingLanguages.join(', ')}`);
-    }
-  }
 }
 
 interface SupportedLanguage {
