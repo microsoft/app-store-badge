@@ -53,9 +53,12 @@ extends:
             echo "Cleaning dist directory"
             rm -rf "$(System.DefaultWorkingDirectory)/dist"
           displayName: 'Clean dist directory'
-          
+
         - script: |
             npm install
+          displayName: 'Install dependencies'
+          
+        - script: |
             npm run build:prod
           displayName: 'Build badge'
           
