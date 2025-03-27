@@ -71,6 +71,11 @@ extends:
         - script: |
             npm run build:prod
           displayName: 'Build badge'
+
+        - script: |
+            echo "Listing dist directory structure:"
+            dir dist /s
+          displayName: 'List dist directory structure'
           
         - script: |
             echo "Listing current directory contents:"
