@@ -3,6 +3,7 @@ import { terser } from 'rollup-plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import copy from 'rollup-plugin-copy';
+import fs from 'fs';
 
 export default {
   input: 'src/ms-store-badge.js',
@@ -32,7 +33,7 @@ export default {
         { src: 'src/iframe.html', dest: 'dist' },
         { src: 'src/9p1j8s7ccwwt_us_en-us.html', dest: 'dist' },
         { src: 'src/index.html', dest: 'dist' },
-        { src: 'dist/ms-store-badge.bundled.js', dest: 'dist/badge' }, // Copy to a badge subdirectory so that we can serve the badge script from get.microsoft.com/badge/ms-store-badge.bundled.js
+        //{ src: 'dist/ms-store-badge.bundled.js', dest: 'dist/badge' }, // Copy to a badge subdirectory so that we can serve the badge script from get.microsoft.com/badge/ms-store-badge.bundled.js
         {
           src: 'src/index.html',
           dest: 'dist',
@@ -51,6 +52,17 @@ export default {
         },
       },
     }),
-    summary()
+    summary(),
+    {
+      name: 'copy-to-badge-dir',
+      writeBundle() {
+        const dir = 'dist/badge';
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir, { recursive: true });
+        }
+        fs.copyFileSync('dist/ms-store-badge.bundled.js', 'dist/badge/ms-store-badge.bundled.js');
+        console.log('Successfully copied bundled file to badge directory');
+      }
+    }
   ],
 };
