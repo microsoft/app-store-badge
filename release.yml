@@ -94,11 +94,12 @@ extends:
         - task: AzureFileCopy@6
           displayName: ' File Copy Bundle'
           inputs:
-            SourcePath: $(System.ArtifactsDirectory)/badge/ms-store-badge.bundled.js
+            SourcePath: $(System.ArtifactsDirectory)/ms-store-badge.bundled.js
             ConnectedServiceNameARM: Arm-Public-Placeholder-Endpoint
             Destination: AzureBlob
             StorageAccountRM: sabadgedelivery
             ContainerName: $web
+
         - task: AzureFileCopy@6
           displayName: ' File Copy Images'
           inputs:
