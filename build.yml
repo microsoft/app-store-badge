@@ -84,7 +84,7 @@ extends:
 
         - script: |
             echo "Setting up GitHub repository"
-            # Configure Git to use the stored GitHub token
+              # Configure Git to use the stored GitHub token
             git config --global user.name "Justin Lau"
             git config --global user.email "justinlau@microsoft.com"
             # Add remote GH badge repo
