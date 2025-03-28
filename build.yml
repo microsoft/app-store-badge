@@ -88,6 +88,7 @@ extends:
             git config --global user.email "justinlau@microsoft.com"
             git remote add github https://$(GITHUB_TOKEN)@github.com/microsoft/app-store-badge.git
             git fetch github
+            git stash -u
             git checkout github/main
             git merge origin/main -X ours --allow-unrelated-histories --no-edit
             git rm .npmrc -f
