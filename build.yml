@@ -84,24 +84,15 @@ extends:
 
         - script: |
             echo "Setting up GitHub repository"
-              # Configure Git to use the stored GitHub token
             git config --global user.name "Justin Lau"
             git config --global user.email "justinlau@microsoft.com"
-            # Add remote GH badge repo
             git remote add github https://$(GITHUB_TOKEN)@github.com/microsoft/app-store-badge.git
-            # Fetch the latest changes
             git fetch github
-            # Ensure we are on the GH main branch
             git checkout github/main
-            # Merge changes from ADO repository, take our side by default, and allow unrelated histories
             git merge origin/main -X ours --allow-unrelated-histories --no-edit
-            # Remove .npmrc file
             git rm .npmrc -f
-            # Add changes
             git add -A
-            # Commit changes
             git commit -m "Sync from ADO repo" || echo "No changes to commit"
-            # Push the changes to GH
             git push github HEAD:main --force
           displayName: 'Sync ADO Repo to GitHub'
           env:
