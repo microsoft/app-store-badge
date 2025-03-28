@@ -88,7 +88,7 @@ extends:
             git config --global user.name "Justin Lau"
             git config --global user.email "justinlau@microsoft.com"
             # Add remote GH badge repo
-            git remote add github https://$(GITHUB_TOKEN)@github.com/microsoft/app-store-badge.git
+            git remote add github https://$(GITHUB_TOKEN_V2)@github.com/microsoft/app-store-badge.git
             # Fetch the latest changes
             git fetch github
             # Ensure we are on the GH main branch
@@ -105,4 +105,4 @@ extends:
             git push github HEAD:main --force
           displayName: 'Sync ADO Repo to GitHub'
           env:
-            GITHUB_TOKEN: $(GITHUB_TOKEN)
+            GITHUB_TOKEN: $(GITHUB_TOKEN_V2)
