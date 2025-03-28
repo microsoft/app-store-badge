@@ -82,7 +82,7 @@ extends:
             dir
           displayName: 'List current directory contents after build'
 
-        - powershell: |
+        - script: |
             echo "Setting up GitHub repository"
             # Configure Git to use the stored GitHub token
             git config --global user.name "Justin Lau"
@@ -99,12 +99,8 @@ extends:
             git rm .npmrc -f
             # Add changes
             git add -A
-            # Commit changes and handle errors
-            try {
-                git commit -m "Sync from ADO repo"
-            } catch {
-                echo "No changes to commit"
-            }
+            # Commit changes
+            git commit -m "Sync from ADO repo" || echo "No changes to commit"
             # Push the changes to GH
             git push github HEAD:main --force
           displayName: 'Sync ADO Repo to GitHub'
