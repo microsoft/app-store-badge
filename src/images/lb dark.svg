@@ -1,6 +1,6 @@
 <svg width="161" height="44" viewBox="0 0 161 44" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="1" y="1" width="159" height="42" rx="4" fill="#202020"/>
-<rect x="0.5" y="0.5" width="160" height="43" rx="4.5" stroke="black" stroke-opacity="0.1"/>
+<rect x="0.5" y="0.5" width="160" height="43" rx="4.5" stroke="white" stroke-opacity="0.1"/>
 <g clip-path="url(#clip0_1049_9465)">
 <g clip-path="url(#clip1_1049_9465)">
 <path d="M10.3438 14.6667C10.3438 14.1604 10.7542 13.75 11.2604 13.75H30.7396C31.2458 13.75 31.6562 14.1604 31.6562 14.6667V28.5313C31.6562 30.6196 29.9633 32.3125 27.875 32.3125H14.125C12.0367 32.3125 10.3438 30.6196 10.3438 28.5313V14.6667Z" fill="url(#paint0_linear_1049_9465)"/>

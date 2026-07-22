@@ -252,7 +252,7 @@ class MSStoreBadge extends HTMLElement {
 
       img {
         display: block;
-        border-radius: 8px;
+        border-radius: 4.5px;
         transition: 0.35s ease;
       }
 
